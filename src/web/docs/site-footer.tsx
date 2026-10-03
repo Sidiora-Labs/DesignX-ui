@@ -8,7 +8,7 @@ export function SiteFooter() {
           <DxMark className="size-5" />
           <span>DesignX UIbuilt on Base UI, Tailwind CSS and Motion. MIT licensed.</span>
         </div>
-        <span className="font-mono text-xs">@designx/ui v0.1.0</span>
+        <span className="font-mono text-xs">NPM: @sidioralabs/designx-ui</span>
       </div>
     </footer>
   );
