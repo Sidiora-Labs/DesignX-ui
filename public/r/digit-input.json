@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "digit-input",
+  "type": "registry:component",
+  "title": "Digit Input",
+  "description": "One-time-code input where each digit rolls in with motion.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/digit-input.tsx",
+      "type": "registry:component",
+      "target": "components/dx/digit-input.tsx",
+      "content": "import * as React from \"react\";\nimport { AnimatePresence, motion } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * DigitInputevery typed character rises into place. The real input stays\n * on top (transparent text) so selection, paste and a11y keep working.\n *\n */\n\ntype DigitInputProps = Omit<React.ComponentProps<\"input\">, \"value\" | \"defaultValue\" | \"onChange\"> & {\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  /** Restrict input to digits. */\n  numeric?: boolean;\n  wrapperClassName?: string;\n};\n\nfunction DigitInput({\n  value,\n  defaultValue = \"\",\n  onValueChange,\n  numeric = false,\n  placeholder = \"0\",\n  className,\n  wrapperClassName,\n  ...props\n}: DigitInputProps) {\n  const [internal, setInternal] = React.useState(defaultValue);\n  const controlled = value !== undefined;\n  const current = controlled ? value : internal;\n\n  return (\n    <div\n      data-slot=\"digit-input\"\n      className={cn(\n        \"relative w-full overflow-hidden text-center text-[44px] leading-tight font-medium tracking-[-0.03em]\",\n        wrapperClassName,\n      )}\n    >\n      <input\n        {...props}\n        inputMode={numeric ? \"numeric\" : props.inputMode}\n        value={current}\n        onChange={(e) => {\n          const next = numeric ? e.target.value.replace(/\\D/g, \"\") : e.target.value;\n          if (!controlled) setInternal(next);\n          onValueChange?.(next);\n        }}\n        className={cn(\n          \"caret-primary relative z-10 w-full bg-transparent py-2 text-center text-transparent outline-none selection:bg-info/20\",\n          className,\n        )}\n      />\n      <div aria-hidden className=\"pointer-events-none absolute inset-0 flex items-center justify-center\">\n        {current === \"\" && <span className=\"text-muted-foreground/40\">{placeholder}</span>}\n        <AnimatePresence initial={false} mode=\"popLayout\">\n          {current.split(\"\").map((ch, i) => (\n            <motion.span\n              key={`${ch}-${i}`}\n              className=\"inline-block whitespace-pre\"\n              initial={{ y: \"100%\", opacity: 0, filter: \"blur(4px)\" }}\n              animate={{ y: \"0%\", opacity: 1, filter: \"blur(0px)\" }}\n              exit={{ y: \"100%\", opacity: 0, filter: \"blur(4px)\" }}\n              transition={{ type: \"spring\", stiffness: 420, damping: 32 }}\n            >\n              {ch}\n            </motion.span>\n          ))}\n        </AnimatePresence>\n      </div>\n    </div>\n  );\n}\n\nexport { DigitInput };\nexport type { DigitInputProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/digit-input"
+  }
+}

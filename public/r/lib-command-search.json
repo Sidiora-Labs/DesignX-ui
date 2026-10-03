@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-command-search",
+  "type": "registry:lib",
+  "title": "lib-command-search",
+  "files": [
+    {
+      "path": "lib/command-search.ts",
+      "type": "registry:lib",
+      "target": "lib/command-search.ts",
+      "content": "export type SearchableCommand = { label: string; group?: string; hint?: string; keywords?: string[] };\n\nfunction score(text: string, q: string) {\n  const t = text.toLowerCase();\n  if (t === q) return 100;\n  if (t.startsWith(q)) return 80;\n  if (t.split(/[\\s\\-_/]+/).some((w) => w.startsWith(q))) return 60;\n  if (t.includes(q)) return 40;\n  // Subsequence match: every query character appears in order.\n  let i = 0;\n  for (const ch of t) if (ch === q[i]) i++;\n  return i === q.length ? 10 : 0;\n}\n\n/** Rank commands by label, then keywords, hint and group. Empty query returns items as-is. */\nexport function searchCommands<T extends SearchableCommand>(items: readonly T[], query: string): T[] {\n  const q = query.trim().toLowerCase();\n  if (!q) return [...items];\n  return items\n    .map((item, index) => {\n      const best = Math.max(\n        score(item.label, q),\n        ...(item.keywords ?? []).map((k) => score(k, q) * 0.9),\n        item.hint ? score(item.hint, q) * 0.6 : 0,\n        item.group ? score(item.group, q) * 0.5 : 0,\n      );\n      return { item, index, best };\n    })\n    .filter((r) => r.best > 0)\n    .sort((a, b) => b.best - a.best || a.index - b.index)\n    .map((r) => r.item);\n}\n"
+    }
+  ]
+}

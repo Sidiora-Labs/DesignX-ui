@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scroll-to",
+  "type": "registry:component",
+  "title": "Scroll To",
+  "description": "Smooth anchor scrolling with offsets.",
+  "registryDependencies": [
+    "@dx/smooth-scroll",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/scroll-to.tsx",
+      "type": "registry:component",
+      "target": "components/motion/scroll-to.tsx",
+      "content": "import type { ButtonHTMLAttributes, ReactNode } from \"react\";\n\nimport {\n  type ScrollTarget,\n  type ScrollToOptions,\n  useSmoothScroll,\n} from \"@/components/motion/smooth-scroll\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface ScrollToProps\n  extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, \"onClick\"> {\n  /** Where to scroll: px offset, selector string or element. */\n  to: ScrollTarget;\n  /** Extra px offset from the target (e.g. to clear a sticky header). */\n  offset?: number;\n  /** Override the ease duration in seconds. */\n  duration?: number;\n  children: ReactNode;\n  className?: string;\n}\n\n/**\n * Button that smooth-scrolls to a target via the active SmoothScroll provider\n * (or native scroll as a fallback). Respects reduced motionjumps instantly.\n */\nexport function ScrollTo({\n  to,\n  offset,\n  duration,\n  children,\n  className,\n  ...rest\n}: ScrollToProps) {\n  const { scrollTo } = useSmoothScroll();\n  const options: ScrollToOptions = { offset, duration };\n  return (\n    <button\n      type=\"button\"\n      onClick={() => scrollTo(to, options)}\n      className={cn(className)}\n      {...rest}\n    >\n      {children}\n    </button>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/scroll-to"
+  }
+}

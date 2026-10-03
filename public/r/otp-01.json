@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "otp-01",
+  "type": "registry:block",
+  "title": "Verify code",
+  "description": "One-time code verification with the animated Digit Input.",
+  "dependencies": [
+    "lucide-react@^0.577.0"
+  ],
+  "registryDependencies": [
+    "@dx/button",
+    "@dx/digit-input",
+    "@dx/sonner"
+  ],
+  "files": [
+    {
+      "path": "blocks/otp-01.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/otp-01.tsx",
+      "content": "import * as React from \"react\";\nimport { MailCheckIcon } from \"lucide-react\";\n\nimport { DigitInput } from \"@/components/dx/digit-input\";\nimport { Button } from \"@/components/ui/button\";\nimport { toast } from \"@/components/ui/sonner\";\n\nexport default function Otp01() {\n  const [code, setCode] = React.useState(\"\");\n  const [seconds, setSeconds] = React.useState(30);\n  React.useEffect(() => {\n    if (seconds <= 0) return;\n    const t = setTimeout(() => setSeconds((s) => s - 1), 1000);\n    return () => clearTimeout(t);\n  }, [seconds]);\n\n  return (\n    <div className=\"flex min-h-svh items-center justify-center p-6\">\n      <form\n        className=\"grid w-full max-w-sm justify-items-center gap-6 text-center\"\n        onSubmit={(e) => {\n          e.preventDefault();\n          toast.success(\"Verified\", { description: \"Your email is confirmed.\" });\n        }}\n      >\n        <div className=\"grid size-14 place-items-center rounded-full bg-info-container text-info\">\n          <MailCheckIcon className=\"size-6\" />\n        </div>\n        <div className=\"grid gap-1.5\">\n          <h1 className=\"text-[28px] font-normal tracking-[-0.02em]\">Check your email</h1>\n          <p className=\"text-sm text-muted-foreground\">\n            We sent a 6-digit code to <span className=\"font-medium text-foreground\">ada@acme.com</span>\n          </p>\n        </div>\n        <DigitInput numeric maxLength={6} value={code} onValueChange={setCode} placeholder=\"000000\" aria-label=\"Verification code\" />\n        <Button type=\"submit\" size=\"lg\" className=\"w-full\" disabled={code.length < 6}>\n          Verify\n        </Button>\n        <p className=\"text-[13px] text-muted-foreground\">\n          Didn't get it?{\" \"}\n          {seconds > 0 ? (\n            <span className=\"tabular-nums\">Resend in {seconds}s</span>\n          ) : (\n            <button\n              type=\"button\"\n              className=\"text-foreground underline underline-offset-4\"\n              onClick={() => {\n                setSeconds(30);\n                toast(\"Code resent\");\n              }}\n            >\n              Resend code\n            </button>\n          )}\n        </p>\n      </form>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "otp"
+  ],
+  "meta": {
+    "iframeHeight": "640px",
+    "preview": "https://ui.designx.dev/blocks#otp-01"
+  }
+}

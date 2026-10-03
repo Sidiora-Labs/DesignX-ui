@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "motion-switch",
+  "type": "registry:component",
+  "title": "Switch",
+  "description": "A switch with a stretchy thumb.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/switch.tsx",
+      "type": "registry:component",
+      "target": "components/motion/switch.tsx",
+      "content": "import { animate, motion, MotionConfig, useReducedMotion } from \"motion/react\";\nimport { useEffect, useId, useRef, useState } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\n// Heavy, deliberate thumbhigh mass keeps the travel weighty without wobble.\nconst THUMB_SPRING = { type: \"spring\", stiffness: 800, damping: 80, mass: 4 } as const;\n\nexport interface SwitchProps {\n  checked: boolean;\n  onCheckedChange: (checked: boolean) => void;\n  disabled?: boolean;\n  label?: string;\n  ariaLabel?: string;\n  className?: string;\n}\n\nexport function Switch({\n  checked,\n  onCheckedChange,\n  disabled,\n  label,\n  ariaLabel,\n  className,\n}: SwitchProps) {\n  const id = useId();\n  const thumbRef = useRef<HTMLDivElement>(null);\n  const reduce = useReducedMotion();\n  const [isPressed, setIsPressed] = useState(false);\n  const [isPointer, setIsPointer] = useState(false);\n\n  // Disabled shake feedback when pressed.\n  useEffect(() => {\n    if (!thumbRef.current || reduce) return;\n    if (disabled && isPressed) {\n      animate(\n        thumbRef.current,\n        { x: [0, -2, 2, -1, 0] },\n        { delay: 0.2, duration: 0.6 },\n      );\n    }\n  }, [disabled, isPressed, reduce]);\n\n  const squish = !disabled && isPointer && isPressed && !reduce;\n\n  return (\n    <MotionConfig transition={reduce ? { duration: 0 } : THUMB_SPRING}>\n      <span className={cn(\"inline-flex items-center gap-3\", className)}>\n        <motion.button\n          id={id}\n          type=\"button\"\n          role=\"switch\"\n          aria-checked={checked}\n          aria-label={ariaLabel}\n          disabled={disabled}\n          onClick={() => !disabled && onCheckedChange(!checked)}\n          onPointerDown={(e) => {\n            setIsPressed(true);\n            setIsPointer(e.type.startsWith(\"pointer\"));\n          }}\n          onPointerUp={() => setIsPressed(false)}\n          onPointerLeave={() => setIsPressed(false)}\n          initial={false}\n          data-state={checked ? \"checked\" : \"unchecked\"}\n          className={cn(\n            \"group peer inline-flex h-7 w-12 shrink-0 cursor-pointer items-center px-1 rounded-full outline-none transition-colors duration-200\",\n            \"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n            \"disabled:cursor-not-allowed disabled:opacity-60\",\n            checked ? \"justify-end bg-primary\" : \"justify-start bg-muted-foreground/60\",\n          )}\n        >\n          <motion.div\n            ref={thumbRef}\n            layout\n            animate={{ scale: squish ? 0.9 : 1 }}\n            className=\"pointer-events-none block h-5 w-5 rounded-full bg-background shadow-md\"\n          >\n            {/* Stretch toward the destination while active. */}\n            <div\n              className={cn(\n                \"size-5\",\n                squish && (checked ? \"ml-1\" : \"mr-1\"),\n              )}\n            />\n          </motion.div>\n        </motion.button>\n        {label ? (\n          <label htmlFor={id} className=\"cursor-pointer text-sm text-foreground\">\n            {label}\n          </label>\n        ) : null}\n      </span>\n    </MotionConfig>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/motion-switch"
+  }
+}

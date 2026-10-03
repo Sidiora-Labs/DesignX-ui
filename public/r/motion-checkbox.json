@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "motion-checkbox",
+  "type": "registry:component",
+  "title": "Checkbox",
+  "description": "A checkbox with a drawn tick and squash on press.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/checkbox.tsx",
+      "type": "registry:component",
+      "target": "components/motion/checkbox.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useId } from \"react\";\nimport { EASE_OUT, SPRING_PRESS } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\nconst CHECK_PATH = \"M5 13l4 4L19 7\";\nconst INDETERMINATE_PATH = \"M6 12h12\";\n\nexport interface CheckboxProps {\n  checked: boolean;\n  onCheckedChange: (checked: boolean) => void;\n  disabled?: boolean;\n  indeterminate?: boolean;\n  label?: string;\n  className?: string;\n  id?: string;\n  \"aria-label\"?: string;\n  /** Associates an external message (e.g. a form error) with the control. */\n  \"aria-describedby\"?: string;\n}\n\nexport function Checkbox({\n  checked,\n  onCheckedChange,\n  disabled,\n  indeterminate,\n  label,\n  className,\n  id: idProp,\n  \"aria-label\": ariaLabel,\n  \"aria-describedby\": ariaDescribedBy,\n}: CheckboxProps) {\n  const autoId = useId();\n  const id = idProp ?? autoId;\n  const reduce = useReducedMotion();\n  const showMark = checked || indeterminate;\n  const path = indeterminate ? INDETERMINATE_PATH : CHECK_PATH;\n\n  return (\n    <label\n      htmlFor={id}\n      className={cn(\n        \"inline-flex items-center gap-3\",\n        disabled ? \"cursor-not-allowed\" : \"cursor-pointer\",\n        className,\n      )}\n    >\n      <motion.button\n        id={id}\n        type=\"button\"\n        // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n        role=\"checkbox\"\n        aria-checked={indeterminate ? \"mixed\" : checked}\n        aria-label={ariaLabel}\n        aria-describedby={ariaDescribedBy}\n        disabled={disabled}\n        onClick={() => !disabled && onCheckedChange(!checked)}\n        whileTap={reduce || disabled ? undefined : { scale: 0.92 }}\n        transition={SPRING_PRESS}\n        data-state={\n          checked ? \"checked\" : indeterminate ? \"indeterminate\" : \"unchecked\"\n        }\n        className={cn(\n          \"inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-md border-2 outline-none transition-colors duration-200\",\n          \"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n          \"disabled:cursor-not-allowed disabled:opacity-60\",\n          showMark\n            ? \"border-primary bg-primary text-primary-foreground\"\n            : \"border-muted-foreground/50 bg-background hover:border-muted-foreground\",\n        )}\n      >\n        <AnimatePresence initial={false}>\n          {showMark ? (\n            <motion.svg\n              key={indeterminate ? \"indeterminate\" : \"checked\"}\n              width=\"12\"\n              height=\"12\"\n              viewBox=\"0 0 24 24\"\n              fill=\"none\"\n              stroke=\"currentColor\"\n              strokeWidth={3}\n              strokeLinecap=\"round\"\n              strokeLinejoin=\"round\"\n              initial={reduce ? { opacity: 1 } : { opacity: 0, scale: 0.5 }}\n              animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1 }}\n              exit={\n                reduce\n                  ? { opacity: 0 }\n                  : { opacity: 0, scale: 0.5, filter: \"blur(4px)\" }\n              }\n              transition={\n                reduce ? { duration: 0 } : { duration: 0.16, ease: EASE_OUT }\n              }\n              aria-hidden\n            >\n              <title>{indeterminate ? \"Partially selected\" : \"Selected\"}</title>\n              <motion.path\n                d={path}\n                initial={reduce ? { pathLength: 1 } : { pathLength: 0 }}\n                animate={{ pathLength: 1 }}\n                transition={\n                  reduce\n                    ? { duration: 0 }\n                    : {\n                        duration: indeterminate ? 0.2 : 0.3,\n                        ease: EASE_OUT,\n                        delay: 0.04,\n                      }\n                }\n              />\n            </motion.svg>\n          ) : null}\n        </AnimatePresence>\n      </motion.button>\n      {label ? (\n        <span className={cn(\"select-none text-sm text-foreground\", disabled && \"opacity-60\")}>\n          {label}\n        </span>\n      ) : null}\n    </label>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/motion-checkbox"
+  }
+}

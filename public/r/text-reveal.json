@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-reveal",
+  "type": "registry:component",
+  "title": "Text Reveal",
+  "description": "Words blur and rise into place.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/text-reveal.tsx",
+      "type": "registry:component",
+      "target": "components/motion/text-reveal.tsx",
+      "content": "import { motion, type Transition, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef, type ElementType, type ReactNode } from \"react\";\nimport { EASE_OUT } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\ntype SplitMode = \"word\" | \"char\";\n\nexport interface TextRevealProps {\n  text: string | string[];\n  as?: ElementType;\n  className?: string;\n  split?: SplitMode;\n  stagger?: number;\n  delay?: number;\n  blur?: number;\n  yOffset?: string | number;\n  spring?: { stiffness?: number; damping?: number; mass?: number };\n  once?: boolean;\n  whileInView?: boolean;\n  children?: ReactNode;\n}\n\nconst DEFAULT_SPRING = { stiffness: 140, damping: 26, mass: 1.2 };\n\ntype WordGroup = { text: string; trailing: string };\n\n/**\n * One tokenizer for both modes: a line becomes the words it is made of, each\n * carrying the whitespace that follows it. Word mode animates a group at a\n * time, char mode the characters inside oneso the two can't drift apart on\n * what counts as a word or where a space belongs. Runs of whitespace and tabs\n * survive as their own group rather than collapsing.\n */\nfunction toWordGroups(line: string): WordGroup[] {\n  const chunks = line.match(/\\S+\\s*|\\s+/g) ?? [];\n  return chunks.map((chunk) => {\n    const text = chunk.replace(/\\s+$/, \"\");\n    return { text, trailing: chunk.slice(text.length) };\n  });\n}\n\nexport function TextReveal({\n  text,\n  as: Comp = \"span\",\n  className,\n  split = \"word\",\n  stagger = 0.09,\n  delay = 0,\n  blur = 12,\n  yOffset = \"40%\",\n  spring,\n  once = true,\n  whileInView = false,\n  children,\n}: TextRevealProps) {\n  const ref = useRef<HTMLElement>(null);\n  const inView = useInView(ref, { once, amount: 0.4 });\n  const reduce = useReducedMotion();\n  const shouldAnimate = whileInView ? inView : true;\n\n  const lines = Array.isArray(text) ? text : [text];\n  const s = { ...DEFAULT_SPRING, ...spring };\n\n  let unitIndex = 0;\n  const lineCounts = new Map<string, number>();\n\n  return (\n    <Comp ref={ref} className={cn(\"block\", className)}>\n      {lines.map((line) => {\n        const lineCount = lineCounts.get(line) ?? 0;\n        lineCounts.set(line, lineCount + 1);\n        const lineKey = `${line}-${lineCount}`;\n        const unitCounts = new Map<string, number>();\n\n        const renderUnit = (unit: string) => {\n          const d = delay + unitIndex * stagger;\n          unitIndex += 1;\n          const unitCount = unitCounts.get(unit) ?? 0;\n          unitCounts.set(unit, unitCount + 1);\n          const unitKey = `${unit}-${unitCount}`;\n          const initial = reduce\n            ? { opacity: 0 }\n            : { y: yOffset, opacity: 0, filter: `blur(${blur}px)` };\n          const animate = shouldAnimate\n            ? reduce\n              ? { opacity: 1 }\n              : { y: 0, opacity: 1, filter: \"blur(0px)\" }\n            : initial;\n          const transition: Transition = reduce\n            ? { opacity: { duration: 0.25, ease: EASE_OUT, delay: d * 0.3 } }\n            : {\n                y: { type: \"spring\" as const, ...s, delay: d },\n                opacity: { duration: 0.7, ease: EASE_OUT, delay: d },\n                filter: { duration: 0.9, ease: EASE_OUT, delay: d },\n              };\n          return (\n            <motion.span\n              key={unitKey}\n              initial={initial}\n              animate={animate}\n              transition={transition}\n              // `whitespace-pre` is load-bearing: a unit's trailing space is\n              // inside an inline-block and would otherwise collapse to zero\n              // width, running every word together.\n              className=\"inline-block whitespace-pre will-change-transform\"\n            >\n              {unit}\n            </motion.span>\n          );\n        };\n\n        const groups = toWordGroups(line);\n        const groupCounts = new Map<string, number>();\n\n        return (\n          <span key={lineKey} className=\"block\">\n            {groups.map((group) => {\n              const whole = group.text + group.trailing;\n              // Characters animate one at a time, but each word (plus the\n              // space that follows it) sits in its own inline-block so a long\n              // line wraps between words instead of mid-word.\n              if (split !== \"char\") return renderUnit(whole);\n\n              const groupCount = groupCounts.get(whole) ?? 0;\n              groupCounts.set(whole, groupCount + 1);\n              return (\n                <span\n                  key={`${whole}-${groupCount}`}\n                  className=\"inline-block whitespace-pre\"\n                >\n                  {Array.from(whole).map((char) => renderUnit(char))}\n                </span>\n              );\n            })}\n          </span>\n        );\n      })}\n      {children}\n    </Comp>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/text-reveal"
+  }
+}

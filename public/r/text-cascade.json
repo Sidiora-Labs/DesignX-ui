@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-cascade",
+  "type": "registry:component",
+  "title": "Text Cascade",
+  "description": "Letters cascade in on a stagger.",
+  "registryDependencies": [
+    "@dx/action-swap"
+  ],
+  "files": [
+    {
+      "path": "components/motion/text-cascade.tsx",
+      "type": "registry:component",
+      "target": "components/motion/text-cascade.tsx",
+      "content": "import { ActionSwapText } from \"./action-swap\";\n\nexport interface TextCascadeProps {\n  /** Current text. Changing it cascades the letters to the new value. */\n  text: string;\n  className?: string;\n}\n\n/**\n * Letter-by-letter slot roll for standalone textthe old letters drop away\n * as the new ones land, left to right. Same motion as the action-swap\n * cascade variant, with a text-first API.\n */\nexport function TextCascade({ text, className }: TextCascadeProps) {\n  return (\n    <ActionSwapText value={text} animation=\"cascade\" className={className}>\n      {text}\n    </ActionSwapText>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/text-cascade"
+  }
+}

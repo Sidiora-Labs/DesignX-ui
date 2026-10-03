@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "dev-tools",
+  "type": "registry:component",
+  "title": "Dev Tools",
+  "description": "A breakpoint indicator and live debug panel that only render in development.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/dev-tools.tsx",
+      "type": "registry:component",
+      "target": "components/dx/dev-tools.tsx",
+      "content": "import * as React from \"react\";\nimport { motion, type MotionValue } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * Dev toolsa Tailwind breakpoint badge and a live value panel that\n * understands motion values. Both render nothing in production builds unless\n * `force` is set.\n */\n\nconst isDev = import.meta.env.DEV;\n\ntype BreakpointIndicatorProps = {\n  className?: string;\n  /** Render in production too. */\n  force?: boolean;\n  /** Pin to a viewport corner. Set false to render inline. */\n  position?: \"bottom-left\" | \"bottom-right\" | \"top-left\" | \"top-right\" | false;\n};\n\nconst corners = {\n  \"bottom-left\": \"fixed bottom-2 left-2\",\n  \"bottom-right\": \"fixed bottom-2 right-2\",\n  \"top-left\": \"fixed top-2 left-2\",\n  \"top-right\": \"fixed top-2 right-2\",\n};\n\nfunction BreakpointIndicator({ className, force, position = \"bottom-left\" }: BreakpointIndicatorProps) {\n  if (!isDev && !force) return null;\n  return (\n    <div\n      data-slot=\"breakpoint-indicator\"\n      aria-hidden\n      className={cn(\n        \"z-50 flex h-7 min-w-7 items-center justify-center rounded-full bg-foreground px-2 font-mono text-xs font-medium text-background shadow-md\",\n        position && corners[position],\n        className,\n      )}\n    >\n      <span className=\"sm:hidden\">xs</span>\n      <span className=\"hidden sm:inline md:hidden\">sm</span>\n      <span className=\"hidden md:inline lg:hidden\">md</span>\n      <span className=\"hidden lg:inline xl:hidden\">lg</span>\n      <span className=\"hidden xl:inline 2xl:hidden\">xl</span>\n      <span className=\"hidden 2xl:inline\">2xl</span>\n    </div>\n  );\n}\n\ntype DebugValue = string | number | boolean | null | undefined | MotionValue<number> | MotionValue<string> | object;\n\ntype DebugPanelProps = {\n  values: Record<string, DebugValue>;\n  title?: string;\n  className?: string;\n  force?: boolean;\n};\n\nconst isMotionValue = (v: unknown): v is MotionValue => !!v && typeof v === \"object\" && \"get\" in v && \"on\" in v;\n\nfunction formatValue(v: DebugValue): React.ReactNode {\n  if (isMotionValue(v)) return <motion.span>{v as MotionValue<number>}</motion.span>;\n  if (typeof v === \"string\") return `\"${v}\"`;\n  if (v === null || v === undefined || typeof v === \"boolean\" || typeof v === \"number\") return String(v);\n  try {\n    return JSON.stringify(v);\n  } catch {\n    return String(v);\n  }\n}\n\nfunction DebugPanel({ values, title, className, force }: DebugPanelProps) {\n  if (!isDev && !force) return null;\n  return (\n    <div\n      data-slot=\"debug-panel\"\n      className={cn(\n        \"rounded-xl border border-border bg-container/90 px-4 py-3 font-mono text-[13px] leading-relaxed text-foreground shadow-sm backdrop-blur\",\n        className,\n      )}\n    >\n      {title && <div className=\"mb-1 text-[11px] tracking-wider text-muted-foreground uppercase\">{title}</div>}\n      <span className=\"text-muted-foreground\">{\"{\"}</span>\n      {Object.entries(values).map(([key, value]) => (\n        <div key={key} className=\"pl-4\">\n          <span className=\"text-[var(--dx-purple-3)]\">{key}</span>\n          <span className=\"text-muted-foreground\">: </span>\n          <span className=\"text-[var(--dx-blue-3)] tabular-nums\">{formatValue(value)}</span>\n          <span className=\"text-muted-foreground\">,</span>\n        </div>\n      ))}\n      <span className=\"text-muted-foreground\">{\"}\"}</span>\n    </div>\n  );\n}\n\nexport { BreakpointIndicator, DebugPanel };\nexport type { BreakpointIndicatorProps, DebugPanelProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/dev-tools"
+  }
+}

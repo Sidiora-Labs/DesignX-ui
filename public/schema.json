@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://dxuireact.com/schema.json",
+  "title": "DesignX UI configuration",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "format": "uri"
+    },
+    "registry": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\{name\\}"
+    },
+    "css": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aliases": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["registry", "css"],
+  "additionalProperties": true
+}

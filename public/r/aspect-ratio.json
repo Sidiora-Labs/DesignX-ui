@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "aspect-ratio",
+  "type": "registry:ui",
+  "title": "Aspect Ratio",
+  "description": "Displays content within a desired ratio.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/aspect-ratio.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction AspectRatio({ ratio = 1, className, style, ...props }: React.ComponentProps<\"div\"> & { ratio?: number }) {\n  return (\n    <div\n      data-slot=\"aspect-ratio\"\n      className={cn(\"relative w-full overflow-hidden\", className)}\n      style={{ aspectRatio: String(ratio), ...style }}\n      {...props}\n    />\n  );\n}\n\nexport { AspectRatio };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/aspect-ratio"
+  }
+}

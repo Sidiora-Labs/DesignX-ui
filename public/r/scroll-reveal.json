@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scroll-reveal",
+  "type": "registry:component",
+  "title": "Scroll Reveal",
+  "description": "Reveal content as it scrolls into view.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/scroll-reveal.tsx",
+      "type": "registry:component",
+      "target": "components/motion/scroll-reveal.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { type ReactNode, type RefObject, useRef } from \"react\";\n\nimport { EASE_OUT } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface ScrollRevealProps {\n  children: ReactNode;\n  /** Slide distance in px before reveal. */\n  y?: number;\n  /** Enter blur in px (kept ≤ 10 per motion conventions). */\n  blur?: number;\n  /** Reveal duration in seconds. */\n  duration?: number;\n  delay?: number;\n  /** Reveal only once (default) or every time it enters view. */\n  once?: boolean;\n  /** Portion of the element that must be visible to trigger. */\n  amount?: \"some\" | \"all\" | number;\n  /** Scroll root for contained scroll areas. Defaults to the viewport. */\n  root?: RefObject<Element | null>;\n  className?: string;\n}\n\nexport function ScrollReveal({\n  children,\n  y = 16,\n  blur = 8,\n  duration = 0.6,\n  delay = 0,\n  once = true,\n  amount = 0.3,\n  root,\n  className,\n}: ScrollRevealProps) {\n  const reduce = useReducedMotion();\n  const ref = useRef<HTMLDivElement>(null);\n  const inView = useInView(ref, { root, once, amount });\n\n  const hidden = reduce\n    ? { opacity: 0 }\n    : { opacity: 0, y, filter: `blur(${blur}px)` };\n  const shown = reduce\n    ? { opacity: 1 }\n    : { opacity: 1, y: 0, filter: \"blur(0px)\" };\n\n  return (\n    <motion.div\n      ref={ref}\n      initial={hidden}\n      animate={inView ? shown : hidden}\n      transition={{ duration, ease: EASE_OUT, delay }}\n      className={cn(className)}\n    >\n      {children}\n    </motion.div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/scroll-reveal"
+  }
+}

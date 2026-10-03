@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "tilt-card",
+  "type": "registry:component",
+  "title": "Tilt Card",
+  "description": "A card that tilts toward the pointer.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/use-hover-capable",
+    "@dx/use-media-query",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/tilt-card.tsx",
+      "type": "registry:component",
+      "target": "components/motion/tilt-card.tsx",
+      "content": "import { motion, useMotionTemplate, useMotionValue, useReducedMotion, useSpring } from \"motion/react\";\nimport { useRef, type ReactNode } from \"react\";\nimport { SPRING_MOUSE } from \"@/lib/ease\";\nimport { useHoverCapable } from \"@/lib/hooks/use-hover-capable\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface TiltCardProps {\n  children: ReactNode;\n  max?: number;\n  glare?: boolean;\n  className?: string;\n}\n\nexport function TiltCard({ children, max = 12, glare = true, className }: TiltCardProps) {\n  const ref = useRef<HTMLDivElement>(null);\n  const reduce = useReducedMotion();\n  const canHover = useHoverCapable();\n  // Decorative cursor-follow: skip on touch (phantom hover) and reduced motion.\n  const enabled = !reduce && canHover;\n  const rx = useMotionValue(0);\n  const ry = useMotionValue(0);\n  const gx = useMotionValue(50);\n  const gy = useMotionValue(50);\n\n  const srx = useSpring(rx, SPRING_MOUSE);\n  const sry = useSpring(ry, SPRING_MOUSE);\n\n  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {\n    const el = ref.current;\n    if (!el || !enabled) return;\n    const rect = el.getBoundingClientRect();\n    const px = (e.clientX - rect.left) / rect.width;\n    const py = (e.clientY - rect.top) / rect.height;\n    ry.set((px - 0.5) * max);\n    rx.set((0.5 - py) * max);\n    gx.set(px * 100);\n    gy.set(py * 100);\n  };\n\n  const onLeave = () => {\n    rx.set(0);\n    ry.set(0);\n  };\n\n  const transform = useMotionTemplate`perspective(1000px) rotateX(${srx}deg) rotateY(${sry}deg)`;\n  const glareBg = useMotionTemplate`radial-gradient(circle at ${gx}% ${gy}%, var(--foreground), transparent 50%)`;\n\n  return (\n    <motion.div\n      ref={ref}\n      onMouseMove={onMove}\n      onMouseLeave={onLeave}\n      style={{ transform, transformStyle: \"preserve-3d\" }}\n      className={cn(\"relative overflow-hidden rounded-2xl will-change-transform\", className)}\n    >\n      {children}\n      {glare && enabled ? (\n        <motion.div\n          aria-hidden\n          style={{ background: glareBg }}\n          className=\"pointer-events-none absolute inset-0 opacity-15\"\n        />\n      ) : null}\n    </motion.div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/tilt-card"
+  }
+}

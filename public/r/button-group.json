@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "button-group",
+  "type": "registry:ui",
+  "title": "Button Group",
+  "description": "Groups related buttons together with joined edges.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/separator",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/button-group.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\nimport { Separator } from \"@/components/ui/separator\";\n\nconst buttonGroupVariants = cva(\n  \"flex w-fit items-stretch [&>*]:focus-visible:relative [&>*]:focus-visible:z-10\",\n  {\n    variants: {\n      orientation: {\n        horizontal:\n          \"[&>*:not(:first-child)]:rounded-l-none [&>*:not(:last-child)]:rounded-r-none [&>[data-variant=outline]:not(:first-child)]:border-l-0\",\n        vertical:\n          \"flex-col [&>*:not(:first-child)]:rounded-t-none [&>*:not(:last-child)]:rounded-b-none [&>[data-variant=outline]:not(:first-child)]:border-t-0\",\n      },\n    },\n    defaultVariants: { orientation: \"horizontal\" },\n  },\n);\n\nfunction ButtonGroup({ className, orientation, ...props }: React.ComponentProps<\"div\"> & VariantProps<typeof buttonGroupVariants>) {\n  return (\n    <div\n      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n      role=\"group\"\n      data-slot=\"button-group\"\n      data-orientation={orientation}\n      className={cn(buttonGroupVariants({ orientation }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction ButtonGroupText({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      className={cn(\n        \"flex items-center gap-2 rounded-full border border-border bg-container px-4 text-sm font-medium [&_svg:not([class*='size-'])]:size-4\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction ButtonGroupSeparator({ className, orientation = \"vertical\", ...props }: React.ComponentProps<typeof Separator>) {\n  return (\n    <Separator\n      data-slot=\"button-group-separator\"\n      orientation={orientation}\n      className={cn(\"relative m-0! self-stretch bg-primary-foreground/20 data-[orientation=vertical]:h-auto\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { ButtonGroup, ButtonGroupSeparator, ButtonGroupText, buttonGroupVariants };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/button-group"
+  }
+}

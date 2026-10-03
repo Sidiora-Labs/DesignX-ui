@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "signup-01",
+  "type": "registry:block",
+  "title": "Sign up",
+  "description": "Account creation with field validation and a password meter.",
+  "registryDependencies": [
+    "@dx/button",
+    "@dx/card",
+    "@dx/checkbox",
+    "@dx/field",
+    "@dx/input",
+    "@dx/label",
+    "@dx/meter",
+    "@dx/sonner"
+  ],
+  "files": [
+    {
+      "path": "blocks/signup-01.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/signup-01.tsx",
+      "content": "import * as React from \"react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { Card, CardContent, CardDescription, CardHeader, CardTitle } from \"@/components/ui/card\";\nimport { Checkbox } from \"@/components/ui/checkbox\";\nimport { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from \"@/components/ui/field\";\nimport { Input } from \"@/components/ui/input\";\nimport { Label } from \"@/components/ui/label\";\nimport { Meter } from \"@/components/ui/meter\";\nimport { toast } from \"@/components/ui/sonner\";\n\nfunction strength(pw: string) {\n  let s = 0;\n  if (pw.length >= 8) s++;\n  if (/[A-Z]/.test(pw) && /[a-z]/.test(pw)) s++;\n  if (/\\d/.test(pw)) s++;\n  if (/[^A-Za-z0-9]/.test(pw)) s++;\n  return s;\n}\nconst labels = [\"Too short\", \"Weak\", \"Fair\", \"Good\", \"Strong\"];\nconst colors = [\"bg-destructive\", \"bg-destructive\", \"bg-warning\", \"bg-info\", \"bg-success\"];\n\nexport default function Signup01() {\n  const [pw, setPw] = React.useState(\"\");\n  const s = strength(pw);\n  return (\n    <div className=\"flex min-h-svh items-center justify-center bg-container p-6\">\n      <Card className=\"w-full max-w-md\" variant=\"elevated\">\n        <CardHeader className=\"text-center\">\n          <CardTitle className=\"text-2xl font-normal tracking-[-0.02em]\">Create your account</CardTitle>\n          <CardDescription>Start your 14-day free trial. No card required.</CardDescription>\n        </CardHeader>\n        <CardContent>\n          <form\n            onSubmit={(e) => {\n              e.preventDefault();\n              toast.success(\"Account created\", { description: \"Check your inbox to verify your email.\" });\n            }}\n          >\n            <FieldGroup>\n              <div className=\"grid grid-cols-2 gap-3\">\n                <Field>\n                  <FieldLabel>First name</FieldLabel>\n                  <Input required autoComplete=\"given-name\" />\n                </Field>\n                <Field>\n                  <FieldLabel>Last name</FieldLabel>\n                  <Input required autoComplete=\"family-name\" />\n                </Field>\n              </div>\n              <Field>\n                <FieldLabel>Work email</FieldLabel>\n                <Input type=\"email\" required placeholder=\"you@company.com\" autoComplete=\"email\" />\n                <FieldError match=\"typeMismatch\">Enter a valid email address.</FieldError>\n              </Field>\n              <Field>\n                <FieldLabel>Password</FieldLabel>\n                <Input type=\"password\" required minLength={8} value={pw} onChange={(e) => setPw(e.target.value)} autoComplete=\"new-password\" />\n                <div className=\"flex items-center gap-3\">\n                  <Meter value={(s / 4) * 100} className=\"flex-1\" indicatorClassName={colors[s]} aria-label=\"Password strength\" />\n                  <span className=\"w-16 text-right text-xs text-muted-foreground\">{pw ? labels[s] : \"\"}</span>\n                </div>\n                <FieldDescription>8+ characters with a mix of cases, numbers and symbols.</FieldDescription>\n              </Field>\n              <Label className=\"items-start gap-2 font-normal\">\n                <Checkbox required className=\"mt-0.5\" />\n                <span className=\"text-[13px] text-muted-foreground\">\n                  I agree to the <span className=\"text-foreground underline underline-offset-4\">Terms</span> and{\" \"}\n                  <span className=\"text-foreground underline underline-offset-4\">Privacy Policy</span>.\n                </span>\n              </Label>\n              <Button type=\"submit\" size=\"lg\" className=\"w-full\">\n                Create account\n              </Button>\n              <p className=\"text-center text-[13px] text-muted-foreground\">\n                Already have an account?{\" \"}\n                <a href=\"#login-01\" className=\"text-foreground underline underline-offset-4\">\n                  Sign in\n                </a>\n              </p>\n            </FieldGroup>\n          </form>\n        </CardContent>\n      </Card>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "signup"
+  ],
+  "meta": {
+    "iframeHeight": "760px",
+    "preview": "https://ui.designx.dev/blocks#signup-01"
+  }
+}

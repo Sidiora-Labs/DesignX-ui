@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "expanding-arrow-button",
+  "type": "registry:component",
+  "title": "Expanding Arrow Button",
+  "description": "A button whose arrow stretches on hover.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/use-hover-capable",
+    "@dx/use-media-query",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/expanding-arrow-button.tsx",
+      "type": "registry:component",
+      "target": "components/motion/expanding-arrow-button.tsx",
+      "content": "import {\n  motion,\n  useReducedMotion,\n  type HTMLMotionProps,\n} from \"motion/react\";\nimport {\n  forwardRef,\n  useState,\n  type FocusEvent,\n  type MouseEvent,\n  type ReactNode,\n} from \"react\";\nimport { EASE_OUT, SPRING_LAYOUT, SPRING_PRESS } from \"@/lib/ease\";\nimport { useHoverCapable } from \"@/lib/hooks/use-hover-capable\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface ExpandingArrowButtonProps extends Omit<\n  HTMLMotionProps<\"button\">,\n  \"children\"\n> {\n  children: ReactNode;\n  accentClassName?: string;\n  labelClassName?: string;\n}\n\nconst ARROW_OPACITY = [1, 0.78, 0.54, 0.32, 0.16] as const;\n\nfunction DottedChevron({ className }: { className?: string }) {\n  return (\n    <svg\n      viewBox=\"0 0 20 28\"\n      fill=\"none\"\n      aria-hidden=\"true\"\n      className={className}\n    >\n      <circle cx=\"4\" cy=\"4\" r=\"2\" fill=\"currentColor\" />\n      <circle cx=\"10\" cy=\"9\" r=\"2\" fill=\"currentColor\" />\n      <circle cx=\"16\" cy=\"14\" r=\"2\" fill=\"currentColor\" />\n      <circle cx=\"10\" cy=\"19\" r=\"2\" fill=\"currentColor\" />\n      <circle cx=\"4\" cy=\"24\" r=\"2\" fill=\"currentColor\" />\n    </svg>\n  );\n}\n\nexport const ExpandingArrowButton = forwardRef<\n  HTMLButtonElement,\n  ExpandingArrowButtonProps\n>(function ExpandingArrowButton(\n  {\n    children,\n    className,\n    accentClassName,\n    labelClassName,\n    disabled,\n    onMouseEnter,\n    onMouseLeave,\n    onFocus,\n    onBlur,\n    ...rest\n  },\n  ref,\n) {\n  const reduce = useReducedMotion();\n  const canHover = useHoverCapable();\n  const [hovered, setHovered] = useState(false);\n  const [focused, setFocused] = useState(false);\n  const active = !disabled && ((canHover && hovered) || focused);\n  const layoutTransition = reduce ? { duration: 0 } : SPRING_LAYOUT;\n\n  const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {\n    setHovered(true);\n    onMouseEnter?.(event);\n  };\n\n  const handleMouseLeave = (event: MouseEvent<HTMLButtonElement>) => {\n    setHovered(false);\n    onMouseLeave?.(event);\n  };\n\n  const handleFocus = (event: FocusEvent<HTMLButtonElement>) => {\n    setFocused(true);\n    onFocus?.(event);\n  };\n\n  const handleBlur = (event: FocusEvent<HTMLButtonElement>) => {\n    setFocused(false);\n    onBlur?.(event);\n  };\n\n  return (\n    <motion.button\n      ref={ref}\n      type=\"button\"\n      disabled={disabled}\n      onMouseEnter={handleMouseEnter}\n      onMouseLeave={handleMouseLeave}\n      onFocus={handleFocus}\n      onBlur={handleBlur}\n      whileTap={reduce || disabled ? undefined : { scale: 0.97 }}\n      transition={SPRING_PRESS}\n      className={cn(\n        \"relative inline-flex h-16 min-w-72 items-center overflow-hidden rounded-[22px] bg-neutral-950 p-1.5 text-white select-none\",\n        \"outline-none focus-visible:ring-2 focus-visible:ring-lime-300 focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n        \"disabled:pointer-events-none disabled:opacity-50\",\n        className,\n      )}\n      {...rest}\n    >\n      <motion.span\n        layout=\"size\"\n        aria-hidden=\"true\"\n        transition={layoutTransition}\n        style={{\n          width: active ? \"calc(100% - 12px)\" : 52,\n          borderRadius: 16,\n        }}\n        className={cn(\n          \"absolute inset-y-1.5 left-1.5 z-10 overflow-hidden bg-lime-300 text-neutral-950\",\n          accentClassName,\n        )}\n      >\n        <motion.span\n          animate={{ opacity: active ? 0 : 1 }}\n          transition={{ duration: reduce ? 0 : 0.1, ease: EASE_OUT }}\n          className=\"absolute inset-0 grid place-items-center\"\n        >\n          <DottedChevron className=\"h-7 w-5\" />\n        </motion.span>\n\n        <span className=\"absolute inset-0 flex items-center justify-around px-3\">\n          {ARROW_OPACITY.map((opacity, index) => (\n            <motion.span\n              key={opacity}\n              animate={{\n                opacity: active ? 1 : 0,\n                transform:\n                  active && !reduce ? \"translateX(0px)\" : \"translateX(-6px)\",\n              }}\n              transition={{\n                duration: reduce ? 0 : 0.18,\n                delay: active && !reduce ? 0.04 + index * 0.025 : 0,\n                ease: EASE_OUT,\n              }}\n              style={{ color: `rgb(10 10 10 / ${opacity})` }}\n              className=\"inline-grid place-items-center\"\n            >\n              <DottedChevron className=\"h-7 w-5\" />\n            </motion.span>\n          ))}\n        </span>\n      </motion.span>\n\n      <motion.span\n        animate={{\n          opacity: active ? 0 : 1,\n          transform:\n            active && !reduce ? \"translateX(6px)\" : \"translateX(0px)\",\n        }}\n        transition={{ duration: reduce ? 0 : 0.12, ease: EASE_OUT }}\n        className={cn(\n          \"relative z-0 ml-[76px] mr-5 whitespace-nowrap text-lg font-medium tracking-[-0.02em]\",\n          labelClassName,\n        )}\n      >\n        {children}\n      </motion.span>\n    </motion.button>\n  );\n});\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/expanding-arrow-button"
+  }
+}

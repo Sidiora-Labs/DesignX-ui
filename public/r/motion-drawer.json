@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "motion-drawer",
+  "type": "registry:component",
+  "title": "Drawer",
+  "description": "A draggable drawer with snap points.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/lib-presence-gate",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/drawer.tsx",
+      "type": "registry:component",
+      "target": "components/motion/drawer.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, type ReactNode } from \"react\";\nimport { EASE_OUT, SPRING_PANEL } from \"@/lib/ease\";\nimport { PresenceGate } from \"@/lib/presence-gate\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface DrawerProps {\n  open: boolean;\n  onOpenChange: (open: boolean) => void;\n  side?: \"left\" | \"right\";\n  children: ReactNode;\n  /** Class for the panel surface. */\n  className?: string;\n  /** Class for the backdrop. */\n  backdropClassName?: string;\n  ariaLabel?: string;\n  /** Close when the backdrop is clicked. Default true. */\n  dismissable?: boolean;\n}\n\nexport function Drawer({\n  open,\n  onOpenChange,\n  side = \"right\",\n  children,\n  className,\n  backdropClassName,\n  ariaLabel,\n  dismissable = true,\n}: DrawerProps) {\n  const reduce = useReducedMotion();\n\n  useEffect(() => {\n    if (!open) return;\n    const onKey = (e: KeyboardEvent) => {\n      if (e.key === \"Escape\") onOpenChange(false);\n    };\n    window.addEventListener(\"keydown\", onKey);\n    const prevOverflow = document.body.style.overflow;\n    document.body.style.overflow = \"hidden\";\n    return () => {\n      window.removeEventListener(\"keydown\", onKey);\n      document.body.style.overflow = prevOverflow;\n    };\n  }, [open, onOpenChange]);\n\n  const offscreen = side === \"right\" ? \"100%\" : \"-100%\";\n\n  // Two fixed siblings, no wrapper: the backdrop spans the viewport edges but\n  // paints the scrim, and the panel is inset off one side and paints its own\n  // surface, so neither is a transparent edge-spanning layer. Both hang off\n  // `PresenceGate`, so interaction releases in the same commit that starts the\n  // exit rather than when it ends.\n  return (\n    <AnimatePresence>\n      {open ? (\n        <PresenceGate key=\"backdrop\">\n          {({ gate }) => (\n            <motion.button\n              type=\"button\"\n              aria-label=\"Close\"\n              tabIndex={dismissable ? 0 : -1}\n              onClick={() => dismissable && onOpenChange(false)}\n              initial={{ opacity: 0 }}\n              animate={{ opacity: 1 }}\n              exit={{ opacity: 0 }}\n              transition={{ duration: 0.25, ease: EASE_OUT }}\n              {...gate}\n              className={cn(\n                \"fixed inset-0 z-50 h-full w-full cursor-default bg-black/40 backdrop-blur-sm\",\n                backdropClassName,\n              )}\n            />\n          )}\n        </PresenceGate>\n      ) : null}\n      {open ? (\n        <PresenceGate key=\"panel\">\n          {({ gate }) => (\n            <motion.aside\n              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n              role=\"dialog\"\n              aria-modal=\"true\"\n              aria-label={ariaLabel}\n              initial={reduce ? { opacity: 0 } : { x: offscreen }}\n              animate={reduce ? { opacity: 1 } : { x: 0 }}\n              exit={reduce ? { opacity: 0 } : { x: offscreen }}\n              transition={\n                reduce ? { duration: 0.2, ease: EASE_OUT } : SPRING_PANEL\n              }\n              {...gate}\n              className={cn(\n                \"fixed inset-y-0 z-50 flex w-80 max-w-[85vw] flex-col bg-background shadow-2xl\",\n                side === \"right\"\n                  ? \"right-0 border-l border-border\"\n                  : \"left-0 border-r border-border\",\n                className,\n              )}\n            >\n              {children}\n            </motion.aside>\n          )}\n        </PresenceGate>\n      ) : null}\n    </AnimatePresence>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/motion-drawer"
+  }
+}

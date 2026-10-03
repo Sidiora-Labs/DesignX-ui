@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "icon-accordion",
+  "type": "registry:component",
+  "title": "Icon Accordion",
+  "description": "A horizontal accordion where icons expand into cards.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/icon-accordion.tsx",
+      "type": "registry:component",
+      "target": "components/dx/icon-accordion.tsx",
+      "content": "import * as React from \"react\";\nimport { AnimatePresence, motion } from \"motion/react\";\nimport { ChevronDown } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * IconAccordiona stacked list where the open row detaches into its own\n * pill and neighbours round their corners to meet it.\n *\n */\n\ntype IconAccordionItem = { icon: React.ReactNode; title: string; description: React.ReactNode };\n\ntype IconAccordionProps = {\n  items: IconAccordionItem[];\n  value?: number | null;\n  defaultValue?: number | null;\n  onValueChange?: (value: number | null) => void;\n  radius?: number;\n  className?: string;\n};\n\nfunction IconAccordion({ items, value, defaultValue = null, onValueChange, radius = 20, className }: IconAccordionProps) {\n  const [internal, setInternal] = React.useState<number | null>(defaultValue);\n  const active = value !== undefined ? value : internal;\n  const set = (v: number | null) => {\n    if (value === undefined) setInternal(v);\n    onValueChange?.(v);\n  };\n  const r = `${radius}px`;\n  const last = items.length - 1;\n\n  return (\n    <ul data-slot=\"icon-accordion\" className={cn(\"w-full max-w-sm select-none\", className)}>\n      {items.map((item, i) => {\n        const open = active === i;\n        const roundTop = i === 0 || open || (active !== null && i === active + 1);\n        const roundBottom = i === last || open || (active !== null && i === active - 1);\n        const panelId = `dx-ia-${i}`;\n        return (\n          <motion.li\n            key={item.title}\n            initial={false}\n            animate={{\n              marginBlock: open ? \"8px\" : \"0px\",\n              borderTopLeftRadius: roundTop ? r : \"0px\",\n              borderTopRightRadius: roundTop ? r : \"0px\",\n              borderBottomLeftRadius: roundBottom ? r : \"0px\",\n              borderBottomRightRadius: roundBottom ? r : \"0px\",\n            }}\n            transition={{ type: \"spring\", stiffness: 300, damping: 24 }}\n            className=\"bg-container-high relative overflow-hidden\"\n          >\n            <button\n              type=\"button\"\n              aria-expanded={open}\n              aria-controls={panelId}\n              onClick={() => set(open ? null : i)}\n              className=\"state-layer focus-ring flex h-12 w-full items-center gap-3 px-4 text-left text-sm\"\n            >\n              <span className=\"text-foreground/80 flex size-5 shrink-0 items-center justify-center [&_svg]:size-[18px]\">{item.icon}</span>\n              <span className=\"flex-1 font-medium tracking-[-0.01em]\">{item.title}</span>\n              <ChevronDown className={cn(\"text-muted-foreground size-4 transition-transform duration-300\", open && \"rotate-180\")} />\n            </button>\n            <AnimatePresence initial={false}>\n              {open && (\n                <motion.div\n                  id={panelId}\n                  key=\"panel\"\n                  initial={{ height: 0, opacity: 0, filter: \"blur(2px)\" }}\n                  animate={{ height: \"auto\", opacity: 1, filter: \"blur(0px)\" }}\n                  exit={{ height: 0, opacity: 0, filter: \"blur(2px)\" }}\n                  transition={{ type: \"spring\", stiffness: 300, damping: 30 }}\n                >\n                  <div className=\"text-muted-foreground px-4 pb-4 pl-12 text-sm leading-relaxed\">{item.description}</div>\n                </motion.div>\n              )}\n            </AnimatePresence>\n          </motion.li>\n        );\n      })}\n    </ul>\n  );\n}\n\nexport { IconAccordion };\nexport type { IconAccordionItem, IconAccordionProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/icon-accordion"
+  }
+}

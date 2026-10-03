@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "marquee",
+  "type": "registry:component",
+  "title": "Marquee",
+  "description": "An infinite marquee that pauses on hover.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/marquee.tsx",
+      "type": "registry:component",
+      "target": "components/motion/marquee.tsx",
+      "content": "import { Children, type ReactNode } from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface MarqueeProps {\n  children: ReactNode;\n  direction?: \"left\" | \"right\" | \"up\" | \"down\";\n  speed?: number;\n  pauseOnHover?: boolean;\n  gap?: string;\n  className?: string;\n  fade?: boolean;\n}\n\nexport function Marquee({\n  children,\n  direction = \"left\",\n  speed = 30,\n  pauseOnHover = true,\n  gap = \"1rem\",\n  className,\n  fade = true,\n}: MarqueeProps) {\n  const vertical = direction === \"up\" || direction === \"down\";\n  const reverse = direction === \"right\" || direction === \"down\";\n  const items = Children.toArray(children);\n\n  return (\n    <div\n      className={cn(\n        \"group relative flex overflow-hidden\",\n        vertical ? \"flex-col\" : \"flex-row\",\n        fade && !vertical && \"[mask-image:linear-gradient(to_right,transparent,black_12%,black_88%,transparent)]\",\n        fade && vertical && \"[mask-image:linear-gradient(to_bottom,transparent,black_12%,black_88%,transparent)]\",\n        className,\n      )}\n      // gap on the wrapper too, so the seam between the two tracks matches the\n      // spacing between items and the loop stays even.\n      style={{ \"--gap\": gap, gap } as React.CSSProperties}\n    >\n      {[0, 1].map((dup) => (\n        <div\n          key={dup}\n          aria-hidden={dup === 1}\n          inert={dup === 1}\n          style={{\n            animationDuration: `${speed}s`,\n            animationDirection: reverse ? \"reverse\" : \"normal\",\n            gap,\n          }}\n          className={cn(\n            \"flex shrink-0 items-center\",\n            vertical ? \"flex-col animate-marquee-vertical\" : \"flex-row animate-marquee\",\n            pauseOnHover && \"group-hover:[animation-play-state:paused]\",\n          )}\n        >\n          {items.map((child, i) => (\n            <div key={i} className=\"shrink-0\">\n              {child}\n            </div>\n          ))}\n        </div>\n      ))}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/marquee"
+  }
+}

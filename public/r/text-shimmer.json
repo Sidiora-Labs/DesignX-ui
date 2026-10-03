@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-shimmer",
+  "type": "registry:component",
+  "title": "Text Shimmer",
+  "description": "A light sweep across text for loading and thinking states.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/text-shimmer.tsx",
+      "type": "registry:component",
+      "target": "components/dx/text-shimmer.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * TextShimmera highlight that sweeps across text, for \"thinking\",\n * \"generating\" and other in-progress moments. Colors follow the theme.\n */\n\ntype TextShimmerProps = {\n  children: string;\n  as?: \"p\" | \"span\" | \"div\" | \"h1\" | \"h2\" | \"h3\";\n  className?: string;\n  /** Seconds per sweep. */\n  duration?: number;\n  /** Highlight width, multiplied by the text length (px per character). */\n  spread?: number;\n  /** Base text color. */\n  baseColor?: string;\n  /** Highlight color. */\n  shimmerColor?: string;\n};\n\nconst MotionTags = {\n  p: motion.p,\n  span: motion.span,\n  div: motion.div,\n  h1: motion.h1,\n  h2: motion.h2,\n  h3: motion.h3,\n};\n\nfunction TextShimmer({\n  children,\n  as = \"span\",\n  className,\n  duration = 2,\n  spread = 2,\n  baseColor = \"color-mix(in srgb, var(--foreground) 42%, transparent)\",\n  shimmerColor = \"var(--foreground)\",\n}: TextShimmerProps) {\n  const reduce = useReducedMotion();\n  const Tag = MotionTags[as];\n  const width = Math.max(children.length * spread, 24);\n  return (\n    <Tag\n      data-slot=\"text-shimmer\"\n      className={cn(\"relative inline-block bg-clip-text text-transparent [background-repeat:no-repeat,padding-box]\", className)}\n      initial={{ backgroundPosition: \"100% center\" }}\n      animate={reduce ? undefined : { backgroundPosition: \"0% center\" }}\n      transition={{ repeat: Infinity, duration, ease: \"linear\" }}\n      style={{\n        backgroundSize: \"250% 100%, auto\",\n        backgroundImage: `linear-gradient(90deg, transparent calc(50% - ${width}px), ${shimmerColor}, transparent calc(50% + ${width}px)), linear-gradient(${baseColor}, ${baseColor})`,\n      }}\n    >\n      {children}\n    </Tag>\n  );\n}\n\nexport { TextShimmer };\nexport type { TextShimmerProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/text-shimmer"
+  }
+}

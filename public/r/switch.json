@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "switch",
+  "type": "registry:ui",
+  "title": "Switch",
+  "description": "A control that toggles between on and off.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/switch.tsx",
+      "type": "registry:ui",
+      "content": "import { Switch as SwitchPrimitive } from \"@base-ui/react/switch\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Switch({ className, size = \"default\", ...props }: SwitchPrimitive.Root.Props & { size?: \"sm\" | \"default\" }) {\n  return (\n    <SwitchPrimitive.Root\n      data-slot=\"switch\"\n      data-size={size}\n      className={cn(\n        \"group/switch peer focus-ring relative inline-flex shrink-0 items-center rounded-full border-2 border-muted-foreground/60 bg-container-highest transition-[background-color,border-color] duration-200 ease-(--ease-dx)\",\n        \"data-[size=default]:h-7 data-[size=default]:w-[46px] data-[size=sm]:h-5 data-[size=sm]:w-8\",\n        \"data-checked:border-primary data-checked:bg-primary data-disabled:pointer-events-none data-disabled:opacity-40\",\n        className,\n      )}\n      {...props}\n    >\n      <SwitchPrimitive.Thumb\n        data-slot=\"switch-thumb\"\n        className={cn(\n          \"pointer-events-none block rounded-full bg-muted-foreground shadow-sm transition-[translate,width,height,background-color] duration-200 ease-(--ease-dx)\",\n          \"group-data-[size=default]/switch:size-3.5 group-data-[size=default]/switch:translate-x-1 group-data-[size=default]/switch:data-checked:size-5 group-data-[size=default]/switch:data-checked:translate-x-[20px]\",\n          \"group-data-[size=sm]/switch:size-2.5 group-data-[size=sm]/switch:translate-x-0.5 group-data-[size=sm]/switch:data-checked:size-3 group-data-[size=sm]/switch:data-checked:translate-x-[14px]\",\n          \"data-checked:bg-primary-foreground group-active/switch:not-data-disabled:scale-110\",\n        )}\n      />\n    </SwitchPrimitive.Root>\n  );\n}\n\nexport { Switch };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "switch",
+    "docs": "https://ui.designx.dev/docs/components/switch"
+  }
+}

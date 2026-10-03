@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-modal-scope",
+  "type": "registry:hook",
+  "title": "use-modal-scope",
+  "files": [
+    {
+      "path": "lib/hooks/use-modal-scope.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-modal-scope.ts",
+      "content": "import { useEffect, useRef, type RefObject } from \"react\";\n\nconst FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex=\"-1\"])';\n\n/**\n * Makes a portalled layer behave like a modal while `active`: locks page\n * scroll, moves focus into `panel`, traps Tab inside `scope`, closes on Escape\n * and restores focus afterwards.\n */\nexport function useModalScope(\n  active: boolean,\n  scope: RefObject<HTMLElement | null>,\n  panel: RefObject<HTMLElement | null>,\n  onClose: () => void,\n) {\n  const close = useRef(onClose);\n  close.current = onClose;\n\n  useEffect(() => {\n    if (!active) return;\n    const previous = document.activeElement as HTMLElement | null;\n    const { overflow } = document.body.style;\n    document.body.style.overflow = \"hidden\";\n    const raf = requestAnimationFrame(() => {\n      const target = panel.current?.querySelector<HTMLElement>(FOCUSABLE) ?? panel.current;\n      target?.focus({ preventScroll: true });\n    });\n    const onKey = (event: KeyboardEvent) => {\n      if (event.key === \"Escape\") {\n        event.preventDefault();\n        close.current();\n        return;\n      }\n      if (event.key !== \"Tab\") return;\n      const root = scope.current ?? panel.current;\n      if (!root) return;\n      const items = [...root.querySelectorAll<HTMLElement>(FOCUSABLE)];\n      if (items.length === 0) return;\n      const first = items[0];\n      const last = items[items.length - 1];\n      if (event.shiftKey && document.activeElement === first) {\n        event.preventDefault();\n        last.focus();\n      } else if (!event.shiftKey && document.activeElement === last) {\n        event.preventDefault();\n        first.focus();\n      }\n    };\n    document.addEventListener(\"keydown\", onKey);\n    return () => {\n      cancelAnimationFrame(raf);\n      document.removeEventListener(\"keydown\", onKey);\n      document.body.style.overflow = overflow;\n      previous?.focus?.({ preventScroll: true });\n    };\n  }, [active, scope, panel]);\n}\n"
+    }
+  ]
+}

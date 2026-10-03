@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "command",
+  "type": "registry:ui",
+  "title": "Command",
+  "description": "A fast, composable command menu for search and actions.",
+  "dependencies": [
+    "cmdk@^1.1.1",
+    "lucide-react@^0.577.0"
+  ],
+  "registryDependencies": [
+    "@dx/dialog",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/command.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Command as CommandPrimitive } from \"cmdk\";\nimport { SearchIcon } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\nimport { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from \"@/components/ui/dialog\";\n\nfunction Command({ className, ...props }: React.ComponentProps<typeof CommandPrimitive>) {\n  return (\n    <CommandPrimitive\n      data-slot=\"command\"\n      className={cn(\"flex h-full w-full flex-col overflow-hidden rounded-xl bg-popover text-popover-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction CommandDialog({\n  title = \"Command palette\",\n  description = \"Search for a command to run…\",\n  children,\n  className,\n  ...props\n}: React.ComponentProps<typeof Dialog> & { title?: string; description?: string; className?: string; children?: React.ReactNode }) {\n  return (\n    <Dialog {...props}>\n      <DialogHeader className=\"sr-only\">\n        <DialogTitle>{title}</DialogTitle>\n        <DialogDescription>{description}</DialogDescription>\n      </DialogHeader>\n      <DialogContent className={cn(\"top-[18%] translate-y-0 gap-0 overflow-hidden p-0 sm:max-w-xl\", className)} showCloseButton={false}>\n        <Command className=\"[&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground\">\n          {children}\n        </Command>\n      </DialogContent>\n    </Dialog>\n  );\n}\n\nfunction CommandInput({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Input>) {\n  return (\n    <div data-slot=\"command-input-wrapper\" className=\"flex h-13 items-center gap-2.5 border-b border-outline-variant px-4\">\n      <SearchIcon className=\"size-4 shrink-0 text-muted-foreground\" />\n      <CommandPrimitive.Input\n        data-slot=\"command-input\"\n        className={cn(\"flex h-12 w-full bg-transparent text-[15px] outline-none placeholder:text-muted-foreground disabled:opacity-50\", className)}\n        {...props}\n      />\n    </div>\n  );\n}\n\nfunction CommandList({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.List>) {\n  return (\n    <CommandPrimitive.List\n      data-slot=\"command-list\"\n      className={cn(\"max-h-[360px] scroll-py-2 overflow-x-hidden overflow-y-auto p-1.5\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction CommandEmpty(props: React.ComponentProps<typeof CommandPrimitive.Empty>) {\n  return <CommandPrimitive.Empty data-slot=\"command-empty\" className=\"py-10 text-center text-sm text-muted-foreground\" {...props} />;\n}\n\nfunction CommandGroup({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Group>) {\n  return (\n    <CommandPrimitive.Group\n      data-slot=\"command-group\"\n      className={cn(\n        \"overflow-hidden py-1 text-foreground [&_[cmdk-group-heading]]:px-2.5 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction CommandSeparator({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Separator>) {\n  return <CommandPrimitive.Separator data-slot=\"command-separator\" className={cn(\"-mx-1.5 my-1 h-px bg-outline-variant\", className)} {...props} />;\n}\n\nfunction CommandItem({ className, ...props }: React.ComponentProps<typeof CommandPrimitive.Item>) {\n  return (\n    <CommandPrimitive.Item\n      data-slot=\"command-item\"\n      className={cn(\n        \"relative flex h-10 cursor-default items-center gap-3 rounded-sm px-2.5 text-sm outline-none select-none data-[disabled=true]:pointer-events-none data-[disabled=true]:opacity-40 data-[selected=true]:bg-container-high [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction CommandShortcut({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span data-slot=\"command-shortcut\" className={cn(\"ml-auto font-mono text-[11px] tracking-wide text-muted-foreground\", className)} {...props} />;\n}\n\nexport { Command, CommandDialog, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandShortcut, CommandSeparator };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/command"
+  }
+}

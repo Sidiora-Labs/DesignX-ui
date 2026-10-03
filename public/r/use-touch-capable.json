@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-touch-capable",
+  "type": "registry:hook",
+  "title": "use-touch-capable",
+  "registryDependencies": [
+    "@dx/use-media-query"
+  ],
+  "files": [
+    {
+      "path": "lib/hooks/use-touch-capable.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-touch-capable.ts",
+      "content": "import { useMediaQuery } from \"./use-media-query\";\n\n/** True when the primary input is coarse (a finger). */\nexport function useTouchCapable() {\n  return useMediaQuery(\"(pointer: coarse)\", false);\n}\n"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-row-cursor",
+  "type": "registry:hook",
+  "title": "use-row-cursor",
+  "files": [
+    {
+      "path": "lib/hooks/use-row-cursor.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-row-cursor.ts",
+      "content": "import { useCallback, useEffect, useMemo, useState } from \"react\";\n\n/**\n * Keyboard cursor over a filtered list. The cursor follows a row id, so it\n * survives re-filtering, and falls back to the first row when that row is gone\n * or the query changes.\n */\nexport function useRowCursor<T extends { id: string | number }>(rows: readonly T[], query?: string) {\n  const [activeId, setActiveId] = useState<T[\"id\"] | null>(null);\n\n  useEffect(() => {\n    setActiveId(null);\n  }, [query]);\n\n  const activeIndex = useMemo(() => {\n    if (rows.length === 0) return -1;\n    const i = activeId === null ? -1 : rows.findIndex((r) => r.id === activeId);\n    return i === -1 ? 0 : i;\n  }, [rows, activeId]);\n\n  const moveTo = useCallback((id: T[\"id\"] | null) => setActiveId(id), []);\n\n  const moveActive = useCallback(\n    (delta: number) => {\n      if (rows.length === 0) return;\n      const next = (activeIndex + delta + rows.length) % rows.length;\n      setActiveId(rows[next].id);\n    },\n    [rows, activeIndex],\n  );\n\n  return { activeIndex, activeId, moveTo, moveActive };\n}\n"
+    }
+  ]
+}

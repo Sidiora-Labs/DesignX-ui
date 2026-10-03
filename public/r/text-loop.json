@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-loop",
+  "type": "registry:component",
+  "title": "Text Loop",
+  "description": "Cycles through words with a blurred vertical slide, plus a useLoop hook.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/text-loop.tsx",
+      "type": "registry:component",
+      "target": "components/dx/text-loop.tsx",
+      "content": "import * as React from \"react\";\nimport { AnimatePresence, motion, type Transition } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * useLoop + TextLoopa ticking key for cycling content, and a text slot that\n * rolls through a list.\n */\n\n/** Returns a `key` that increments every `delay` ms. Pass `paused` to stop the clock. */\nfunction useLoop(delay = 1000, paused = false) {\n  const [key, setKey] = React.useState(0);\n  React.useEffect(() => {\n    if (paused) return;\n    const id = window.setInterval(() => setKey((k) => k + 1), delay);\n    return () => window.clearInterval(id);\n  }, [delay, paused]);\n  return { key, reset: () => setKey(0) };\n}\n\ntype TextLoopProps = {\n  items: React.ReactNode[];\n  /** ms each item stays on screen. */\n  interval?: number;\n  paused?: boolean;\n  direction?: \"up\" | \"down\";\n  transition?: Transition;\n  className?: string;\n};\n\nfunction TextLoop({ items, interval = 2000, paused, direction = \"up\", transition, className }: TextLoopProps) {\n  const { key } = useLoop(interval, paused);\n  const sign = direction === \"up\" ? 1 : -1;\n  return (\n    <span data-slot=\"text-loop\" className={cn(\"relative inline-flex overflow-hidden align-bottom\", className)}>\n      <AnimatePresence mode=\"popLayout\" initial={false}>\n        <motion.span\n          key={key}\n          initial={{ opacity: 0, y: `${100 * sign}%`, filter: \"blur(4px)\" }}\n          animate={{ opacity: 1, y: 0, filter: \"blur(0px)\" }}\n          exit={{ opacity: 0, y: `${-100 * sign}%`, filter: \"blur(4px)\" }}\n          transition={transition ?? { type: \"spring\", stiffness: 300, damping: 30 }}\n          className=\"inline-block whitespace-nowrap\"\n        >\n          {items[key % items.length]}\n        </motion.span>\n      </AnimatePresence>\n    </span>\n  );\n}\n\nexport { TextLoop, useLoop };\nexport type { TextLoopProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/text-loop"
+  }
+}

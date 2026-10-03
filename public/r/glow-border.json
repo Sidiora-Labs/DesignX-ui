@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "glow-border",
+  "type": "registry:component",
+  "title": "Glow Border",
+  "description": "The animated dx-gradient palette border for AI and focus moments.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/glow-border.tsx",
+      "type": "registry:component",
+      "target": "components/dx/glow-border.tsx",
+      "content": "import * as React from \"react\";\nimport { AnimatePresence, motion } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * GlowBordera rotating DX gradient halo that hugs its parent's edge.\n * Place inside a `relative` element.\n */\n\nconst blurs = {\n  none: \"after:blur-none\",\n  sm: \"after:blur-sm\",\n  md: \"after:blur-md\",\n  lg: \"after:blur-lg\",\n  xl: \"after:blur-xl\",\n  \"2xl\": \"after:blur-2xl\",\n} as const;\n\nconst DEFAULT_COLORS = [\"var(--dx-blue-3)\", \"var(--dx-purple-3)\", \"var(--dx-pink-3)\", \"var(--dx-yellow-3)\"];\n\ntype GlowBorderProps = {\n  active?: boolean;\n  /** How soft the inner edge is. */\n  intensity?: keyof typeof blurs;\n  /** Border thickness in px. */\n  thickness?: number;\n  /** Seconds per full rotation. */\n  duration?: number;\n  colors?: string[];\n  className?: string;\n};\n\nfunction GlowBorder({\n  active = true,\n  intensity = \"lg\",\n  thickness = 2,\n  duration = 5,\n  colors = DEFAULT_COLORS,\n  className,\n}: GlowBorderProps) {\n  const stops = colors.join(\", \");\n  return (\n    <AnimatePresence>\n      {active && (\n        <motion.div\n          data-slot=\"glow-border\"\n          aria-hidden\n          initial={{ opacity: 0 }}\n          exit={{ opacity: 0 }}\n          animate={{\n            opacity: 1,\n            background: [`linear-gradient(0deg, ${stops})`, `linear-gradient(360deg, ${stops})`],\n          }}\n          transition={{ opacity: { duration: 0.5, ease: \"easeInOut\" }, duration, repeat: Infinity, ease: \"linear\" }}\n          style={{ \"--glow-inset\": `${thickness}px` } as React.CSSProperties}\n          className={cn(\n            \"pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]\",\n            \"after:bg-background after:absolute after:inset-[var(--glow-inset)] after:rounded-[inherit] after:content-['']\",\n            blurs[intensity],\n            className,\n          )}\n        />\n      )}\n    </AnimatePresence>\n  );\n}\n\nexport { GlowBorder };\nexport type { GlowBorderProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/glow-border"
+  }
+}

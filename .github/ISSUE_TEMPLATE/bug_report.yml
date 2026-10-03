@@ -1,0 +1,53 @@
+name: Bug report
+description: Something in a component, the CLI, or the docs isn't working.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please search existing issues first. For security issues, use [private vulnerability reporting](https://github.com/Sidiora-Labs/DesignX-ui/security/advisories/new) instead.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Component
+        - CLI
+        - Registry
+        - Documentation site
+    validations:
+      required: true
+  - type: input
+    id: component
+    attributes:
+      label: Component or command
+      placeholder: e.g. dialog, or dx-ui add
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the bug and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: A minimal reproduction (a repository or sandbox link) helps the most.
+      placeholder: |
+        1. Run `npx @sidioralabs/designx-ui@latest add ...`
+        2. Render ...
+        3. See error
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Versions of React, Tailwind CSS, Node.js, the CLI, and your browser and OS.
+      render: text
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or error output
+      render: text

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "range-slider",
+  "type": "registry:component",
+  "title": "Range Slider",
+  "description": "A spring-smoothed slider with step ticks.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/lib-touch",
+    "@dx/use-slider",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/range-slider.tsx",
+      "type": "registry:component",
+      "target": "components/motion/range-slider.tsx",
+      "content": "import {\n  motion,\n  useMotionValue,\n  useReducedMotion,\n  useSpring,\n  useTransform,\n} from \"motion/react\";\nimport { useEffect, useLayoutEffect, useState } from \"react\";\n\nimport { SPRING_GLIDE } from \"@/lib/ease\";\nimport { type SliderOptions, useSlider } from \"@/lib/hooks/use-slider\";\nimport { TOUCH_GESTURE_CLASS } from \"@/lib/touch\";\nimport { cn } from \"@/lib/utils\";\n\n// Bouncy grab feedback for the thumb scale only.\nconst SPRING_BOUNCY = { type: \"spring\", stiffness: 500, damping: 14, mass: 0.7 } as const;\n\nexport interface RangeSliderProps extends SliderOptions {\n  /** Render a tick dot at each step. */\n  showTicks?: boolean;\n  className?: string;\n}\n\nexport function RangeSlider({ showTicks = true, className, ...options }: RangeSliderProps) {\n  const reduce = useReducedMotion();\n  const { percent, dragging, min, max, step, trackProps, sliderProps } = useSlider(options);\n  const [trackWidth, setTrackWidth] = useState(292);\n  useLayoutEffect(() => {\n    const track = trackProps.ref.current;\n    if (!track) return;\n    const measure = () => {\n      const width = track.getBoundingClientRect().width;\n      if (width > 0) setTrackWidth(width);\n    };\n    measure();\n    const observer = new ResizeObserver(measure);\n    observer.observe(track);\n    return () => observer.disconnect();\n  }, [trackProps.ref]);\n\n  // Spring-smoothed position drives both the thumb and the fill.\n  const target = useMotionValue(percent);\n  useEffect(() => {\n    target.set(percent);\n  }, [percent, target]);\n  const smooth = useSpring(target, SPRING_GLIDE);\n  const pos = reduce ? target : smooth;\n  const thumbX = useTransform(pos, (p) => 8 + Math.max(0, trackWidth - 20) * p / 100);\n  // Match InlineSlider: the 4px handle starts 8px inside the track, and\n  // the rounded fill extends 8px past its left edge. Translate a full-size\n  // fill inside the 2px inset clip so its corner never stretches.\n  const fillX = useTransform(pos, (p) => p >= 100\n    ? \"0%\"\n    : `calc(${p - 100}% + ${14 - 0.16 * p}px)`);\n\n  // Floor rather than round, so a range the step does not divide (0 to 10 by 4)\n  // stops its dots at the last whole step instead of drawing one past max.\n  // toFixed comes first because 0.3/0.1 is 2.9999999999999996, which would\n  // floor to 2 and drop the last dot.\n  const steps = Math.floor(Number(((max - min) / step).toFixed(6)));\n  const ticks =\n    showTicks && steps > 0 && steps <= 50\n      ? Array.from({ length: steps + 1 }, (_, i) => Number((min + i * step).toFixed(6)))\n      : [];\n\n  return (\n    <div\n      {...trackProps}\n      className={cn(\n        \"relative flex h-10 w-full touch-none items-center overflow-hidden rounded-lg bg-muted\",\n        TOUCH_GESTURE_CLASS,\n        options.disabled\n          ? \"pointer-events-none opacity-50\"\n          : \"cursor-grab active:cursor-grabbing\",\n        className,\n      )}\n    >\n      <div aria-hidden=\"true\" className=\"pointer-events-none absolute inset-x-[2px] inset-y-0 overflow-hidden rounded-lg\">\n        <motion.div className=\"absolute inset-0 rounded-lg bg-foreground/15\" style={{ x: fillX }} />\n      </div>\n\n      {/* Tick centres follow the same inset path as the handle centre. */}\n      <div className=\"pointer-events-none absolute inset-x-[10px] inset-y-0\">\n        {ticks.map((t) => {\n          const tp = ((t - min) / (max - min)) * 100;\n          return (\n            <span\n              key={t}\n              className=\"absolute top-1/2 size-1 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground/25\"\n              style={{ left: `${tp}%` }}\n            />\n          );\n        })}\n      </div>\n\n      {/* Keep the handle inside the rounded progress fill at both ends. */}\n      <motion.div\n        {...sliderProps}\n        animate={reduce ? undefined : { scaleY: dragging ? 1.35 : 1 }}\n        transition={SPRING_BOUNCY}\n        className=\"absolute left-0 top-1/2 h-6 w-1 rounded-full bg-foreground outline-none ring-inset ring-foreground/30 focus-visible:ring-4\"\n        style={{ x: thumbX, y: \"-50%\" }}\n      />\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/range-slider"
+  }
+}

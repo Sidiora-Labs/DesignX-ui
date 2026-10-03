@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
+		<link rel="icon" href="/favicon.ico" sizes="any" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<meta property="og:image" content="/og-image.png" />
+		<meta name="description" content="DX UI — beautifully considered components built on Base UI and Tailwind CSS. Copy, paste, own." />
+		<title>DX UI — DesignX component system</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@300..800&family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap" rel="stylesheet" />
+		<script>
+			(function () {
+				try {
+					var t = localStorage.getItem("dx-theme");
+					var a = localStorage.getItem("dx-accent");
+					var dark = t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches);
+					if (dark) document.documentElement.classList.add("dark");
+					if (a === "dx-gradient") document.documentElement.classList.add("accent-dx-gradient");
+				} catch (e) {}
+			})();
+		</script>
+	</head>
+	<body>
+		<div id="root"></div>
+		<script type="module" src="/src/web/main.tsx"></script>
+	</body>
+</html>

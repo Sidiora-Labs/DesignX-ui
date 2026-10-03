@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "range-slider-fluid",
+  "type": "registry:component",
+  "title": "Fluid Slider",
+  "description": "A slider whose fill swells as you drag.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/lib-touch",
+    "@dx/use-slider",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/range-slider-fluid.tsx",
+      "type": "registry:component",
+      "target": "components/motion/range-slider-fluid.tsx",
+      "content": "import {\n  motion,\n  useMotionTemplate,\n  useMotionValue,\n  useReducedMotion,\n  useSpring,\n  useTransform,\n} from \"motion/react\";\nimport { useEffect } from \"react\";\n\nimport { SPRING_GLIDE, SPRING_PRESS } from \"@/lib/ease\";\nimport { type SliderOptions, useSlider } from \"@/lib/hooks/use-slider\";\nimport { TOUCH_GESTURE_CLASS } from \"@/lib/touch\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface FluidSliderProps extends SliderOptions {\n  /** Text shown on the left of the track. */\n  label?: string;\n  /** Formats the value shown on the right. */\n  format?: (value: number) => string;\n  className?: string;\n}\n\n/**\n * Thumbless slider: the whole pill is the control. The fill glides to the new\n * value behind a rounded liquid cap, and the label reads inverted wherever the\n * fill has covered it.\n */\nexport function FluidSlider({\n  label,\n  // The value arrives already snapped to the step. Rounding it again would\n  // only make the label and the announcement disagree with aria-valuenow.\n  format = (v) => `${v}%`,\n  className,\n  ...options\n}: FluidSliderProps) {\n  const reduce = useReducedMotion();\n  const { percent, current, dragging, trackProps, sliderProps } = useSlider({\n    ...options,\n    formatValueText: options.formatValueText ?? format,\n  });\n\n  const target = useMotionValue(percent);\n  useEffect(() => {\n    target.set(percent);\n  }, [percent, target]);\n  const smooth = useSpring(target, SPRING_GLIDE);\n  const pos = reduce ? target : smooth;\n  // Reveal the fill by clipping a full-width layer rather than animating its\n  // width: at 0% the clip is empty, so no hairline of a sub-pixel-wide box is\n  // left behind, and the label inside is never scaled or re-laid out.\n  const uncovered = useTransform(pos, (v) => 100 - v);\n  const clipPath = useMotionTemplate`inset(0 ${uncovered}% 0 0 round 9999px)`;\n\n  const row = (\n    <>\n      {label ? <span className=\"truncate\">{label}</span> : <span />}\n      <span className=\"tabular-nums\">{format(current)}</span>\n    </>\n  );\n\n  return (\n    <motion.div\n      {...trackProps}\n      animate={reduce ? undefined : { scale: dragging ? 1.03 : 1 }}\n      transition={SPRING_PRESS}\n      className={cn(\n        \"relative flex h-12 w-full touch-none overflow-hidden rounded-full bg-muted\",\n        TOUCH_GESTURE_CLASS,\n        options.disabled\n          ? \"pointer-events-none opacity-50\"\n          : \"cursor-grab active:cursor-grabbing\",\n        className,\n      )}\n    >\n      {/* uncovered labelsits on the muted track */}\n      <div className=\"pointer-events-none absolute inset-0 flex items-center justify-between px-5 text-sm font-medium text-foreground\">\n        {row}\n      </div>\n\n      {/* fill + the same label, both clipped to the value, so the text inverts\n          as the fill covers it and lines up glyph for glyph with the copy\n          underneath. The clip's rounded right edge is the liquid cap. */}\n      <motion.div className=\"absolute inset-0\" style={{ clipPath }}>\n        <div className=\"absolute inset-0 bg-foreground\" />\n        <div className=\"pointer-events-none absolute inset-0 flex items-center justify-between px-5 text-sm font-medium text-background\">\n          {row}\n        </div>\n      </motion.div>\n\n      {/* focusable, keyboard-controlled handle surface. The ring is insetan\n          outset one is clipped away by the track's overflow-hidden. */}\n      <button\n        type=\"button\"\n        {...sliderProps}\n        className=\"absolute inset-0 touch-none rounded-full outline-none ring-inset ring-foreground/40 focus-visible:ring-4\"\n      />\n    </motion.div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/range-slider-fluid"
+  }
+}

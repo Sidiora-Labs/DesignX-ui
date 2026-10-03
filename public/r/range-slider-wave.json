@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "range-slider-wave",
+  "type": "registry:component",
+  "title": "Wave Slider",
+  "description": "An equaliser-style slider of animated bars.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-touch",
+    "@dx/use-slider",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/range-slider-wave.tsx",
+      "type": "registry:component",
+      "target": "components/motion/range-slider-wave.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\nimport { useMemo } from \"react\";\n\nimport { type SliderOptions, useSlider } from \"@/lib/hooks/use-slider\";\nimport { TOUCH_GESTURE_CLASS } from \"@/lib/touch\";\nimport { cn } from \"@/lib/utils\";\n\n// Per-bar spring: soft enough that the crest wobbles as it travels.\nconst SPRING_BAR = { type: \"spring\", stiffness: 420, damping: 20, mass: 0.5 } as const;\n/** Bar count that reads as a wave without turning into a stripe pattern. */\nconst BARS = 32;\n/** Width of the crest in barsbigger spreads the bell wider. */\nconst SPREAD = 2.6;\n\nexport interface WaveSliderProps extends SliderOptions {\n  /** Number of bars drawn across the track. */\n  bars?: number;\n  className?: string;\n}\n\n/**\n * Equalizer slider: bars rise into a crest around the handle position and fall\n * back as it passes, so the value reads as a travelling wave. Bars up to the\n * value are filled, the rest stay muted.\n */\nexport function WaveSlider({ bars = BARS, className, ...options }: WaveSliderProps) {\n  const reduce = useReducedMotion();\n  const { percent, dragging, trackProps, sliderProps } = useSlider(options);\n\n  // Keys only change when the bar count doesthe list never reorders.\n  const keys = useMemo(() => Array.from({ length: bars }, (_, i) => `bar-${i}`), [bars]);\n\n  const head = (percent / 100) * (bars - 1);\n  const lanes = keys.map((key, i) => {\n    const distance = Math.abs(i - head);\n    return {\n      key,\n      distance,\n      // Gaussian crest centred on the handle.\n      crest: Math.exp(-(distance ** 2) / (2 * SPREAD ** 2)),\n      filled: i <= Math.round(head),\n    };\n  });\n\n  return (\n    <div\n      {...trackProps}\n      className={cn(\n        \"relative flex h-20 w-full touch-none items-center justify-between gap-1\",\n        TOUCH_GESTURE_CLASS,\n        options.disabled\n          ? \"pointer-events-none opacity-50\"\n          : \"cursor-grab active:cursor-grabbing\",\n        className,\n      )}\n    >\n      {lanes.map((lane) => (\n        <motion.span\n          key={lane.key}\n          className={cn(\n            \"h-14 flex-1 origin-center rounded-full\",\n            // /45 keeps the unfilled track above the 3:1 non-text contrast\n            // floor in both themes (measured 4.16 dark / 3.13 light)\n            lane.filled ? \"bg-foreground\" : \"bg-foreground/45\",\n          )}\n          animate={{\n            scaleY: reduce ? 0.4 : 0.22 + lane.crest * (dragging ? 0.78 : 0.6),\n          }}\n          transition={\n            reduce\n              ? { duration: 0 }\n              : { ...SPRING_BAR, delay: Math.min(lane.distance * 0.012, 0.12) }\n          }\n        />\n      ))}\n\n      <button\n        type=\"button\"\n        {...sliderProps}\n        className=\"absolute inset-0 touch-none rounded-xl outline-none ring-foreground/30 focus-visible:ring-4\"\n      />\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/range-slider-wave"
+  }
+}

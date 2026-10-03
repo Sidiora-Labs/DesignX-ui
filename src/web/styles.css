@@ -1,0 +1,86 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./dx-theme.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    font-feature-settings: "ss02" on;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--info) 22%, transparent);
+  }
+}
+
+/* ---------- Docs site helpers (not part of the registry) ---------- */
+.docs-prose h2:not(.not-prose, .not-prose *) {
+  @apply mt-12 mb-4 scroll-m-24 text-[22px] font-medium tracking-[-0.015em];
+}
+.docs-prose h3:not(.not-prose, .not-prose *) {
+  @apply mt-8 mb-3 scroll-m-24 text-[17px] font-medium tracking-[-0.01em];
+}
+.docs-prose p:not(.not-prose, .not-prose *) {
+  @apply text-muted-foreground mb-4 text-[15px] leading-[1.65];
+}
+.docs-prose ul:not(.not-prose, .not-prose *) {
+  @apply text-muted-foreground mb-4 ml-5 list-disc space-y-1.5 text-[15px];
+}
+.docs-prose code:not(pre code):not(.not-prose, .not-prose *) {
+  @apply bg-container-high rounded-xs px-1.5 py-0.5 font-mono text-[13px] text-foreground;
+}
+.docs-prose a:not([data-slot]):not(.not-prose, .not-prose *) {
+  @apply text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-colors;
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, var(--outline-variant) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--outline-variant) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.shiki,
+.shiki span {
+  background-color: transparent !important;
+}
+.dark .shiki,
+.dark .shiki span {
+  color: var(--shiki-dark) !important;
+}
+
+@keyframes dx-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.animate-rise {
+  animation: dx-rise 0.8s var(--ease-dx) both;
+}
+
+@keyframes dx-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+@keyframes dx-spinner-fade {
+  0% { opacity: 1; }
+  100% { opacity: 0.15; }
+}

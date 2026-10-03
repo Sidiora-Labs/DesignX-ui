@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "navigation-menu",
+  "type": "registry:ui",
+  "title": "Navigation Menu",
+  "description": "A collection of links for navigating websites, with animated popups.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "lucide-react@^0.577.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/navigation-menu.tsx",
+      "type": "registry:ui",
+      "content": "import { NavigationMenu as NavigationMenuPrimitive } from \"@base-ui/react/navigation-menu\";\nimport { ChevronDownIcon } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction NavigationMenu({ className, children, ...props }: NavigationMenuPrimitive.Root.Props) {\n  return (\n    <NavigationMenuPrimitive.Root data-slot=\"navigation-menu\" className={cn(\"relative min-w-max\", className)} {...props}>\n      {children}\n      <NavigationMenuPositioner />\n    </NavigationMenuPrimitive.Root>\n  );\n}\n\nfunction NavigationMenuList({ className, ...props }: NavigationMenuPrimitive.List.Props) {\n  return <NavigationMenuPrimitive.List data-slot=\"navigation-menu-list\" className={cn(\"flex items-center gap-0.5\", className)} {...props} />;\n}\n\nfunction NavigationMenuItem(props: NavigationMenuPrimitive.Item.Props) {\n  return <NavigationMenuPrimitive.Item data-slot=\"navigation-menu-item\" {...props} />;\n}\n\nconst navigationMenuTriggerStyle =\n  \"state-layer focus-ring inline-flex h-9 items-center justify-center gap-1 rounded-full px-3.5 text-sm font-medium text-foreground/80 no-underline transition-colors outline-none select-none hover:text-foreground data-popup-open:text-foreground\";\n\nfunction NavigationMenuTrigger({ className, children, ...props }: NavigationMenuPrimitive.Trigger.Props) {\n  return (\n    <NavigationMenuPrimitive.Trigger data-slot=\"navigation-menu-trigger\" className={cn(navigationMenuTriggerStyle, className)} {...props}>\n      {children}\n      <NavigationMenuPrimitive.Icon className=\"transition-transform duration-200 ease-(--ease-dx) data-popup-open:rotate-180\">\n        <ChevronDownIcon className=\"size-3.5 text-muted-foreground\" />\n      </NavigationMenuPrimitive.Icon>\n    </NavigationMenuPrimitive.Trigger>\n  );\n}\n\nfunction NavigationMenuContent({ className, ...props }: NavigationMenuPrimitive.Content.Props) {\n  return (\n    <NavigationMenuPrimitive.Content\n      data-slot=\"navigation-menu-content\"\n      className={cn(\n        \"h-full w-[calc(100vw-40px)] p-2 sm:w-max\",\n        \"transition-[opacity,translate] duration-(--duration) ease-(--easing) data-starting-style:opacity-0 data-ending-style:opacity-0\",\n        \"data-starting-style:data-[activation-direction=left]:-translate-x-1/2 data-starting-style:data-[activation-direction=right]:translate-x-1/2\",\n        \"data-ending-style:data-[activation-direction=left]:translate-x-1/2 data-ending-style:data-[activation-direction=right]:-translate-x-1/2\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction NavigationMenuPositioner() {\n  return (\n    <NavigationMenuPrimitive.Portal>\n      <NavigationMenuPrimitive.Positioner\n        sideOffset={8}\n        collisionPadding={{ top: 5, bottom: 5, left: 20, right: 20 }}\n        collisionAvoidance={{ side: \"none\" }}\n        className=\"z-50 h-(--positioner-height) w-(--positioner-width) max-w-(--available-width) transition-[top,left,right,bottom] duration-(--duration) ease-(--easing) data-instant:transition-none\"\n        style={{ [\"--duration\" as string]: \"0.35s\", [\"--easing\" as string]: \"cubic-bezier(0.22, 1, 0.36, 1)\" }}\n      >\n        <NavigationMenuPrimitive.Popup className=\"relative h-(--popup-height) w-(--popup-width) origin-(--transform-origin) rounded-xl border border-outline-variant bg-popover text-popover-foreground shadow-float outline-none transition-[opacity,transform,width,height,scale] duration-(--duration) ease-(--easing) data-ending-style:scale-95 data-ending-style:opacity-0 data-ending-style:duration-150 data-starting-style:scale-95 data-starting-style:opacity-0\">\n          <NavigationMenuPrimitive.Viewport className=\"relative h-full w-full overflow-hidden\" />\n        </NavigationMenuPrimitive.Popup>\n      </NavigationMenuPrimitive.Positioner>\n    </NavigationMenuPrimitive.Portal>\n  );\n}\n\nfunction NavigationMenuLink({ className, ...props }: NavigationMenuPrimitive.Link.Props) {\n  return (\n    <NavigationMenuPrimitive.Link\n      data-slot=\"navigation-menu-link\"\n      className={cn(\n        \"focus-ring flex flex-col gap-1 rounded-md p-3 text-sm no-underline transition-colors outline-none hover:bg-container data-active:bg-container\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport {\n  NavigationMenu,\n  NavigationMenuList,\n  NavigationMenuItem,\n  NavigationMenuTrigger,\n  NavigationMenuContent,\n  NavigationMenuLink,\n  navigationMenuTriggerStyle,\n};\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "navigation-menu",
+    "docs": "https://ui.designx.dev/docs/components/navigation-menu"
+  }
+}

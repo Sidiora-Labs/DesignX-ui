@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "tabs",
+  "type": "registry:ui",
+  "title": "Tabs",
+  "description": "Layered sections of content with a sliding indicator. Pill and line variants.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/tabs.tsx",
+      "type": "registry:ui",
+      "content": "import { Tabs as TabsPrimitive } from \"@base-ui/react/tabs\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Tabs({ className, ...props }: TabsPrimitive.Root.Props) {\n  return (\n    <TabsPrimitive.Root\n      data-slot=\"tabs\"\n      className={cn(\"flex flex-col gap-3 data-[orientation=vertical]:flex-row\", className)}\n      {...props}\n    />\n  );\n}\n\nconst tabsListVariants = cva(\"relative z-0 inline-flex w-fit items-center data-[orientation=vertical]:flex-col\", {\n  variants: {\n    variant: {\n      default: \"gap-1 rounded-full bg-container p-1\",\n      line: \"gap-5 border-b border-outline-variant\",\n    },\n  },\n  defaultVariants: { variant: \"default\" },\n});\n\nfunction TabsList({\n  className,\n  variant = \"default\",\n  children,\n  ...props\n}: TabsPrimitive.List.Props & VariantProps<typeof tabsListVariants>) {\n  return (\n    <TabsPrimitive.List\n      data-slot=\"tabs-list\"\n      data-variant={variant}\n      className={cn(\"group/tabs-list\", tabsListVariants({ variant }), className)}\n      {...props}\n    >\n      {children}\n      <TabsPrimitive.Indicator\n        data-slot=\"tabs-indicator\"\n        className={cn(\n          \"absolute left-0 -z-1 translate-x-(--active-tab-left) transition-[translate,width,height] duration-250 ease-(--ease-dx)\",\n          variant === \"line\"\n            ? \"bottom-0 h-0.5 w-(--active-tab-width) rounded-full bg-foreground\"\n            : \"top-1/2 h-(--active-tab-height) w-(--active-tab-width) -translate-y-1/2 rounded-full bg-background shadow-[0_1px_2px_rgb(0_0_0/0.08),0_0_0_1px_var(--outline-variant)] dark:bg-container-highest\",\n        )}\n      />\n    </TabsPrimitive.List>\n  );\n}\n\nfunction TabsTrigger({ className, ...props }: TabsPrimitive.Tab.Props) {\n  return (\n    <TabsPrimitive.Tab\n      data-slot=\"tabs-trigger\"\n      className={cn(\n        \"focus-ring inline-flex h-8 items-center justify-center gap-1.5 rounded-full px-3.5 text-[13px] font-medium whitespace-nowrap text-muted-foreground transition-colors duration-150 outline-none select-none hover:text-foreground data-active:text-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0\",\n        \"group-data-[variant=line]/tabs-list:h-10 group-data-[variant=line]/tabs-list:rounded-none group-data-[variant=line]/tabs-list:px-0.5\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction TabsContent({ className, ...props }: TabsPrimitive.Panel.Props) {\n  return <TabsPrimitive.Panel data-slot=\"tabs-content\" className={cn(\"flex-1 outline-none\", className)} {...props} />;\n}\n\nexport { Tabs, TabsList, TabsTrigger, TabsContent, tabsListVariants };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "tabs",
+    "docs": "https://ui.designx.dev/docs/components/tabs"
+  }
+}

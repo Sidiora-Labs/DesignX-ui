@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "spinner",
+  "type": "registry:ui",
+  "title": "Spinner",
+  "description": "A twelve-blade activity indicator that inherits currentColor.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/spinner.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/** Twelve-blade spinner. Inherits `currentColor`, sized with `size-*`. */\nfunction Spinner({ className, ...props }: React.ComponentProps<\"output\">) {\n  return (\n    <output\n      aria-label=\"Loading\"\n      data-slot=\"spinner\"\n      className={cn(\"relative inline-block size-4 shrink-0\", className)}\n      {...props}\n    >\n      {Array.from({ length: 12 }, (_, i) => (\n        <span\n          key={i}\n          className=\"absolute top-0 left-[46%] h-[28%] w-[8%] origin-[50%_178%] animate-[dx-spin-fade_1s_linear_infinite] rounded-full bg-current\"\n          style={{ transform: `rotate(${i * 30}deg)`, animationDelay: `${-1 + i / 12}s` }}\n        />\n      ))}\n      <style>{`@keyframes dx-spin-fade{0%{opacity:1}100%{opacity:.15}}`}</style>\n    </output>\n  );\n}\n\nexport { Spinner };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/spinner"
+  }
+}

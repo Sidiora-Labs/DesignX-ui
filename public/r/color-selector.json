@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "color-selector",
+  "type": "registry:component",
+  "title": "Color Selector",
+  "description": "A swatch picker that expands into a palette.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/color-selector.tsx",
+      "type": "registry:component",
+      "target": "components/motion/color-selector.tsx",
+      "content": "import { LayoutGroup, motion, useReducedMotion } from \"motion/react\";\nimport { createContext, useContext, useId, useState, type ComponentPropsWithRef } from \"react\";\nimport { SPRING_LAYOUT, SPRING_PRESS } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\ntype ColorSelectorContextValue = {\n  value: string;\n  select: (value: string) => void;\n  name: string;\n  disabled: boolean;\n  required: boolean;\n  form?: string;\n};\n\nconst ColorSelectorContext = createContext<ColorSelectorContextValue | null>(null);\n\nexport interface ColorSelectorProps extends Omit<ComponentPropsWithRef<\"fieldset\">, \"onChange\" | \"defaultValue\"> {\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  /** The radio group name used in form submission. Generated when omitted. */\n  name?: string;\n  required?: boolean;\n}\n\n/** A single color choice. Give it a ColorSelectorLabel or an aria-label. */\nexport function ColorSelector({\n  value,\n  defaultValue = \"\",\n  onValueChange,\n  name,\n  disabled = false,\n  required = false,\n  form,\n  className,\n  children,\n  ...props\n}: ColorSelectorProps) {\n  const id = useId();\n  const [internal, setInternal] = useState(defaultValue);\n  const current = value ?? internal;\n  return (\n    <ColorSelectorContext.Provider value={{\n      value: current,\n      select: (next) => {\n        if (next === current) return;\n        if (value === undefined) setInternal(next);\n        onValueChange?.(next);\n      },\n      name: name ?? id,\n      disabled,\n      required,\n      form,\n    }}>\n      <fieldset {...props} disabled={disabled} form={form} className={cn(\"min-w-0 border-0 p-0\", className)}>\n        <LayoutGroup id={id}>{children}</LayoutGroup>\n      </fieldset>\n    </ColorSelectorContext.Provider>\n  );\n}\n\nexport type ColorSelectorLabelProps = ComponentPropsWithRef<\"legend\">;\n\nexport function ColorSelectorLabel({ className, ...props }: ColorSelectorLabelProps) {\n  return <legend {...props} className={cn(\"mb-3 p-0 text-sm font-medium text-muted-foreground\", className)} />;\n}\n\nexport type ColorSelectorListProps = ComponentPropsWithRef<\"div\">;\n\nexport function ColorSelectorList({ className, ...props }: ColorSelectorListProps) {\n  return <div {...props} className={cn(\"flex flex-wrap items-center gap-3 p-1\", className)} />;\n}\n\nexport interface ColorSelectorItemProps extends Omit<ComponentPropsWithRef<\"input\">, \"type\" | \"value\" | \"defaultValue\" | \"checked\" | \"defaultChecked\" | \"name\" | \"children\" | \"size\"> {\n  value: string;\n  /** Any CSS color, including a custom property. */\n  color: string;\n  /** Accessible color name; selection never relies on color alone. */\n  label: string;\n  /** Applied to the visible swatch surface. */\n  className?: string;\n}\n\nexport function ColorSelectorItem({ value, color, label, disabled = false, className, style, onChange, ...props }: ColorSelectorItemProps) {\n  const context = useContext(ColorSelectorContext);\n  const reduce = useReducedMotion();\n  if (!context) throw new Error(\"ColorSelectorItem must be used within ColorSelector\");\n  const selected = context.value === value;\n  const unavailable = disabled || context.disabled;\n  return (\n    <motion.label\n      tabIndex={-1}\n      whileTap={reduce || unavailable ? undefined : { scale: 0.94 }}\n      transition={SPRING_PRESS}\n      className={cn(\"relative inline-flex shrink-0 rounded-full\", unavailable ? \"cursor-not-allowed opacity-40\" : \"cursor-pointer\")}>\n      <input\n        {...props}\n        type=\"radio\"\n        name={context.name}\n        value={value}\n        checked={selected}\n        disabled={unavailable}\n        required={context.required}\n        form={context.form}\n        aria-label={label}\n        onChange={(event) => {\n          onChange?.(event);\n          if (!event.defaultPrevented) context.select(value);\n        }}\n        className=\"peer sr-only\"\n      />\n      <span\n        aria-hidden=\"true\"\n        style={style}\n        className={cn(\n          \"relative flex size-11 items-center justify-center rounded-full border border-foreground/10 bg-muted/60\",\n          \"peer-focus-visible:outline-2 peer-focus-visible:outline-offset-4 peer-focus-visible:outline-foreground\",\n          className,\n        )}\n      >\n        {selected && (\n          <motion.span\n            layoutId={reduce ? undefined : \"color-selection\"}\n            initial={false}\n            transition={SPRING_LAYOUT}\n            className=\"pointer-events-none absolute -inset-1 rounded-full border-2\"\n            style={{ borderColor: `color-mix(in srgb, ${color} 65%, transparent)` }}\n          />\n        )}\n        <span className=\"size-5 rounded-full border border-black/5\" style={{ backgroundColor: color }} />\n      </span>\n    </motion.label>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/color-selector"
+  }
+}

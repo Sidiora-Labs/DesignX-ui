@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "form",
+  "type": "registry:ui",
+  "title": "Form",
+  "description": "A native form element with consolidated error handling.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/form.tsx",
+      "type": "registry:ui",
+      "content": "import { Form as FormPrimitive } from \"@base-ui/react/form\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Form({ className, ...props }: FormPrimitive.Props) {\n  return <FormPrimitive data-slot=\"form\" className={cn(\"flex w-full flex-col gap-5\", className)} {...props} />;\n}\n\nexport { Form };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "form",
+    "docs": "https://ui.designx.dev/docs/components/form"
+  }
+}

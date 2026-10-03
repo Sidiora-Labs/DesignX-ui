@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "sonner",
+  "type": "registry:ui",
+  "title": "Toast",
+  "description": "An opinionated toast component, themed to the DX surface ladder.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "sonner@^2.0.8"
+  ],
+  "registryDependencies": [
+    "@dx/theme-provider"
+  ],
+  "files": [
+    {
+      "path": "ui/sonner.tsx",
+      "type": "registry:ui",
+      "content": "import { Toaster as Sonner, toast, type ToasterProps } from \"sonner\";\nimport { CircleCheckIcon, InfoIcon, Loader2Icon, OctagonXIcon, TriangleAlertIcon } from \"lucide-react\";\n\nimport { useTheme } from \"@/components/theme-provider\";\n\nfunction Toaster(props: ToasterProps) {\n  const { resolvedTheme } = useTheme();\n  return (\n    <Sonner\n      theme={resolvedTheme}\n      className=\"toaster group\"\n      icons={{\n        success: <CircleCheckIcon className=\"size-4 text-success\" />,\n        info: <InfoIcon className=\"size-4 text-info\" />,\n        warning: <TriangleAlertIcon className=\"size-4 text-warning\" />,\n        error: <OctagonXIcon className=\"size-4 text-destructive\" />,\n        loading: <Loader2Icon className=\"size-4 animate-spin\" />,\n      }}\n      toastOptions={{\n        classNames: {\n          toast:\n            \"group toast font-sans! rounded-lg! border! border-outline-variant! bg-popover! text-popover-foreground! shadow-float! gap-3! px-4! py-3.5!\",\n          title: \"text-sm! font-medium!\",\n          description: \"text-[13px]! text-muted-foreground!\",\n          actionButton: \"rounded-full! bg-primary! text-primary-foreground! h-7! px-3! text-xs! font-medium!\",\n          cancelButton: \"rounded-full! bg-secondary! text-secondary-foreground! h-7! px-3! text-xs!\",\n        },\n      }}\n      {...props}\n    />\n  );\n}\n\nexport { Toaster, toast };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/sonner"
+  }
+}

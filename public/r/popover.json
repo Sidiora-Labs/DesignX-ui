@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "popover",
+  "type": "registry:ui",
+  "title": "Popover",
+  "description": "Displays rich content in a portal, triggered by a button.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/popover.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Popover as PopoverPrimitive } from \"@base-ui/react/popover\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Popover(props: PopoverPrimitive.Root.Props) {\n  return <PopoverPrimitive.Root data-slot=\"popover\" {...props} />;\n}\n\nfunction PopoverTrigger(props: PopoverPrimitive.Trigger.Props) {\n  return <PopoverPrimitive.Trigger data-slot=\"popover-trigger\" {...props} />;\n}\n\nfunction PopoverContent({\n  className,\n  align = \"center\",\n  side = \"bottom\",\n  sideOffset = 8,\n  ...props\n}: PopoverPrimitive.Popup.Props &\n  Pick<PopoverPrimitive.Positioner.Props, \"align\" | \"side\" | \"sideOffset\" | \"alignOffset\">) {\n  return (\n    <PopoverPrimitive.Portal>\n      <PopoverPrimitive.Positioner className=\"z-50\" align={align} side={side} sideOffset={sideOffset}>\n        <PopoverPrimitive.Popup\n          data-slot=\"popover-content\"\n          className={cn(\n            \"popup-motion w-72 rounded-lg border border-outline-variant bg-popover p-4 text-popover-foreground shadow-float outline-none\",\n            className,\n          )}\n          {...props}\n        />\n      </PopoverPrimitive.Positioner>\n    </PopoverPrimitive.Portal>\n  );\n}\n\nfunction PopoverHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"popover-header\" className={cn(\"mb-3 flex flex-col gap-1\", className)} {...props} />;\n}\n\nfunction PopoverTitle({ className, ...props }: PopoverPrimitive.Title.Props) {\n  return <PopoverPrimitive.Title data-slot=\"popover-title\" className={cn(\"text-sm font-medium\", className)} {...props} />;\n}\n\nfunction PopoverDescription({ className, ...props }: PopoverPrimitive.Description.Props) {\n  return <PopoverPrimitive.Description data-slot=\"popover-description\" className={cn(\"text-[13px] text-muted-foreground\", className)} {...props} />;\n}\n\nconst PopoverClose = PopoverPrimitive.Close;\n\nexport { Popover, PopoverTrigger, PopoverContent, PopoverHeader, PopoverTitle, PopoverDescription, PopoverClose };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "popover",
+    "docs": "https://ui.designx.dev/docs/components/popover"
+  }
+}

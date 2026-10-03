@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-roll",
+  "type": "registry:component",
+  "title": "Text Roll",
+  "description": "Letters roll vertically on hover, staggered from the edge or the center.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/text-roll.tsx",
+      "type": "registry:component",
+      "target": "components/dx/text-roll.tsx",
+      "content": "import * as React from \"react\";\nimport { motion, type Transition } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * TextRollon hover every letter rolls up and a copy rolls in from below.\n *\n */\n\ntype TextRollProps = {\n  children: string;\n  /** Stagger outward from the middle letter instead of left to right. */\n  center?: boolean;\n  /** Seconds between letters. */\n  stagger?: number;\n  transition?: Transition;\n  className?: string;\n  /** Roll when this is true, regardless of hover (e.g. driven by a parent). */\n  active?: boolean;\n};\n\nconst DEFAULT_TRANSITION: Transition = { duration: 0.45, ease: [0.2, 0, 0, 1] };\n\nfunction TextRoll({ children, center = false, stagger = 0.035, transition = DEFAULT_TRANSITION, className, active }: TextRollProps) {\n  const letters = React.useMemo(() => Array.from(children), [children]);\n  const delayOf = (i: number) => (center ? stagger * Math.abs(i - (letters.length - 1) / 2) : stagger * i);\n  const controlled = active !== undefined;\n\n  const row = (from: string | number, to: string | number, hidden?: boolean) =>\n    letters.map((l, i) => (\n      <motion.span\n        key={i}\n        aria-hidden={hidden}\n        variants={{ initial: { y: from }, hovered: { y: to } }}\n        transition={{ ...transition, delay: delayOf(i) }}\n        className=\"inline-block whitespace-pre\"\n      >\n        {l}\n      </motion.span>\n    ));\n\n  return (\n    <motion.span\n      data-slot=\"text-roll\"\n      initial=\"initial\"\n      animate={controlled ? (active ? \"hovered\" : \"initial\") : undefined}\n      whileHover={controlled ? undefined : \"hovered\"}\n      aria-label={children}\n      className={cn(\"relative inline-block overflow-hidden leading-[0.85]\", className)}\n    >\n      <span aria-hidden className=\"block\">\n        {row(0, \"-100%\", true)}\n      </span>\n      <span aria-hidden className=\"absolute inset-0 block\">\n        {row(\"100%\", 0, true)}\n      </span>\n    </motion.span>\n  );\n}\n\nexport { TextRoll };\nexport type { TextRollProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/text-roll"
+  }
+}

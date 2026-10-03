@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-hover-gesture",
+  "type": "registry:hook",
+  "title": "use-hover-gesture",
+  "files": [
+    {
+      "path": "lib/hooks/use-hover-gesture.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-hover-gesture.ts",
+      "content": "import { useMemo, useRef } from \"react\";\nimport type { PointerEvent } from \"react\";\n\nexport type HoverGesture = {\n  /** Returns true when the enter is a real hover (not the compatibility event a tap fires). */\n  enter: (event: PointerEvent) => boolean;\n  /** Returns true when the leave ends a real hover. */\n  leave: (event: PointerEvent) => boolean;\n};\n\n/**\n * Pairs pointerenter/pointerleave so only genuine hovers count. Touch taps fire\n * enter/leave around the tap itself, which would flicker hover UI open and shut.\n */\nexport function useHoverGesture(): HoverGesture {\n  const hovering = useRef(false);\n  return useMemo(\n    () => ({\n      enter(event) {\n        if (event.pointerType === \"touch\") return false;\n        hovering.current = true;\n        return true;\n      },\n      leave(event) {\n        if (event.pointerType === \"touch\" || !hovering.current) return false;\n        hovering.current = false;\n        return true;\n      },\n    }),\n    [],\n  );\n}\n"
+    }
+  ]
+}

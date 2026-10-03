@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scroll-area",
+  "type": "registry:ui",
+  "title": "Scroll Area",
+  "description": "A native scroll container with custom, auto-hiding scrollbars.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/scroll-area.tsx",
+      "type": "registry:ui",
+      "content": "import { ScrollArea as ScrollAreaPrimitive } from \"@base-ui/react/scroll-area\";\n\nimport * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/** Mask that fades content under the edges only while there is more to scroll. */\nconst fadeMask = (size: number): React.CSSProperties => {\n  const y0 = `min(${size}px, var(--scroll-area-overflow-y-start, 0px))`;\n  const y1 = `min(${size}px, var(--scroll-area-overflow-y-end, 0px))`;\n  const mask = `linear-gradient(to bottom, transparent 0, #000 ${y0}, #000 calc(100% - ${y1}), transparent 100%)`;\n  return { maskImage: mask, WebkitMaskImage: mask };\n};\n\ntype ScrollAreaProps = ScrollAreaPrimitive.Root.Props & {\n  /** Fade content at the top/bottom edges while it overflows. Pass a number for the fade size in px. */\n  fade?: boolean | number;\n};\n\nfunction ScrollArea({ className, children, fade, ...props }: ScrollAreaProps) {\n  return (\n    <ScrollAreaPrimitive.Root data-slot=\"scroll-area\" className={cn(\"relative overflow-hidden\", className)} {...props}>\n      <ScrollAreaPrimitive.Viewport\n        data-slot=\"scroll-area-viewport\"\n        className=\"size-full overscroll-contain rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-ring/40\"\n        style={fade ? fadeMask(typeof fade === \"number\" ? fade : 40) : undefined}\n      >\n        {children}\n      </ScrollAreaPrimitive.Viewport>\n      <ScrollBar />\n      <ScrollBar orientation=\"horizontal\" />\n      <ScrollAreaPrimitive.Corner />\n    </ScrollAreaPrimitive.Root>\n  );\n}\n\nfunction ScrollBar({ className, orientation = \"vertical\", ...props }: ScrollAreaPrimitive.Scrollbar.Props) {\n  return (\n    <ScrollAreaPrimitive.Scrollbar\n      data-slot=\"scroll-area-scrollbar\"\n      orientation={orientation}\n      className={cn(\n        \"pointer-events-none flex p-0.5 opacity-0 transition-opacity duration-200 select-none data-hovering:pointer-events-auto data-hovering:opacity-100 data-scrolling:pointer-events-auto data-scrolling:opacity-100 data-scrolling:duration-0\",\n        \"data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:h-2.5 data-[orientation=horizontal]:flex-col\",\n        className,\n      )}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Thumb data-slot=\"scroll-area-thumb\" className=\"relative flex-1 rounded-full bg-[var(--scrollbar-thumb)] transition-colors hover:bg-[var(--scrollbar-thumb-hover)] active:bg-[var(--scrollbar-thumb-active)]\" />\n    </ScrollAreaPrimitive.Scrollbar>\n  );\n}\n\nexport { ScrollArea, ScrollBar };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "scroll-area",
+    "docs": "https://ui.designx.dev/docs/components/scroll-area"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-ease",
+  "type": "registry:lib",
+  "title": "lib-ease",
+  "files": [
+    {
+      "path": "lib/ease.ts",
+      "type": "registry:lib",
+      "target": "lib/ease.ts",
+      "content": "/**\n * Shared motion curves and springs for DX UI motion components.\n * Cubic-bezier arrays work with `motion/react` transitions; the `_CSS` strings\n * are for plain CSS animations.\n */\nexport const EASE_OUT = [0.23, 1, 0.32, 1] as const;\nexport const EASE_IN_OUT = [0.77, 0, 0.175, 1] as const;\nexport const EASE_DRAWER = [0.32, 0.72, 0, 1] as const;\n\nexport const EASE_OUT_CSS = \"cubic-bezier(0.23, 1, 0.32, 1)\";\nexport const EASE_IN_OUT_CSS = \"cubic-bezier(0.77, 0, 0.175, 1)\";\nexport const EASE_DRAWER_CSS = \"cubic-bezier(0.32, 0.72, 0, 1)\";\n\n/** Layout and shared-element morphs. */\nexport const SPRING_LAYOUT = { type: \"spring\", stiffness: 420, damping: 38, mass: 0.9 } as const;\n/** Press / tap feedback — quick and slightly bouncy. */\nexport const SPRING_PRESS = { type: \"spring\", stiffness: 600, damping: 30, mass: 0.6 } as const;\n/** Panels, sheets and popovers opening. */\nexport const SPRING_PANEL = { type: \"spring\", stiffness: 380, damping: 34, mass: 1 } as const;\n/** Content swaps — icons, labels, digits. */\nexport const SPRING_SWAP = { type: \"spring\", stiffness: 520, damping: 36, mass: 0.7 } as const;\n/** Pointer-follow effects (magnetic, tilt). */\nexport const SPRING_MOUSE = { stiffness: 260, damping: 22, mass: 0.5 } as const;\n/** Smoothed values gliding to a target (sliders, charts). */\nexport const SPRING_GLIDE = { stiffness: 340, damping: 34, mass: 0.6 } as const;\n"
+    }
+  ]
+}

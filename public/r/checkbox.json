@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "checkbox",
+  "type": "registry:ui",
+  "title": "Checkbox",
+  "description": "A control that allows the user to toggle between checked and not checked.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "lucide-react@^0.577.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/checkbox.tsx",
+      "type": "registry:ui",
+      "content": "import { Checkbox as CheckboxPrimitive } from \"@base-ui/react/checkbox\";\nimport { CheckIcon, MinusIcon } from \"lucide-react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Checkbox({ className, ...props }: CheckboxPrimitive.Root.Props) {\n  return (\n    <CheckboxPrimitive.Root\n      data-slot=\"checkbox\"\n      className={cn(\n        \"peer focus-ring relative inline-flex size-[18px] shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-muted-foreground/70 bg-transparent text-primary-foreground transition-[background-color,border-color] duration-150 ease-(--ease-dx)\",\n        \"after:absolute after:-inset-2.5 after:rounded-full after:bg-current after:opacity-0 after:transition-opacity hover:after:opacity-[0.06]\",\n        \"data-checked:border-primary data-checked:bg-primary data-indeterminate:border-primary data-indeterminate:bg-primary\",\n        \"data-invalid:border-destructive data-disabled:pointer-events-none data-disabled:opacity-40\",\n        className,\n      )}\n      {...props}\n    >\n      <CheckboxPrimitive.Indicator\n        data-slot=\"checkbox-indicator\"\n        className=\"flex items-center justify-center transition-[scale,opacity] duration-150 data-ending-style:scale-50 data-ending-style:opacity-0 data-starting-style:scale-50 data-starting-style:opacity-0 data-unchecked:hidden\"\n        render={(p, state) => (\n          <span {...p}>\n            {state.indeterminate ? <MinusIcon className=\"size-3.5\" strokeWidth={3} /> : <CheckIcon className=\"size-3.5\" strokeWidth={3} />}\n          </span>\n        )}\n      />\n    </CheckboxPrimitive.Root>\n  );\n}\n\nexport { Checkbox };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "checkbox",
+    "docs": "https://ui.designx.dev/docs/components/checkbox"
+  }
+}

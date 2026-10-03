@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "toggle",
+  "type": "registry:ui",
+  "title": "Toggle",
+  "description": "A two-state button that can be on or off.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/toggle.tsx",
+      "type": "registry:ui",
+      "content": "import { Toggle as TogglePrimitive } from \"@base-ui/react/toggle\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst toggleVariants = cva(\n  \"state-layer focus-ring inline-flex shrink-0 items-center justify-center gap-1.5 rounded-full text-sm font-medium whitespace-nowrap text-muted-foreground transition-[background-color,color] duration-150 ease-(--ease-dx) outline-none select-none hover:text-foreground data-pressed:bg-secondary data-pressed:text-secondary-foreground data-pressed:before:opacity-0! data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-transparent\",\n        outline: \"border border-border bg-transparent data-pressed:border-transparent\",\n      },\n      size: {\n        sm: \"h-8 min-w-8 px-2.5\",\n        default: \"h-10 min-w-10 px-3\",\n        lg: \"h-12 min-w-12 px-4\",\n      },\n    },\n    defaultVariants: { variant: \"default\", size: \"default\" },\n  },\n);\n\nfunction Toggle({ className, variant, size, ...props }: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {\n  return <TogglePrimitive data-slot=\"toggle\" className={cn(toggleVariants({ variant, size, className }))} {...props} />;\n}\n\nexport { Toggle, toggleVariants };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "toggle",
+    "docs": "https://ui.designx.dev/docs/components/toggle"
+  }
+}

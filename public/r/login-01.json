@@ -1,0 +1,36 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "login-01",
+  "type": "registry:block",
+  "title": "Login — split screen",
+  "description": "Split-screen sign in with social providers and a brand panel.",
+  "dependencies": [
+    "react-icons@^5.6.0"
+  ],
+  "registryDependencies": [
+    "@dx/button",
+    "@dx/checkbox",
+    "@dx/field",
+    "@dx/glow-border",
+    "@dx/input",
+    "@dx/label",
+    "@dx/sonner",
+    "@dx/spinner"
+  ],
+  "files": [
+    {
+      "path": "blocks/login-01.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/login-01.tsx",
+      "content": "import * as React from \"react\";\nimport { FaApple, FaGithub, FaGoogle } from \"react-icons/fa6\";\n\nimport { GlowBorder } from \"@/components/dx/glow-border\";\nimport { Button } from \"@/components/ui/button\";\nimport { Checkbox } from \"@/components/ui/checkbox\";\nimport { Field, FieldError, FieldGroup, FieldLabel, FieldSeparator } from \"@/components/ui/field\";\nimport { Input } from \"@/components/ui/input\";\nimport { Label } from \"@/components/ui/label\";\nimport { toast } from \"@/components/ui/sonner\";\nimport { Spinner } from \"@/components/ui/spinner\";\n\nexport default function Login01() {\n  const [loading, setLoading] = React.useState(false);\n  const onSubmit = (e: React.FormEvent) => {\n    e.preventDefault();\n    setLoading(true);\n    setTimeout(() => {\n      setLoading(false);\n      toast.success(\"Signed in\", { description: \"Welcome back, Ada.\" });\n    }, 1200);\n  };\n\n  return (\n    <div className=\"grid min-h-svh lg:grid-cols-2\">\n      <div className=\"flex flex-col gap-4 p-6 md:p-10\">\n        <div className=\"flex items-center gap-2 font-medium\">\n          <div className=\"grid size-7 place-items-center rounded-md bg-primary text-[11px] font-semibold text-primary-foreground\">DX</div>\n          Acme Inc.\n        </div>\n        <div className=\"flex flex-1 items-center justify-center\">\n          <form onSubmit={onSubmit} className=\"w-full max-w-sm\">\n            <FieldGroup>\n              <div className=\"grid gap-1 text-center\">\n                <h1 className=\"text-[28px] font-normal tracking-[-0.02em]\">Welcome back</h1>\n                <p className=\"text-sm text-muted-foreground\">Sign in to continue to your workspace.</p>\n              </div>\n              <div className=\"grid grid-cols-3 gap-2\">\n                <Button variant=\"outline\" type=\"button\" aria-label=\"Continue with Google\">\n                  <FaGoogle />\n                </Button>\n                <Button variant=\"outline\" type=\"button\" aria-label=\"Continue with Apple\">\n                  <FaApple />\n                </Button>\n                <Button variant=\"outline\" type=\"button\" aria-label=\"Continue with GitHub\">\n                  <FaGithub />\n                </Button>\n              </div>\n              <FieldSeparator>or continue with email</FieldSeparator>\n              <Field>\n                <FieldLabel>Email</FieldLabel>\n                <Input type=\"email\" placeholder=\"you@company.com\" required autoComplete=\"email\" />\n                <FieldError match=\"typeMismatch\">Enter a valid email address.</FieldError>\n              </Field>\n              <Field>\n                <div className=\"flex items-center justify-between\">\n                  <FieldLabel>Password</FieldLabel>\n                  <a href=\"#forgot-01\" className=\"text-[13px] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline\">\n                    Forgot password?\n                  </a>\n                </div>\n                <Input type=\"password\" required autoComplete=\"current-password\" />\n              </Field>\n              <Label className=\"gap-2 font-normal\">\n                <Checkbox defaultChecked /> Keep me signed in\n              </Label>\n              <Button type=\"submit\" size=\"lg\" className=\"w-full\" disabled={loading}>\n                {loading && <Spinner />} Sign in\n              </Button>\n              <p className=\"text-center text-[13px] text-muted-foreground\">\n                Don't have an account?{\" \"}\n                <a href=\"#signup-01\" className=\"text-foreground underline underline-offset-4\">\n                  Sign up\n                </a>\n              </p>\n            </FieldGroup>\n          </form>\n        </div>\n      </div>\n      <div className=\"relative hidden overflow-hidden bg-container lg:block\">\n        <div className=\"absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,var(--dx-blue-2),transparent_45%),radial-gradient(circle_at_80%_70%,var(--dx-purple-2),transparent_45%),radial-gradient(circle_at_40%_90%,var(--dx-pink-2),transparent_40%)] opacity-70 dark:opacity-25\" />\n        <div className=\"relative flex h-full flex-col justify-end p-10\">\n          <div className=\"relative max-w-md rounded-[28px] bg-background/70 backdrop-blur-xl\">\n            <GlowBorder intensity=\"xl\" duration={8} />\n            <blockquote className=\"relative grid gap-4 p-6\">\n              <p className=\"text-lg leading-relaxed\">\n                \"DX UI let us ship a consistent product across four teams in a quarter. It feels like one designer built everything.\"\n              </p>\n              <footer className=\"text-sm text-muted-foreground\">Sofia Davis, Head of Design</footer>\n            </blockquote>\n          </div>\n        </div>\n      </div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "login"
+  ],
+  "meta": {
+    "iframeHeight": "760px",
+    "preview": "https://ui.designx.dev/blocks#login-01"
+  }
+}

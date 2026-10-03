@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "kbd",
+  "type": "registry:ui",
+  "title": "Kbd",
+  "description": "Displays a keyboard key or shortcut.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/kbd.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Kbd({ className, ...props }: React.ComponentProps<\"kbd\">) {\n  return (\n    <kbd\n      data-slot=\"kbd\"\n      className={cn(\n        \"bg-container-high text-muted-foreground pointer-events-none inline-flex h-5 min-w-5 items-center justify-center gap-1 rounded-xs px-1.5 font-sans text-[11px] font-medium select-none shadow-[inset_0_-1px_0_var(--border)] [&_svg:not([class*='size-'])]:size-3\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction KbdGroup({ className, ...props }: React.ComponentProps<\"kbd\">) {\n  return <kbd data-slot=\"kbd-group\" className={cn(\"inline-flex items-center gap-1\", className)} {...props} />;\n}\n\nexport { Kbd, KbdGroup };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/kbd"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "input-group",
+  "type": "registry:ui",
+  "title": "Input Group",
+  "description": "Add icons, text, buttons and kbd hints inside an input.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/input-group.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction InputGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"input-group\"\n      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n      role=\"group\"\n      className={cn(\n        \"group/input-group relative flex h-10 w-full min-w-0 items-center rounded-md border border-input transition-[border-color,box-shadow] duration-150 ease-(--ease-dx) outline-none\",\n        \"hover:border-foreground/30 has-[[data-slot=input-group-control]:focus-visible]:border-foreground has-[[data-slot=input-group-control]:focus-visible]:shadow-[0_0_0_3px_var(--outline-variant)]\",\n        \"has-[textarea]:h-auto has-[[aria-invalid=true]]:border-destructive\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction InputGroupAddon({\n  className,\n  align = \"inline-start\",\n  ...props\n}: React.ComponentProps<\"div\"> & { align?: \"inline-start\" | \"inline-end\" | \"block-start\" | \"block-end\" }) {\n  return (\n    // oxlint-disable-next-line jsx-a11y/no-static-element-interactions -- pointer convenience only; input remains keyboard focusable\n    <div\n      data-slot=\"input-group-addon\"\n      data-align={align}\n      onMouseDown={(e) => {\n        if ((e.target as HTMLElement).closest(\"button\")) return;\n        e.preventDefault();\n        e.currentTarget.parentElement?.querySelector<HTMLInputElement>(\"input, textarea\")?.focus();\n      }}\n      className={cn(\n        \"flex h-auto cursor-text items-center justify-center gap-2 py-1.5 text-sm font-medium text-muted-foreground select-none [&>svg:not([class*='size-'])]:size-4\",\n        align === \"inline-start\" && \"order-first pl-3.5\",\n        align === \"inline-end\" && \"order-last pr-2\",\n        align === \"block-start\" && \"order-first w-full justify-start px-3.5 pt-3\",\n        align === \"block-end\" && \"order-last w-full justify-start px-3.5 pb-3\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction InputGroupInput({ className, ...props }: React.ComponentProps<\"input\">) {\n  return (\n    <input\n      data-slot=\"input-group-control\"\n      className={cn(\n        \"h-full min-w-0 flex-1 bg-transparent px-3.5 text-sm outline-none placeholder:text-muted-foreground/70 group-has-[[data-align=inline-start]]/input-group:pl-2 group-has-[[data-align=inline-end]]/input-group:pr-2\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction InputGroupTextarea({ className, ...props }: React.ComponentProps<\"textarea\">) {\n  return (\n    <textarea\n      data-slot=\"input-group-control\"\n      className={cn(\"field-sizing-content min-h-16 w-full flex-1 resize-none bg-transparent px-3.5 py-3 text-sm outline-none placeholder:text-muted-foreground/70\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction InputGroupText({ className, ...props }: React.ComponentProps<\"span\">) {\n  return <span className={cn(\"flex items-center gap-2 text-sm text-muted-foreground [&_svg:not([class*='size-'])]:size-4\", className)} {...props} />;\n}\n\nexport { InputGroup, InputGroupAddon, InputGroupInput, InputGroupTextarea, InputGroupText };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/input-group"
+  }
+}

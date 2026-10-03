@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "radio-group",
+  "type": "registry:ui",
+  "title": "Radio Group",
+  "description": "A set of checkable buttons where only one can be checked at a time.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/radio-group.tsx",
+      "type": "registry:ui",
+      "content": "import { Radio as RadioPrimitive } from \"@base-ui/react/radio\";\nimport { RadioGroup as RadioGroupPrimitive } from \"@base-ui/react/radio-group\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction RadioGroup({ className, ...props }: RadioGroupPrimitive.Props) {\n  return <RadioGroupPrimitive data-slot=\"radio-group\" className={cn(\"grid gap-3\", className)} {...props} />;\n}\n\nfunction RadioGroupItem({ className, ...props }: RadioPrimitive.Root.Props) {\n  return (\n    <RadioPrimitive.Root\n      data-slot=\"radio-group-item\"\n      className={cn(\n        \"peer focus-ring relative inline-flex size-[18px] shrink-0 items-center justify-center rounded-full border-[1.5px] border-muted-foreground/70 transition-colors duration-150\",\n        \"after:absolute after:-inset-2.5 after:rounded-full after:bg-current after:opacity-0 after:transition-opacity hover:after:opacity-[0.06]\",\n        \"data-checked:border-primary data-disabled:pointer-events-none data-disabled:opacity-40\",\n        className,\n      )}\n      {...props}\n    >\n      <RadioPrimitive.Indicator\n        data-slot=\"radio-group-indicator\"\n        className=\"size-2.5 rounded-full bg-primary transition-[scale] duration-200 ease-(--ease-dx) data-starting-style:scale-0 data-ending-style:scale-0 data-unchecked:hidden\"\n      />\n    </RadioPrimitive.Root>\n  );\n}\n\nexport { RadioGroup, RadioGroupItem };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "radio-group",
+    "docs": "https://ui.designx.dev/docs/components/radio-group"
+  }
+}

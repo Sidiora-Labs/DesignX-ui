@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "count-up",
+  "type": "registry:component",
+  "title": "Count Up",
+  "description": "Counts to a number when it scrolls into view — tween, scramble or flow.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/number-flow",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/count-up.tsx",
+      "type": "registry:component",
+      "target": "components/dx/count-up.tsx",
+      "content": "import * as React from \"react\";\nimport { animate, useInView, type Easing } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\nimport { NumberFlow } from \"@/components/dx/number-flow\";\n\n/**\n * CountUpcounts from one value to another when it scrolls into view.\n * Three renderers: plain tween text, a slot-machine \"scramble\", or the DX\n * NumberFlow morph.\n */\n\ntype CountUpProps = {\n  to: number;\n  from?: number;\n  /** Seconds. */\n  duration?: number;\n  ease?: Easing;\n  /** \"tween\" interpolates, \"scramble\" flashes random values that climb, \"flow\" morphs digits with NumberFlow. */\n  mode?: \"tween\" | \"scramble\" | \"flow\";\n  /** Replay every time it re-enters the viewport. */\n  repeat?: boolean;\n  /** Start immediately instead of waiting for the viewport. */\n  immediate?: boolean;\n  prefix?: string;\n  suffix?: string;\n  locale?: string;\n  format?: Intl.NumberFormatOptions;\n  className?: string;\n  onComplete?: () => void;\n};\n\nconst DEFAULT_FORMAT: Intl.NumberFormatOptions = { maximumFractionDigits: 0 };\n\nfunction CountUp({\n  to,\n  from = 0,\n  duration = 1,\n  ease = \"easeInOut\",\n  mode = \"tween\",\n  repeat = false,\n  immediate = false,\n  prefix = \"\",\n  suffix = \"\",\n  locale = \"en-US\",\n  format = DEFAULT_FORMAT,\n  className,\n  onComplete,\n}: CountUpProps) {\n  const ref = React.useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: !repeat, amount: 0.5 });\n  const active = immediate || inView;\n  const [value, setValue] = React.useState(from);\n  const fmt = React.useMemo(() => new Intl.NumberFormat(locale, format), [locale, format]);\n  const done = React.useRef(onComplete);\n  done.current = onComplete;\n\n  React.useEffect(() => {\n    if (!active) {\n      setValue(from);\n      return;\n    }\n    if (window.matchMedia(\"(prefers-reduced-motion: reduce)\").matches) {\n      setValue(to);\n      return;\n    }\n    if (mode === \"flow\") {\n      // NumberFlow animates the change itself; sample a few steps so digits roll.\n      const steps = 4;\n      let i = 0;\n      const id = window.setInterval(() => {\n        i++;\n        setValue(i >= steps ? to : from + ((to - from) * i) / steps);\n        if (i >= steps) {\n          window.clearInterval(id);\n          done.current?.();\n        }\n      }, (duration * 1000) / steps);\n      return () => window.clearInterval(id);\n    }\n    if (mode === \"scramble\") {\n      const steps = Math.max(6, Math.round(duration * 12));\n      let i = 0;\n      const id = window.setInterval(() => {\n        i++;\n        if (i < steps) {\n          const min = from + (i * (to - from)) / steps;\n          setValue(min + Math.random() * (Math.max(to, from) * 1.05 - min));\n        } else {\n          setValue(to);\n          window.clearInterval(id);\n          done.current?.();\n        }\n      }, (duration * 1000) / steps);\n      return () => window.clearInterval(id);\n    }\n    const controls = animate(from, to, { duration, ease, onUpdate: setValue, onComplete: () => done.current?.() });\n    return () => controls.stop();\n  }, [active, from, to, duration, ease, mode]);\n\n  if (mode === \"flow\") {\n    return (\n      <span ref={ref} data-slot=\"count-up\" className={cn(\"inline-flex\", className)}>\n        <NumberFlow value={Math.round(value)} prefix={prefix} suffix={suffix} locale={locale} format={format} />\n      </span>\n    );\n  }\n  return (\n    <span ref={ref} data-slot=\"count-up\" className={cn(\"tabular-nums\", className)}>\n      {prefix}\n      {fmt.format(mode === \"scramble\" && value !== to ? Math.floor(value) : value)}\n      {suffix}\n    </span>\n  );\n}\n\nexport { CountUp };\nexport type { CountUpProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/count-up"
+  }
+}

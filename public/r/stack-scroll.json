@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "stack-scroll",
+  "type": "registry:component",
+  "title": "Stack Scroll",
+  "description": "Scroll-driven stacked steps with per-step progress rails.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/stack-scroll.tsx",
+      "type": "registry:component",
+      "target": "components/dx/stack-scroll.tsx",
+      "content": "import * as React from \"react\";\nimport { type MotionValue, motion, useScroll, useTransform } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * StackScrolla sticky, scroll-driven sequence of steps. Each step rises in\n * as its slice of the scroll range is reached and a progress rail fills.\n *\n */\n\ntype StackScrollItem = { title: string; description: string; media?: React.ReactNode };\n\ntype StackScrollProps = {\n  items: StackScrollItem[];\n  /** Total scroll distance for the sequence (CSS length). */\n  scrollLength?: string;\n  /** Scroll container; defaults to the window. */\n  containerRef?: React.RefObject<HTMLElement | null>;\n  className?: string;\n};\n\nfunction Step({ item, index, total, progress }: { item: StackScrollItem; index: number; total: number; progress: MotionValue<number> }) {\n  const start = index / total;\n  const end = (index + 1) / total;\n  const mediaY = useTransform(progress, [start, end], [-40, 0]);\n  const textY = useTransform(progress, [start, end], [40, 0]);\n  const scale = useTransform(progress, [start, end], [0, 1]);\n  const opacity = useTransform(progress, [start, end], [0, 1]);\n  const fill = useTransform(progress, [start, end], [0, 1]);\n  return (\n    <div className=\"relative z-10 flex flex-col gap-8\">\n      <motion.div style={{ y: mediaY, opacity }} className=\"bg-container-high relative flex aspect-[4/3] items-center justify-center overflow-hidden rounded-xl\">\n        {item.media}\n      </motion.div>\n      <div className=\"relative flex items-center\">\n        <div aria-hidden className=\"bg-container-higher absolute inset-x-0 h-0.5 rounded-full\" />\n        <motion.div\n          aria-hidden\n          style={{ scaleX: fill }}\n          className=\"bg-primary primary-fill absolute inset-x-0 h-0.5 origin-left rounded-full\"\n        />\n        <motion.div style={{ scale }} className=\"bg-primary text-primary-foreground primary-fill relative flex size-8 items-center justify-center rounded-full font-mono text-xs\">\n          {String(index + 1).padStart(2, \"0\")}\n        </motion.div>\n      </div>\n      <motion.div style={{ y: textY, opacity }} className=\"space-y-2\">\n        <h3 className=\"text-xl font-medium tracking-[-0.02em]\">{item.title}</h3>\n        <p className=\"text-muted-foreground text-sm leading-relaxed\">{item.description}</p>\n      </motion.div>\n    </div>\n  );\n}\n\nfunction StackScroll({ items, scrollLength = \"300vh\", containerRef, className }: StackScrollProps) {\n  const target = React.useRef<HTMLDivElement>(null);\n  const { scrollYProgress } = useScroll({ target, container: containerRef, offset: [\"start start\", \"end end\"] });\n  return (\n    <div data-slot=\"stack-scroll\" ref={target} className={cn(\"relative\", className)} style={{ height: scrollLength }}>\n      <div className=\"sticky top-0 flex h-[var(--stack-h,100vh)] items-center\">\n        <div className=\"relative grid w-full gap-8 px-6 md:gap-14\" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>\n          {items.map((item, i) => (\n            <Step key={item.title} item={item} index={i} total={items.length} progress={scrollYProgress} />\n          ))}\n        </div>\n      </div>\n    </div>\n  );\n}\n\nexport { StackScroll };\nexport type { StackScrollItem, StackScrollProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/stack-scroll"
+  }
+}

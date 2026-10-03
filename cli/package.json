@@ -1,0 +1,42 @@
+{
+  "name": "@sidioralabs/designx-ui",
+  "version": "0.1.0",
+  "description": "CLI for DesignX UI — add accessible, motion-first components to your React app.",
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/cli.test.mjs",
+    "pack:check": "npm pack --dry-run",
+    "check": "npm test && npm run pack:check"
+  },
+  "license": "MIT",
+  "bin": {
+    "dx-ui": "./bin/dx-ui.mjs"
+  },
+  "files": [
+    "bin/",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18.17"
+  },
+  "keywords": [
+    "designx",
+    "designx-ui",
+    "dx-ui",
+    "components",
+    "shadcn",
+    "base-ui",
+    "react",
+    "tailwind"
+  ],
+  "homepage": "https://dxuireact.com/docs/cli",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sidiora-Labs/DesignX-ui.git",
+    "directory": "cli"
+  },
+  "bugs": {
+    "url": "https://github.com/Sidiora-Labs/DesignX-ui/issues"
+  }
+}

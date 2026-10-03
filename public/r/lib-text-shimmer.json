@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-text-shimmer",
+  "type": "registry:lib",
+  "title": "lib-text-shimmer",
+  "files": [
+    {
+      "path": "lib/text-shimmer.ts",
+      "type": "registry:lib",
+      "target": "lib/text-shimmer.ts",
+      "content": "import type { CSSProperties } from \"react\";\n\nexport const TEXT_SHIMMER_CLASS_NAME = \"dx-text-shimmer\";\n\nexport const TEXT_SHIMMER_KEYFRAMES = `\n@keyframes dx-text-shimmer { from { background-position: 100% 0; } to { background-position: 0% 0; } }\n.dx-text-shimmer {\n  color: transparent;\n  background-image: linear-gradient(90deg, var(--dx-shimmer-base, color-mix(in oklab, currentColor 45%, transparent)) 0%, var(--dx-shimmer-base, color-mix(in oklab, currentColor 45%, transparent)) 40%, var(--dx-shimmer-highlight, var(--foreground)) 50%, var(--dx-shimmer-base, color-mix(in oklab, currentColor 45%, transparent)) 60%, var(--dx-shimmer-base, color-mix(in oklab, currentColor 45%, transparent)) 100%);\n  background-size: 250% 100%;\n  -webkit-background-clip: text;\n  background-clip: text;\n  animation: dx-text-shimmer var(--dx-shimmer-duration, 2.5s) linear infinite;\n}\n@media (prefers-reduced-motion: reduce) { .dx-text-shimmer { animation: none; color: inherit; background: none; opacity: .7; } }\n`;\n\nexport function textShimmerStyle(duration = 2.5): CSSProperties {\n  return { [\"--dx-shimmer-duration\" as string]: `${duration}s` } as CSSProperties;\n}\n"
+    }
+  ]
+}

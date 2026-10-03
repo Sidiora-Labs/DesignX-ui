@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "resizable",
+  "type": "registry:ui",
+  "title": "Resizable",
+  "description": "Accessible resizable panel groups and layouts.",
+  "dependencies": [
+    "react-resizable-panels@^3"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/resizable.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Panel, PanelGroup, PanelResizeHandle } from \"react-resizable-panels\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction ResizablePanelGroup({ className, ...props }: React.ComponentProps<typeof PanelGroup>) {\n  return <PanelGroup data-slot=\"resizable-panel-group\" className={cn(\"flex h-full w-full data-[panel-group-direction=vertical]:flex-col\", className)} {...props} />;\n}\n\nfunction ResizablePanel(props: React.ComponentProps<typeof Panel>) {\n  return <Panel data-slot=\"resizable-panel\" {...props} />;\n}\n\nfunction ResizableHandle({ withHandle, className, ...props }: React.ComponentProps<typeof PanelResizeHandle> & { withHandle?: boolean }) {\n  return (\n    <PanelResizeHandle\n      data-slot=\"resizable-handle\"\n      className={cn(\n        \"group/handle relative flex w-px items-center justify-center bg-outline-variant outline-none after:absolute after:inset-y-0 after:left-1/2 after:w-2 after:-translate-x-1/2\",\n        \"data-[panel-group-direction=vertical]:h-px data-[panel-group-direction=vertical]:w-full data-[panel-group-direction=vertical]:after:left-0 data-[panel-group-direction=vertical]:after:h-2 data-[panel-group-direction=vertical]:after:w-full data-[panel-group-direction=vertical]:after:translate-x-0 data-[panel-group-direction=vertical]:after:-translate-y-1/2\",\n        \"data-[resize-handle-state=drag]:bg-foreground data-[resize-handle-state=hover]:bg-muted-foreground\",\n        className,\n      )}\n      {...props}\n    >\n      {withHandle && (\n        <div className=\"z-10 h-8 w-1.5 rounded-full bg-muted-foreground/50 transition-colors group-data-[panel-group-direction=vertical]/handle:h-1.5 group-data-[panel-group-direction=vertical]/handle:w-8 group-data-[resize-handle-state=drag]/handle:bg-foreground\" />\n      )}\n    </PanelResizeHandle>\n  );\n}\n\nexport { ResizablePanelGroup, ResizablePanel, ResizableHandle };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/resizable"
+  }
+}

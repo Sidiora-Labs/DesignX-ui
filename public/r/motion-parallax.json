@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "motion-parallax",
+  "type": "registry:component",
+  "title": "Parallax Layers",
+  "description": "Scroll-linked parallax layers.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/parallax.tsx",
+      "type": "registry:component",
+      "target": "components/motion/parallax.tsx",
+      "content": "import {\n  motion,\n  type MotionStyle,\n  useReducedMotion,\n  useScroll,\n  useSpring,\n  useTransform,\n} from \"motion/react\";\nimport { type ReactNode, type RefObject, useRef } from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\n// Soft follow so the drift trails the scroll smoothly; looser than the UI\n// springs in lib/ease.ts on purpose.\nconst PARALLAX_SPRING = { stiffness: 120, damping: 30, mass: 0.6 };\n\nexport interface ParallaxProps {\n  children: ReactNode;\n  /**\n   * Drift as a fraction of the element's travel through the viewport.\n   * Positive moves with the scroll (foreground), negative against it\n   * (background). ~0.1–0.5 reads best.\n   */\n  speed?: number;\n  axis?: \"x\" | \"y\";\n  /** Scroll container for contained scroll areas. Defaults to the viewport. */\n  container?: RefObject<HTMLElement | null>;\n  /** Spring-smooth the drift. Disabled automatically under reduced motion. */\n  spring?: boolean;\n  className?: string;\n}\n\nexport function Parallax({\n  children,\n  speed = 0.3,\n  axis = \"y\",\n  container,\n  spring = true,\n  className,\n}: ParallaxProps) {\n  const reduce = useReducedMotion();\n  const ref = useRef<HTMLDivElement>(null);\n  const { scrollYProgress } = useScroll({\n    target: ref,\n    container,\n    offset: [\"start end\", \"end start\"],\n  });\n\n  // progress 0→1 as the element crosses the viewport; map to a symmetric drift.\n  const travel = speed * 100;\n  const drift = useTransform(scrollYProgress, [0, 1], [travel, -travel]);\n  const smoothed = useSpring(drift, PARALLAX_SPRING);\n  const value = spring && !reduce ? smoothed : drift;\n\n  const style: MotionStyle = reduce ? {} : axis === \"x\" ? { x: value } : { y: value };\n\n  return (\n    <motion.div ref={ref} style={style} className={cn(className)}>\n      {children}\n    </motion.div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/motion-parallax"
+  }
+}

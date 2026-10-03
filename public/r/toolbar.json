@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "toolbar",
+  "type": "registry:ui",
+  "title": "Toolbar",
+  "description": "A container for grouping a set of controls, with roving focus.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/toolbar.tsx",
+      "type": "registry:ui",
+      "content": "import { Toolbar as ToolbarPrimitive } from \"@base-ui/react/toolbar\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Toolbar({ className, ...props }: ToolbarPrimitive.Root.Props) {\n  return (\n    <ToolbarPrimitive.Root\n      data-slot=\"toolbar\"\n      className={cn(\n        \"flex w-fit items-center gap-1 rounded-full border border-outline-variant bg-background p-1 shadow-[0_1px_2px_rgb(0_0_0/0.04)] data-[orientation=vertical]:flex-col\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction ToolbarGroup({ className, ...props }: ToolbarPrimitive.Group.Props) {\n  return <ToolbarPrimitive.Group data-slot=\"toolbar-group\" className={cn(\"flex items-center gap-0.5\", className)} {...props} />;\n}\n\nconst toolbarItem =\n  \"state-layer focus-ring inline-flex h-8 min-w-8 items-center justify-center gap-1.5 rounded-full px-2 text-[13px] font-medium text-muted-foreground transition-colors select-none hover:text-foreground data-pressed:bg-secondary data-pressed:text-foreground data-disabled:pointer-events-none data-disabled:opacity-40 [&_svg]:size-4 [&_svg]:shrink-0\";\n\nfunction ToolbarButton({ className, ...props }: ToolbarPrimitive.Button.Props) {\n  return <ToolbarPrimitive.Button data-slot=\"toolbar-button\" className={cn(toolbarItem, className)} {...props} />;\n}\n\nfunction ToolbarLink({ className, ...props }: ToolbarPrimitive.Link.Props) {\n  return <ToolbarPrimitive.Link data-slot=\"toolbar-link\" className={cn(toolbarItem, \"px-3\", className)} {...props} />;\n}\n\nfunction ToolbarInput({ className, ...props }: ToolbarPrimitive.Input.Props) {\n  return (\n    <ToolbarPrimitive.Input\n      data-slot=\"toolbar-input\"\n      className={cn(\n        \"h-8 w-40 rounded-full bg-container px-3 text-[13px] outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-ring/30\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction ToolbarSeparator({ className, ...props }: ToolbarPrimitive.Separator.Props) {\n  return (\n    <ToolbarPrimitive.Separator\n      data-slot=\"toolbar-separator\"\n      className={cn(\"mx-1 h-5 w-px bg-outline-variant data-[orientation=vertical]:h-px data-[orientation=vertical]:w-5\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Toolbar, ToolbarGroup, ToolbarButton, ToolbarLink, ToolbarInput, ToolbarSeparator, toolbarItem };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "toolbar",
+    "docs": "https://ui.designx.dev/docs/components/toolbar"
+  }
+}

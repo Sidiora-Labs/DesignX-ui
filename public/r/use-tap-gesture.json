@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-tap-gesture",
+  "type": "registry:hook",
+  "title": "use-tap-gesture",
+  "files": [
+    {
+      "path": "lib/hooks/use-tap-gesture.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-tap-gesture.ts",
+      "content": "import { useMemo, useRef } from \"react\";\nimport type { PointerEvent } from \"react\";\n\nexport type TapGesture<T> = { pointerType: string; state: T };\n\n/**\n * Remembers the pointer that started a press and some state captured at that\n * moment, so the following click can tell a tap from a mouse click and read\n * the state as it was before focus/hover handlers changed it.\n */\nexport function useTapGesture<T>() {\n  const ref = useRef<TapGesture<T> | null>(null);\n  return useMemo(\n    () => ({\n      start(event: PointerEvent, state: T) {\n        ref.current = { pointerType: event.pointerType, state };\n      },\n      /** Read and clear the pending gesture. `null` for keyboard clicks. */\n      take(): TapGesture<T> | null {\n        const g = ref.current;\n        ref.current = null;\n        return g;\n      },\n      drop() {\n        ref.current = null;\n      },\n    }),\n    [],\n  );\n}\n"
+    }
+  ]
+}

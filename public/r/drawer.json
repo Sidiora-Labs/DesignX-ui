@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "drawer",
+  "type": "registry:ui",
+  "title": "Drawer",
+  "description": "A swipeable panel that slides in from the edge of the screen.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/drawer.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Drawer as DrawerPrimitive } from \"@base-ui/react/drawer\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Drawer(props: DrawerPrimitive.Root.Props) {\n  return <DrawerPrimitive.Root data-slot=\"drawer\" {...props} />;\n}\n\nfunction DrawerTrigger(props: DrawerPrimitive.Trigger.Props) {\n  return <DrawerPrimitive.Trigger data-slot=\"drawer-trigger\" {...props} />;\n}\n\nfunction DrawerClose(props: DrawerPrimitive.Close.Props) {\n  return <DrawerPrimitive.Close data-slot=\"drawer-close\" {...props} />;\n}\n\n/** Bottom sheet with swipe-to-dismiss. */\nfunction DrawerContent({ className, children, ...props }: DrawerPrimitive.Popup.Props) {\n  return (\n    <DrawerPrimitive.Portal>\n      <DrawerPrimitive.Backdrop\n        data-slot=\"drawer-overlay\"\n        className=\"fixed inset-0 z-50 bg-overlay opacity-[calc(1-var(--drawer-swipe-progress))] transition-opacity duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:duration-0 data-starting-style:opacity-0 data-ending-style:opacity-0\"\n      />\n      <DrawerPrimitive.Viewport className=\"fixed inset-0 z-50 flex items-end justify-center\">\n        <DrawerPrimitive.Popup\n          data-slot=\"drawer-content\"\n          className={cn(\n            \"-mb-12 max-h-[calc(85vh+3rem)] w-full overflow-y-auto overscroll-contain rounded-t-[28px] bg-popover px-6 pt-3 pb-[calc(1.5rem+env(safe-area-inset-bottom,0px)+3rem)] text-popover-foreground shadow-float outline-none\",\n            \"[transform:translateY(var(--drawer-swipe-movement-y))] transition-transform duration-[450ms] ease-[cubic-bezier(0.32,0.72,0,1)] data-swiping:select-none data-starting-style:[transform:translateY(calc(100%-3rem+2px))] data-ending-style:[transform:translateY(calc(100%-3rem+2px))] data-ending-style:duration-[calc(var(--drawer-swipe-strength)*400ms)]\",\n            className,\n          )}\n          {...props}\n        >\n          <div className=\"mx-auto mb-5 h-1 w-10 shrink-0 rounded-full bg-container-highest\" />\n          <DrawerPrimitive.Content className=\"mx-auto w-full max-w-lg\">{children}</DrawerPrimitive.Content>\n        </DrawerPrimitive.Popup>\n      </DrawerPrimitive.Viewport>\n    </DrawerPrimitive.Portal>\n  );\n}\n\nfunction DrawerHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"drawer-header\" className={cn(\"flex flex-col gap-1.5 pb-4 text-center sm:text-left\", className)} {...props} />;\n}\n\nfunction DrawerFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"drawer-footer\" className={cn(\"mt-auto flex flex-col gap-2 pt-4\", className)} {...props} />;\n}\n\nfunction DrawerTitle({ className, ...props }: DrawerPrimitive.Title.Props) {\n  return <DrawerPrimitive.Title data-slot=\"drawer-title\" className={cn(\"text-[18px] font-medium tracking-[-0.01em]\", className)} {...props} />;\n}\n\nfunction DrawerDescription({ className, ...props }: DrawerPrimitive.Description.Props) {\n  return <DrawerPrimitive.Description data-slot=\"drawer-description\" className={cn(\"text-muted-foreground text-sm\", className)} {...props} />;\n}\n\nexport { Drawer, DrawerTrigger, DrawerClose, DrawerContent, DrawerHeader, DrawerFooter, DrawerTitle, DrawerDescription };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "drawer",
+    "docs": "https://ui.designx.dev/docs/components/drawer"
+  }
+}

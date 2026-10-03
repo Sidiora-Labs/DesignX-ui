@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-tick-sound",
+  "type": "registry:lib",
+  "title": "lib-tick-sound",
+  "files": [
+    {
+      "path": "lib/tick-sound.ts",
+      "type": "registry:lib",
+      "target": "lib/tick-sound.ts",
+      "content": "/** A tiny Web Audio click for detents (wheel pickers, rulers). Created lazily on first use. */\nexport function createTickPlayer({ frequency = 2400, volume = 0.06, duration = 0.018 } = {}) {\n  let ctx: AudioContext | null = null;\n  let last = 0;\n  const ensure = () => {\n    if (typeof window === \"undefined\") return null;\n    if (!ctx) {\n      const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;\n      if (!Ctor) return null;\n      ctx = new Ctor();\n    }\n    if (ctx.state === \"suspended\") void ctx.resume();\n    return ctx;\n  };\n  return {\n    /** Unlock audio inside a user gesture so the first tick isn't dropped. */\n    prepare() {\n      ensure();\n    },\n    play() {\n      const c = ensure();\n      if (!c) return;\n      const now = c.currentTime;\n      if (now - last < 0.025) return;\n      last = now;\n      const osc = c.createOscillator();\n      const gain = c.createGain();\n      osc.type = \"triangle\";\n      osc.frequency.setValueAtTime(frequency, now);\n      gain.gain.setValueAtTime(volume, now);\n      gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);\n      osc.connect(gain).connect(c.destination);\n      osc.start(now);\n      osc.stop(now + duration + 0.01);\n    },\n    dispose() {\n      void ctx?.close();\n      ctx = null;\n    },\n  };\n}\n"
+    }
+  ]
+}

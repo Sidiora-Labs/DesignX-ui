@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-link",
+  "type": "registry:component",
+  "title": "Animated Link",
+  "description": "Underline and fill hover treatments for links, router-ready via render.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/animated-link.tsx",
+      "type": "registry:component",
+      "target": "components/dx/animated-link.tsx",
+      "content": "import * as React from \"react\";\nimport { useRender } from \"@base-ui/react/use-render\";\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * AnimatedLinkfive underline / highlight hover treatments with an optional\n * arrow. Renders an <a>; pass `render` for your router's Link.\n * Inspired by cursor.com.\n */\n\nconst line =\n  \"before:pointer-events-none before:absolute before:left-0 before:w-full before:bg-current before:content-[''] before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)] motion-reduce:before:transition-none\";\n\nconst animatedLinkVariants = cva(\"group/link focus-ring relative inline-flex w-fit items-center rounded-[2px] text-foreground\", {\n  variants: {\n    variant: {\n      /** Draws in from the left, leaves to the right. */\n      slide: cn(line, \"before:top-[1.25em] before:h-[0.06em] before:origin-right before:scale-x-0 hover:before:origin-left hover:before:scale-x-100 focus-visible:before:origin-left focus-visible:before:scale-x-100\"),\n      /** Draws in from the right, leaves to the left. */\n      reverse: cn(line, \"before:top-[1.25em] before:h-[0.06em] before:origin-left before:scale-x-0 hover:before:origin-right hover:before:scale-x-100 focus-visible:before:scale-x-100\"),\n      /** Grows out from the center. */\n      center: cn(line, \"before:top-[1.25em] before:h-[0.06em] before:origin-center before:scale-x-0 hover:before:scale-x-100 focus-visible:before:scale-x-100\"),\n      /** A bar rises from the baseline and inverts the text. */\n      highlight: cn(\n        \"px-[0.25em] before:pointer-events-none before:absolute before:bottom-0 before:left-0 before:z-10 before:h-0 before:w-full before:bg-white before:mix-blend-difference before:transition-[height] before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)] before:content-['']\",\n        \"hover:before:h-full focus-visible:before:h-full\",\n      ),\n      /** A block sweeps across left to right and inverts the text. */\n      fill: cn(\n        \"px-[0.25em] before:pointer-events-none before:absolute before:inset-0 before:z-10 before:origin-left before:scale-x-0 before:bg-white before:mix-blend-difference before:transition-transform before:duration-300 before:ease-[cubic-bezier(0.4,0,0.2,1)] before:content-['']\",\n        \"hover:before:scale-x-100 focus-visible:before:scale-x-100\",\n      ),\n    },\n  },\n  defaultVariants: { variant: \"slide\" },\n});\n\nconst arrowMotion = {\n  slide: \"translate-y-1 group-hover/link:translate-y-0\",\n  reverse: \"translate-y-1 group-hover/link:translate-y-0\",\n  center: \"translate-y-1 group-hover/link:translate-y-0\",\n  highlight: \"translate-y-1 group-hover/link:translate-y-0 group-hover/link:rotate-45\",\n  fill: \"-translate-x-1 rotate-45 group-hover/link:translate-x-0\",\n} as const;\n\ntype AnimatedLinkProps = useRender.ComponentProps<\"a\"> &\n  VariantProps<typeof animatedLinkVariants> & {\n    /** Show the ↗ arrow on hover. */\n    arrow?: boolean;\n  };\n\nfunction AnimatedLink({ className, variant = \"slide\", arrow = false, render, children, ...props }: AnimatedLinkProps) {\n  const v = variant ?? \"slide\";\n  const content = (\n    <>\n      {children}\n      {arrow && (\n        <svg\n          aria-hidden\n          viewBox=\"0 0 10 10\"\n          fill=\"none\"\n          className={cn(\n            \"ml-[0.35em] size-[0.55em] shrink-0 opacity-0 transition-all duration-300 group-hover/link:opacity-100 group-focus-visible/link:opacity-100 motion-reduce:transition-none\",\n            arrowMotion[v],\n          )}\n        >\n          <path d=\"M1.004 9.166 9.337.833m0 0v8.333m0-8.333H1.004\" stroke=\"currentColor\" strokeWidth=\"1.25\" strokeLinecap=\"round\" strokeLinejoin=\"round\" />\n        </svg>\n      )}\n    </>\n  );\n  return useRender({\n    defaultTagName: \"a\",\n    render,\n    props: mergeProps<\"a\">(\n      { className: cn(animatedLinkVariants({ variant }), className), \"data-slot\": \"animated-link\", children: content } as React.ComponentProps<\"a\">,\n      props,\n    ),\n  });\n}\n\nexport { AnimatedLink, animatedLinkVariants };\nexport type { AnimatedLinkProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/animated-link"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "radio",
+  "type": "registry:component",
+  "title": "Radio",
+  "description": "Radio options with a dot that glides between choices.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/radio.tsx",
+      "type": "registry:component",
+      "target": "components/motion/radio.tsx",
+      "content": "import { motion, MotionConfig, useReducedMotion } from \"motion/react\";\nimport {\n  createContext,\n  useCallback,\n  useContext,\n  useId,\n  useMemo,\n  useState,\n  type ReactNode,\n} from \"react\";\nimport { SPRING_LAYOUT, SPRING_PRESS } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\ntype RadioCtx = {\n  value: string;\n  setValue: (value: string) => void;\n  layoutId: string;\n};\n\nconst RadioCtx = createContext<RadioCtx | null>(null);\n\nfunction useRadioGroup() {\n  const ctx = useContext(RadioCtx);\n  if (!ctx) {\n    throw new Error(\"RadioGroupItem must be used inside <RadioGroup>\");\n  }\n  return ctx;\n}\n\nexport interface RadioGroupProps {\n  value?: string;\n  defaultValue?: string;\n  onValueChange?: (value: string) => void;\n  children: ReactNode;\n  className?: string;\n  orientation?: \"vertical\" | \"horizontal\";\n}\n\nexport function RadioGroup({\n  value,\n  defaultValue = \"\",\n  onValueChange,\n  children,\n  className,\n  orientation = \"vertical\",\n}: RadioGroupProps) {\n  const [internal, setInternal] = useState(defaultValue);\n  const layoutId = useId();\n  const reduce = useReducedMotion();\n  const controlled = value !== undefined;\n  const current = controlled ? value : internal;\n  const setValue = useCallback(\n    (next: string) => {\n      if (!controlled) setInternal(next);\n      onValueChange?.(next);\n    },\n    [controlled, onValueChange],\n  );\n  const contextValue = useMemo(\n    () => ({ value: current, setValue, layoutId }),\n    [current, layoutId, setValue],\n  );\n\n  return (\n    <MotionConfig transition={reduce ? { duration: 0 } : SPRING_LAYOUT}>\n      <RadioCtx.Provider value={contextValue}>\n        <div\n          role=\"radiogroup\"\n          className={cn(\n            \"flex gap-3\",\n            orientation === \"vertical\" ? \"flex-col\" : \"flex-row flex-wrap\",\n            className,\n          )}\n        >\n          {children}\n        </div>\n      </RadioCtx.Provider>\n    </MotionConfig>\n  );\n}\n\nexport interface RadioGroupItemProps {\n  value: string;\n  label?: string;\n  disabled?: boolean;\n  className?: string;\n  id?: string;\n}\n\nexport function RadioGroupItem({\n  value,\n  label,\n  disabled,\n  className,\n  id: idProp,\n}: RadioGroupItemProps) {\n  const { value: groupValue, setValue, layoutId } = useRadioGroup();\n  const autoId = useId();\n  const id = idProp ?? autoId;\n  const reduce = useReducedMotion();\n  const selected = groupValue === value;\n\n  return (\n    <label\n      htmlFor={id}\n      className={cn(\n        \"inline-flex items-center gap-3\",\n        disabled ? \"cursor-not-allowed\" : \"cursor-pointer\",\n        className,\n      )}\n    >\n      <motion.button\n        id={id}\n        type=\"button\"\n        // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n        role=\"radio\"\n        aria-checked={selected}\n        disabled={disabled}\n        onClick={() => !disabled && setValue(value)}\n        whileTap={reduce || disabled ? undefined : { scale: 0.92 }}\n        transition={SPRING_PRESS}\n        data-state={selected ? \"checked\" : \"unchecked\"}\n        className={cn(\n          \"relative inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 outline-none transition-colors duration-200\",\n          \"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n          \"disabled:cursor-not-allowed disabled:opacity-60\",\n          selected\n            ? \"border-primary\"\n            : \"border-muted-foreground/50 hover:border-muted-foreground\",\n        )}\n      >\n        {selected ? (\n          <motion.span\n            layoutId={layoutId}\n            className=\"absolute inset-1 rounded-full bg-primary\"\n            transition={reduce ? { duration: 0 } : SPRING_LAYOUT}\n          />\n        ) : null}\n      </motion.button>\n      {label ? (\n        <span className={cn(\"select-none text-sm text-foreground\", disabled && \"opacity-60\")}>\n          {label}\n        </span>\n      ) : null}\n    </label>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/radio"
+  }
+}

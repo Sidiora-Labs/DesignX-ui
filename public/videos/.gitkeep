@@ -1,0 +1,1 @@
+Put video files here. Serve them from /videos and reference them with a video URL. The build transcodes supported videos when needed.

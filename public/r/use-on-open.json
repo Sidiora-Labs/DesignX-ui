@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-on-open",
+  "type": "registry:hook",
+  "title": "use-on-open",
+  "files": [
+    {
+      "path": "lib/hooks/use-on-open.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-on-open.ts",
+      "content": "import { useEffect, useRef } from \"react\";\n\n/** Runs `callback` each time `open` flips from false to true. */\nexport function useOnOpen(open: boolean, callback: () => void) {\n  const cb = useRef(callback);\n  cb.current = callback;\n  const prev = useRef(false);\n  useEffect(() => {\n    if (open && !prev.current) cb.current();\n    prev.current = open;\n  }, [open]);\n}\n"
+    }
+  ]
+}

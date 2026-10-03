@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "skeleton",
+  "type": "registry:ui",
+  "title": "Skeleton",
+  "description": "A shimmering placeholder while content loads.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/skeleton.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Skeleton({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"skeleton\"\n      className={cn(\n        \"relative overflow-hidden rounded-md bg-container-high\",\n        \"after:absolute after:inset-0 after:-translate-x-full after:animate-[dx-shimmer_1.6s_var(--ease-dx)_infinite] after:bg-linear-to-r after:from-transparent after:via-background/60 after:to-transparent\",\n        className,\n      )}\n      {...props}\n    >\n      <style>{`@keyframes dx-shimmer{100%{transform:translateX(100%)}}`}</style>\n    </div>\n  );\n}\n\nexport { Skeleton };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/skeleton"
+  }
+}

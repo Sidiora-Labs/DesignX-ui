@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-favicon",
+  "type": "registry:hook",
+  "title": "use-favicon",
+  "files": [
+    {
+      "path": "lib/hooks/use-favicon.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-favicon.ts",
+      "content": "import { useCallback, useState } from \"react\";\n\nfunction faviconFor(url?: string) {\n  if (!url) return null;\n  try {\n    const { hostname } = new URL(url.includes(\"://\") ? url : `https://${url}`);\n    return `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;\n  } catch {\n    return null;\n  }\n}\n\n/**\n * Favicon for a URL. Attach `ref` to the `<img>`: if the icon fails to load,\n * `src` becomes null so the caller can render a fallback.\n */\nexport function useFavicon(url?: string) {\n  const [failed, setFailed] = useState<string | null>(null);\n  const candidate = faviconFor(url);\n  const src = candidate && failed !== candidate ? candidate : null;\n  const ref = useCallback(\n    (img: HTMLImageElement | null) => {\n      if (!img || !candidate) return;\n      const onError = () => setFailed(candidate);\n      if (img.complete && img.naturalWidth === 0 && img.src) onError();\n      img.addEventListener(\"error\", onError, { once: true });\n    },\n    [candidate],\n  );\n  return { src, ref };\n}\n"
+    }
+  ]
+}

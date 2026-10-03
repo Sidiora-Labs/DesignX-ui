@@ -1,0 +1,28 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "typography",
+  "type": "registry:ui",
+  "title": "Typography",
+  "description": "The DX type scale as a single component — display to eyebrow.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/typography.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst typographyVariants = cva(\"text-foreground\", {\n  variants: {\n    variant: {\n      display: \"text-[clamp(2.75rem,6vw,4.5rem)] leading-[1.02] font-normal tracking-[-0.035em]\",\n      h1: \"text-[clamp(2.25rem,4vw,3rem)] leading-[1.08] font-normal tracking-[-0.03em]\",\n      h2: \"text-[2rem] leading-[1.15] font-normal tracking-[-0.02em]\",\n      h3: \"text-2xl leading-tight font-medium tracking-[-0.015em]\",\n      h4: \"text-lg leading-snug font-medium tracking-[-0.01em]\",\n      lead: \"text-lg leading-relaxed text-muted-foreground\",\n      p: \"text-[15px] leading-7\",\n      large: \"text-base font-medium\",\n      small: \"text-[13px] leading-snug font-medium\",\n      muted: \"text-sm text-muted-foreground\",\n      eyebrow: \"text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase\",\n      code: \"rounded-xs bg-container px-1.5 py-0.5 font-mono text-[0.88em]\",\n      blockquote: \"border-l-2 border-foreground pl-5 text-[17px] leading-relaxed italic\",\n    },\n  },\n  defaultVariants: { variant: \"p\" },\n});\n\nconst tagMap = {\n  display: \"h1\",\n  h1: \"h1\",\n  h2: \"h2\",\n  h3: \"h3\",\n  h4: \"h4\",\n  lead: \"p\",\n  p: \"p\",\n  large: \"div\",\n  small: \"small\",\n  muted: \"p\",\n  eyebrow: \"span\",\n  code: \"code\",\n  blockquote: \"blockquote\",\n} as const;\n\ntype TypographyProps = React.HTMLAttributes<HTMLElement> &\n  VariantProps<typeof typographyVariants> & { as?: React.ElementType };\n\nfunction Typography({ className, variant = \"p\", as, ...props }: TypographyProps) {\n  const Comp = (as ?? tagMap[variant ?? \"p\"]) as React.ElementType;\n  return <Comp data-slot=\"typography\" data-variant={variant} className={cn(typographyVariants({ variant }), className)} {...props} />;\n}\n\nexport { Typography, typographyVariants };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/typography"
+  }
+}

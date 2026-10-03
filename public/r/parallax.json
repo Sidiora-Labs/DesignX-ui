@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "parallax",
+  "type": "registry:component",
+  "title": "Parallax",
+  "description": "Scroll-linked parallax images and a scale-down reveal.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/parallax.tsx",
+      "type": "registry:component",
+      "target": "components/dx/parallax.tsx",
+      "content": "import * as React from \"react\";\nimport { motion, useReducedMotion, useScroll, useSpring, useTransform, type MotionValue } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * Parallaxscroll-linked image primitives.\n * - ParallaxImage: the image drifts inside its frame as the frame scrolls by.\n * - ScaleReveal: the frame shrinks while the image inside grows, optionally\n *   through an organic, hand-cut mask.\n * Both track the window by default; pass `container` for a scrolling box.\n */\n\ntype ScrollContainer = React.RefObject<HTMLElement | null>;\n\nfunction useSmooth(v: MotionValue<number>, smooth: boolean) {\n  const s = useSpring(v, { stiffness: 140, damping: 30, restDelta: 0.0005 });\n  return smooth ? s : v;\n}\n\ntype ParallaxImageProps = Omit<React.ComponentProps<\"div\">, \"children\"> & {\n  src: string;\n  alt?: string;\n  /** How far the image travels, as a percentage of the frame height. Negative reverses. */\n  speed?: number;\n  container?: ScrollContainer;\n  /** Spring-smooth the scroll value. */\n  smooth?: boolean;\n  imgClassName?: string;\n  children?: React.ReactNode;\n};\n\nfunction ParallaxImage({\n  src,\n  alt = \"\",\n  speed = 30,\n  container,\n  smooth = true,\n  className,\n  imgClassName,\n  children,\n  ...props\n}: ParallaxImageProps) {\n  const ref = React.useRef<HTMLDivElement>(null);\n  const reduce = useReducedMotion();\n  const { scrollYProgress } = useScroll({ target: ref, container, offset: [\"start end\", \"end start\"] });\n  const p = useSmooth(scrollYProgress, smooth);\n  const half = Math.abs(speed) / 2;\n  const y = useTransform(p, [0, 1], speed >= 0 ? [`-${half}%`, `${half}%`] : [`${half}%`, `-${half}%`]);\n\n  return (\n    <div ref={ref} data-slot=\"parallax-image\" className={cn(\"relative overflow-hidden\", className)} {...props}>\n      <motion.img\n        src={src}\n        alt={alt}\n        style={reduce ? undefined : { y, height: `${100 + Math.abs(speed)}%`, top: `-${half}%` }}\n        className={cn(\"absolute inset-x-0 w-full object-cover\", reduce && \"inset-y-0 h-full\", imgClassName)}\n      />\n      {children && <div className=\"relative z-10 size-full\">{children}</div>}\n    </div>\n  );\n}\n\n/** An irregular, hand-cut rounded rectangle (1836×1053 units, scaled to the box). */\nconst ORGANIC =\n  \"M457.525 1.148c-20.789-3.198-193.979 1.16-283.854 2.496 11.104-.178 1.297-2.868-81.146-2.496-103.5.468-86 102.499-86 109.999s-7 524.5-6.5 547.5 10 59 6.5 99c-2.8 32-1.167 234.667 0 332.003.5 75 62.5 66.5 67 68.5s38.5 0 81.5 0 436 6 526 10.5 438.995-.5 505.495 0 330.01-12.5 417.51-12.5 230.99 2 270.99 0 40.5-16 51-31.5 12.5-61 12.5-105.5c0-44.503 7.01-274.504 7.01-348.004s-3.51-159.998-7.01-230.998 0-256.002 0-318.002 7.01-92.998-22.5-110.999c-18.79-11.471-81.99-9.999-133.49-9.999H853.525c-29 0-370 4-396 0Z\";\n\ntype ScaleRevealProps = Omit<React.ComponentProps<\"div\">, \"children\"> & {\n  src: string;\n  alt?: string;\n  /** Frame scale at the end of the scroll range. */\n  from?: number;\n  to?: number;\n  /** How much the image zooms in as the frame shrinks. */\n  zoom?: number;\n  /** Clip the frame with a hand-cut organic shape. */\n  organic?: boolean;\n  container?: ScrollContainer;\n  smooth?: boolean;\n  /** Overlay content, centred over the image. */\n  children?: React.ReactNode;\n};\n\nfunction ScaleReveal({\n  src,\n  alt = \"\",\n  from = 1,\n  to = 0.7,\n  zoom = 1.3,\n  organic = false,\n  container,\n  smooth = true,\n  className,\n  children,\n  style,\n  ...props\n}: ScaleRevealProps) {\n  const ref = React.useRef<HTMLDivElement>(null);\n  const clipId = React.useId().replace(/:/g, \"\");\n  const reduce = useReducedMotion();\n  const { scrollYProgress } = useScroll({ target: ref, container, offset: [\"start end\", \"end start\"] });\n  const p = useSmooth(scrollYProgress, smooth);\n  const scale = useTransform(p, [0, 1], [from, to]);\n  const imgScale = useTransform(p, [0, 1], [1, zoom]);\n\n  return (\n    <motion.div\n      ref={ref}\n      data-slot=\"scale-reveal\"\n      style={{ scale: reduce ? 1 : scale, clipPath: organic ? `url(#${clipId})` : undefined, ...style }}\n      className={cn(\"relative flex aspect-video w-full items-center justify-center overflow-hidden\", !organic && \"rounded-3xl\", className)}\n      {...(props as React.ComponentProps<typeof motion.div>)}\n    >\n      {organic && (\n        <svg aria-hidden width=\"0\" height=\"0\" className=\"absolute\">\n          <clipPath id={clipId} clipPathUnits=\"objectBoundingBox\">\n            <path d={ORGANIC} transform=\"scale(0.0005139987561, 0.0008543065594)\" />\n          </clipPath>\n        </svg>\n      )}\n      <motion.img src={src} alt={alt} style={{ scale: reduce ? 1 : imgScale }} className=\"absolute inset-0 size-full object-cover\" />\n      {children && <div className=\"relative z-10\">{children}</div>}\n    </motion.div>\n  );\n}\n\nexport { ParallaxImage, ScaleReveal };\nexport type { ParallaxImageProps, ScaleRevealProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/parallax"
+  }
+}

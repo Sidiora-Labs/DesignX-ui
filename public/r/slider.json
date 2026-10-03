@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "slider",
+  "type": "registry:ui",
+  "title": "Slider",
+  "description": "An input where the user selects a value from within a given range.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/slider.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Slider as SliderPrimitive } from \"@base-ui/react/slider\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Slider({ className, defaultValue, value, min = 0, max = 100, ...props }: SliderPrimitive.Root.Props) {\n  const values = React.useMemo(() => {\n    const v = value ?? defaultValue;\n    return Array.isArray(v) ? v : v !== undefined ? [v] : [min];\n  }, [value, defaultValue, min]);\n\n  return (\n    <SliderPrimitive.Root\n      data-slot=\"slider\"\n      className={cn(\"data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full\", className)}\n      defaultValue={defaultValue}\n      value={value}\n      min={min}\n      max={max}\n      thumbAlignment=\"edge\"\n      {...props}\n    >\n      <SliderPrimitive.Control className=\"relative flex w-full touch-none items-center py-2 select-none data-disabled:opacity-40 data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-40 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[orientation=vertical]:px-2\">\n        <SliderPrimitive.Track\n          data-slot=\"slider-track\"\n          className=\"relative grow overflow-visible rounded-full bg-container-highest select-none data-[orientation=horizontal]:h-1.5 data-[orientation=horizontal]:w-full data-[orientation=vertical]:h-full data-[orientation=vertical]:w-1.5\"\n        >\n          <SliderPrimitive.Indicator\n            data-slot=\"slider-range\"\n            className=\"rounded-full bg-primary select-none data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full\"\n          />\n          {values.map((_, i) => (\n            <SliderPrimitive.Thumb\n              key={i}\n              data-slot=\"slider-thumb\"\n              className=\"block h-5 w-1.5 rounded-full bg-primary ring-4 ring-background transition-[width,height] duration-150 ease-(--ease-dx) outline-none select-none hover:w-2 focus-visible:ring-ring/40 data-dragging:w-2 data-[orientation=vertical]:h-1.5 data-[orientation=vertical]:w-5\"\n            />\n          ))}\n        </SliderPrimitive.Track>\n      </SliderPrimitive.Control>\n    </SliderPrimitive.Root>\n  );\n}\n\nexport { Slider };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "slider",
+    "docs": "https://ui.designx.dev/docs/components/slider"
+  }
+}

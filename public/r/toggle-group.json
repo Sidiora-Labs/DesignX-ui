@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "toggle-group",
+  "type": "registry:ui",
+  "title": "Toggle Group",
+  "description": "A set of two-state buttons that can be toggled on or off.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/toggle",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/toggle-group.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Toggle as TogglePrimitive } from \"@base-ui/react/toggle\";\nimport { ToggleGroup as ToggleGroupPrimitive } from \"@base-ui/react/toggle-group\";\nimport { type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\nimport { toggleVariants } from \"@/components/ui/toggle\";\n\nconst ToggleGroupContext = React.createContext<VariantProps<typeof toggleVariants>>({ size: \"default\", variant: \"default\" });\n\nfunction ToggleGroup({\n  className,\n  variant,\n  size,\n  children,\n  ...props\n}: ToggleGroupPrimitive.Props & VariantProps<typeof toggleVariants>) {\n  return (\n    <ToggleGroupPrimitive\n      data-slot=\"toggle-group\"\n      data-variant={variant}\n      className={cn(\n        \"group/toggle-group inline-flex w-fit items-center gap-0.5 rounded-full\",\n        variant === \"outline\" ? \"border border-border p-0.5\" : \"bg-container p-1\",\n        className,\n      )}\n      {...props}\n    >\n      <ToggleGroupContext.Provider value={{ variant, size }}>{children}</ToggleGroupContext.Provider>\n    </ToggleGroupPrimitive>\n  );\n}\n\nfunction ToggleGroupItem({ className, variant: _variant, size, ...props }: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {\n  const ctx = React.useContext(ToggleGroupContext);\n  return (\n    <TogglePrimitive\n      data-slot=\"toggle-group-item\"\n      className={cn(\n        toggleVariants({ variant: \"default\", size: ctx.size ?? size }),\n        \"data-pressed:bg-background data-pressed:text-foreground data-pressed:shadow-[0_1px_2px_rgb(0_0_0/0.08),0_0_0_1px_var(--outline-variant)] dark:data-pressed:bg-container-highest\",\n        ctx.size === \"sm\" || size === \"sm\" ? \"h-7 min-w-7\" : \"h-8 min-w-8\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nexport { ToggleGroup, ToggleGroupItem };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "toggle-group",
+    "docs": "https://ui.designx.dev/docs/components/toggle-group"
+  }
+}

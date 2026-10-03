@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "forgot-01",
+  "type": "registry:block",
+  "title": "Forgot password",
+  "description": "Request a reset link, with a success state.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/button",
+    "@dx/field",
+    "@dx/input",
+    "@dx/spinner"
+  ],
+  "files": [
+    {
+      "path": "blocks/forgot-01.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/forgot-01.tsx",
+      "content": "import * as React from \"react\";\nimport { AnimatePresence, motion } from \"motion/react\";\nimport { ArrowLeftIcon, CheckIcon, KeyRoundIcon } from \"lucide-react\";\n\nimport { Button } from \"@/components/ui/button\";\nimport { Field, FieldError, FieldLabel } from \"@/components/ui/field\";\nimport { Input } from \"@/components/ui/input\";\nimport { Spinner } from \"@/components/ui/spinner\";\n\nexport default function Forgot01() {\n  const [state, setState] = React.useState<\"idle\" | \"sending\" | \"sent\">(\"idle\");\n  const [email, setEmail] = React.useState(\"\");\n\n  return (\n    <div className=\"flex min-h-svh items-center justify-center p-6\">\n      <div className=\"w-full max-w-sm\">\n        <AnimatePresence mode=\"wait\" initial={false}>\n          {state !== \"sent\" ? (\n            <motion.form\n              key=\"form\"\n              initial={{ opacity: 0, y: 8 }}\n              animate={{ opacity: 1, y: 0 }}\n              exit={{ opacity: 0, y: -8 }}\n              transition={{ type: \"spring\", bounce: 0, duration: 0.4 }}\n              className=\"grid gap-6\"\n              onSubmit={(e) => {\n                e.preventDefault();\n                setState(\"sending\");\n                setTimeout(() => setState(\"sent\"), 1100);\n              }}\n            >\n              <div className=\"grid size-12 place-items-center rounded-full bg-container-high\">\n                <KeyRoundIcon className=\"size-5\" />\n              </div>\n              <div className=\"grid gap-1.5\">\n                <h1 className=\"text-[28px] font-normal tracking-[-0.02em]\">Forgot password?</h1>\n                <p className=\"text-sm text-muted-foreground\">Enter your email and we'll send you a reset link.</p>\n              </div>\n              <Field>\n                <FieldLabel>Email</FieldLabel>\n                <Input type=\"email\" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder=\"you@company.com\" />\n                <FieldError match=\"typeMismatch\">Enter a valid email address.</FieldError>\n              </Field>\n              <Button type=\"submit\" size=\"lg\" disabled={state === \"sending\"}>\n                {state === \"sending\" && <Spinner />} Send reset link\n              </Button>\n              {/* oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label */}\n              <Button variant=\"ghost\" type=\"button\" render={<a href=\"#login-01\" />}>\n                <ArrowLeftIcon /> Back to sign in\n              </Button>\n            </motion.form>\n          ) : (\n            <motion.div\n              key=\"sent\"\n              initial={{ opacity: 0, scale: 0.96 }}\n              animate={{ opacity: 1, scale: 1 }}\n              transition={{ type: \"spring\", bounce: 0, duration: 0.5 }}\n              className=\"grid justify-items-center gap-5 text-center\"\n            >\n              <div className=\"grid size-14 place-items-center rounded-full bg-success-container text-success\">\n                <CheckIcon className=\"size-6\" />\n              </div>\n              <div className=\"grid gap-1.5\">\n                <h1 className=\"text-[28px] font-normal tracking-[-0.02em]\">Check your inbox</h1>\n                <p className=\"text-sm text-muted-foreground\">\n                  If an account exists for <span className=\"font-medium text-foreground\">{email}</span>, you'll get a link in a minute.\n                </p>\n              </div>\n              <Button variant=\"tonal\" onClick={() => setState(\"idle\")}>\n                Use a different email\n              </Button>\n            </motion.div>\n          )}\n        </AnimatePresence>\n      </div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "forgot"
+  ],
+  "meta": {
+    "iframeHeight": "600px",
+    "preview": "https://ui.designx.dev/blocks#forgot-01"
+  }
+}

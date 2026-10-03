@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-dismiss",
+  "type": "registry:hook",
+  "title": "use-dismiss",
+  "files": [
+    {
+      "path": "lib/hooks/use-dismiss.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-dismiss.ts",
+      "content": "import { useEffect, useRef, type RefObject } from \"react\";\n\nexport type DismissOptions = {\n  /**\n   * \"pass\" (default) lets the outside press reach whatever it landed on;\n   * \"consume\" swallows the click that follows it.\n   */\n  behavior?: \"pass\" | \"consume\";\n  /** Return true for targets that should not count as outside. */\n  ignore?: (target: Element) => boolean;\n  /** Also dismiss on Escape. Default true. */\n  escape?: boolean;\n};\n\n/** Calls `onDismiss` on a pointerdown outside `ref` (or anywhere, when ref is null) while `active`. */\nexport function useDismiss(\n  active: boolean,\n  onDismiss: () => void,\n  ref: RefObject<Element | null> | null,\n  { behavior = \"pass\", ignore, escape = true }: DismissOptions = {},\n) {\n  const cb = useRef(onDismiss);\n  cb.current = onDismiss;\n  const ignoreRef = useRef(ignore);\n  ignoreRef.current = ignore;\n\n  useEffect(() => {\n    if (!active) return;\n    const onDown = (event: PointerEvent) => {\n      const target = event.target;\n      if (!(target instanceof Element)) return;\n      if (ref?.current?.contains(target)) return;\n      if (ignoreRef.current?.(target)) return;\n      if (behavior === \"consume\") {\n        const swallow = (e: MouseEvent) => {\n          e.preventDefault();\n          e.stopPropagation();\n        };\n        window.addEventListener(\"click\", swallow, { capture: true, once: true });\n        window.setTimeout(() => window.removeEventListener(\"click\", swallow, { capture: true }), 400);\n      }\n      cb.current();\n    };\n    const onKey = (event: KeyboardEvent) => {\n      if (escape && event.key === \"Escape\") cb.current();\n    };\n    document.addEventListener(\"pointerdown\", onDown, true);\n    document.addEventListener(\"keydown\", onKey);\n    return () => {\n      document.removeEventListener(\"pointerdown\", onDown, true);\n      document.removeEventListener(\"keydown\", onKey);\n    };\n  }, [active, behavior, escape, ref]);\n}\n"
+    }
+  ]
+}

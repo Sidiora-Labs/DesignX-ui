@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-number",
+  "type": "registry:component",
+  "title": "Animated Number",
+  "description": "Numbers that spring between values.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/animated-number.tsx",
+      "type": "registry:component",
+      "target": "components/motion/animated-number.tsx",
+      "content": "import { animate, useInView, useReducedMotion } from \"motion/react\";\nimport { useEffect, useRef, useState } from \"react\";\nimport { EASE_OUT } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface AnimatedNumberProps {\n  value: number;\n  duration?: number;\n  format?: (n: number) => string;\n  className?: string;\n  startOnView?: boolean;\n}\n\nexport function AnimatedNumber({\n  value,\n  duration = 1.2,\n  format = (n) => Math.round(n).toLocaleString(),\n  className,\n  startOnView = true,\n}: AnimatedNumberProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true, amount: 0.6 });\n  const reduce = useReducedMotion();\n  const [display, setDisplay] = useState(0);\n  const fromRef = useRef(0);\n\n  useEffect(() => {\n    if (startOnView && !inView) return;\n    if (reduce) {\n      fromRef.current = value;\n      setDisplay(value);\n      return;\n    }\n    const controls = animate(fromRef.current, value, {\n      duration,\n      ease: EASE_OUT,\n      onUpdate: (v) => setDisplay(v),\n    });\n    fromRef.current = value;\n    return () => controls.stop();\n  }, [value, duration, inView, startOnView, reduce]);\n\n  return (\n    <span ref={ref} className={cn(\"tabular-nums\", className)}>\n      {format(display)}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/animated-number"
+  }
+}

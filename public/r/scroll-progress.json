@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scroll-progress",
+  "type": "registry:component",
+  "title": "Scroll Progress",
+  "description": "A reading progress bar.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/smooth-scroll",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/scroll-progress.tsx",
+      "type": "registry:component",
+      "target": "components/motion/scroll-progress.tsx",
+      "content": "import {\n  type MotionValue,\n  motion,\n  useReducedMotion,\n  useSpring,\n  useTransform,\n} from \"motion/react\";\n\nimport { useSmoothScroll } from \"@/components/motion/smooth-scroll\";\nimport { cn } from \"@/lib/utils\";\n\n// Soft follow so the indicator trails the scroll smoothly instead of snapping;\n// looser than the UI springs in lib/ease.ts on purpose.\nconst PROGRESS_SPRING = { stiffness: 120, damping: 30, mass: 0.6 };\n\ntype CommonProps = {\n  /** Override the scroll source. Defaults to the page via useSmoothScroll. */\n  progress?: MotionValue<number>;\n  /** Spring-smooth the value. Disabled automatically under reduced motion. */\n  spring?: boolean;\n  className?: string;\n};\n\nexport interface ScrollProgressBarProps extends CommonProps {\n  variant?: \"bar\";\n  position?: \"top\" | \"bottom\";\n  /** Bar thickness in px. */\n  height?: number;\n  /** Position the bar with `fixed` (page) or `absolute` (embedded). */\n  fixed?: boolean;\n}\n\nexport interface ScrollProgressCircleProps extends CommonProps {\n  variant: \"circle\";\n  /** Diameter in px. */\n  size?: number;\n  /** Stroke width in px. */\n  thickness?: number;\n}\n\nexport type ScrollProgressProps =\n  | ScrollProgressBarProps\n  | ScrollProgressCircleProps;\n\nfunction useProgressValue(source: MotionValue<number> | undefined, spring: boolean) {\n  const reduce = useReducedMotion();\n  const fallback = useSmoothScroll().progress;\n  const raw = source ?? fallback;\n  const smoothed = useSpring(raw, PROGRESS_SPRING);\n  return spring && !reduce ? smoothed : raw;\n}\n\nexport function ScrollProgress(props: ScrollProgressProps) {\n  if (props.variant === \"circle\") return <ScrollProgressCircle {...props} />;\n  return <ScrollProgressBar {...props} />;\n}\n\nfunction ScrollProgressBar({\n  progress,\n  spring = true,\n  position = \"top\",\n  height = 2,\n  fixed = true,\n  className,\n}: ScrollProgressBarProps) {\n  const value = useProgressValue(progress, spring);\n  return (\n    <motion.div\n      aria-hidden\n      style={{ height, scaleX: value }}\n      className={cn(\n        \"left-0 right-0 z-50 origin-left bg-foreground\",\n        fixed ? \"fixed\" : \"absolute\",\n        position === \"top\" ? \"top-0\" : \"bottom-0\",\n        className,\n      )}\n    />\n  );\n}\n\nfunction ScrollProgressCircle({\n  progress,\n  spring = true,\n  size = 40,\n  thickness = 3,\n  className,\n}: ScrollProgressCircleProps) {\n  const value = useProgressValue(progress, spring);\n  const radius = (size - thickness) / 2;\n  const circumference = 2 * Math.PI * radius;\n  const offset = useTransform(value, (v) => circumference * (1 - v));\n\n  return (\n    <svg\n      aria-hidden=\"true\"\n      focusable=\"false\"\n      role=\"presentation\"\n      width={size}\n      height={size}\n      viewBox={`0 0 ${size} ${size}`}\n      className={cn(\"text-foreground\", className)}\n    >\n      <circle\n        cx={size / 2}\n        cy={size / 2}\n        r={radius}\n        fill=\"none\"\n        strokeWidth={thickness}\n        className=\"stroke-current opacity-15\"\n      />\n      <motion.circle\n        cx={size / 2}\n        cy={size / 2}\n        r={radius}\n        fill=\"none\"\n        strokeWidth={thickness}\n        strokeLinecap=\"round\"\n        className=\"stroke-current\"\n        strokeDasharray={circumference}\n        style={{ strokeDashoffset: offset }}\n        transform={`rotate(-90 ${size / 2} ${size / 2})`}\n      />\n    </svg>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/scroll-progress"
+  }
+}

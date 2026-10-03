@@ -1,0 +1,91 @@
+# dependencies
+node_modules
+
+# output
+out
+dist
+dist-electron
+release
+web-build
+*.tgz
+
+# code coverage
+coverage
+*.lcov
+
+# logs
+logs
+_.log
+report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
+
+# local databases
+*.db
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+.env*.local
+
+# caches
+.eslintcache
+.cache
+*.tsbuildinfo
+.turbo
+
+# IntelliJ based IDEs
+.idea
+
+# macOS
+.DS_Store
+
+# Expo
+.expo/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# generated native folders
+ios
+android
+
+# scripts (local-only provisioning; only the root registry tooling is public)
+scripts/
+!/scripts/
+/scripts/*
+!/scripts/build-registry.ts
+!/scripts/check-registry.mjs
+
+# local hosting runtime
+.runable/
+__ports.cjs
+
+# local AI-agent and editor tooling
+.codegraph/
+.devin/
+.gemini/
+.opencode/
+.zed/
+.vscode/mcp.json
+.mcp.json
+spec/
+mobile/
+desktop/

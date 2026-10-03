@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "chat-app",
+  "type": "registry:component",
+  "title": "Chat App",
+  "description": "A complete agent chat surface — sidebar, thread, tool calls and a composer, wired together.",
+  "registryDependencies": [
+    "@dx/animated-sidebar",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/agents/chat-app.tsx",
+      "type": "registry:component",
+      "target": "components/agents/chat-app.tsx",
+      "content": "import { useEffect, useRef } from \"react\";\nimport {\n  AnimatedSidebarProvider,\n  type AnimatedSidebarProviderProps,\n  useAnimatedSidebar,\n} from \"@/components/motion/animated-sidebar\";\nimport { cn } from \"@/lib/utils\";\n\n/**\n * Shell width below which a docked sidebar leaves too little room for the\n * conversation: the default sidebar is 17rem, so under 600px the conversation\n * pane is left with barely 330pxnarrower than a phone.\n *\n * Deliberately not AnimatedSidebar's own 767px mobile query: that one asks\n * whether the *viewport* is a phone (and swaps the sidebar for an off-canvas\n * sheet), this one asks whether the *shell's own box*which may be a column,\n * a split view or a panel inside a much wider pagestill fits both panes.\n */\nconst MIN_DOCKED_WIDTH = 600;\n\nexport interface ChatAppProps extends AnimatedSidebarProviderProps {\n  /** Docked sidebar width as a CSS length. Default `17rem`. */\n  sidebarWidth?: string;\n  /**\n   * Shell width in px under which the sidebar folds off-canvas. Ignored while\n   * `open` is controlledthe consumer owns the state then.\n   */\n  collapseSidebarBelow?: number;\n}\n\n/**\n * Folds the sidebar away while the shell is too narrow to carry both panes,\n * and brings it back when it isn't. Only crossings are acted on, so a manual\n * toggle at either size stays put until the shell actually changes shape.\n *\n * Mount is not a crossing in the opening direction: a shell that merely has\n * room says nothing about whether the caller wanted the sidebar open, so the\n * first measurement leaves `defaultOpen` alone. Too narrow at mount *is* the\n * fold condition itself, so that half applies immediately.\n */\nfunction ShellFit({ minWidth }: { minWidth: number }) {\n  const { open, setOpen } = useAnimatedSidebar();\n  const markerRef = useRef<HTMLDivElement>(null);\n  const narrowRef = useRef<boolean | null>(null);\n  const openRef = useRef(open);\n  openRef.current = open;\n\n  useEffect(() => {\n    const shell = markerRef.current?.parentElement;\n    if (!shell) return;\n    const observer = new ResizeObserver(([entry]) => {\n      const narrow = entry.contentRect.width < minWidth;\n      if (narrowRef.current === narrow) return;\n      const first = narrowRef.current === null;\n      narrowRef.current = narrow;\n      if (first && !narrow) return;\n      const wanted = !narrow;\n      // Already where the shell wants itsaying so again would only be an\n      // onOpenChange the caller never asked for.\n      if (openRef.current === wanted) return;\n      setOpen(wanted);\n    });\n    observer.observe(shell);\n    return () => observer.disconnect();\n  }, [minWidth, setOpen]);\n\n  return <div ref={markerRef} className=\"hidden\" />;\n}\n\nexport function ChatApp({\n  children,\n  className,\n  sidebarWidth = \"17rem\",\n  collapseSidebarBelow = MIN_DOCKED_WIDTH,\n  style,\n  ...props\n}: ChatAppProps) {\n  return (\n    <AnimatedSidebarProvider\n      {...props}\n      style={{ ...style, \"--sidebar-width\": sidebarWidth }}\n      className={cn(\n        \"min-h-0 w-full overflow-hidden rounded-2xl border border-border bg-background\",\n        className,\n      )}\n    >\n      {/* A controlled `open` is the consumer's to change; fitting the shell\n          would fire an onOpenChange they never asked for. */}\n      {props.open === undefined ? (\n        <ShellFit minWidth={collapseSidebarBelow} />\n      ) : null}\n      {children}\n    </AnimatedSidebarProvider>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "agents"
+  ],
+  "meta": {
+    "group": "agents",
+    "docs": "https://ui.designx.dev/docs/components/chat-app"
+  }
+}

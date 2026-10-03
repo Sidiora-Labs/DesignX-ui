@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "use-media-query",
+  "type": "registry:hook",
+  "title": "use-media-query",
+  "files": [
+    {
+      "path": "lib/hooks/use-media-query.ts",
+      "type": "registry:hook",
+      "target": "lib/hooks/use-media-query.ts",
+      "content": "import { useSyncExternalStore } from \"react\";\n\n/** Subscribe to a media query. Returns `fallback` during SSR. */\nexport function useMediaQuery(query: string, fallback = false) {\n  return useSyncExternalStore(\n    (cb) => {\n      const mql = window.matchMedia(query);\n      mql.addEventListener(\"change\", cb);\n      return () => mql.removeEventListener(\"change\", cb);\n    },\n    () => window.matchMedia(query).matches,\n    () => fallback,\n  );\n}\n"
+    }
+  ]
+}

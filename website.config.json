@@ -1,0 +1,8 @@
+{
+    "id": "website",
+    "name": "DX UI",
+    "description": "DesignX UI documentation, components, and public registry",
+    "url": "https://dxuireact.com",
+    "hostname": "dxuireact.com",
+    "port": 8080
+}

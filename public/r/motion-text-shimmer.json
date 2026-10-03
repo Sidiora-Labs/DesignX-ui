@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "motion-text-shimmer",
+  "type": "registry:component",
+  "title": "Shimmer Text",
+  "description": "A light sweep across text.",
+  "registryDependencies": [
+    "@dx/lib-text-shimmer",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/text-shimmer.tsx",
+      "type": "registry:component",
+      "target": "components/motion/text-shimmer.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport type { ElementType, ReactNode } from \"react\";\nimport {\n  TEXT_SHIMMER_CLASS_NAME,\n  TEXT_SHIMMER_KEYFRAMES,\n  textShimmerStyle,\n} from \"@/lib/text-shimmer\";\n\nexport interface TextShimmerProps {\n  children: ReactNode;\n  as?: ElementType;\n  duration?: number;\n  className?: string;\n}\n\nexport function TextShimmer({ children, as: Comp = \"span\", duration = 2.5, className }: TextShimmerProps) {\n  return (\n    <>\n      <style>\n        {TEXT_SHIMMER_KEYFRAMES}\n      </style>\n      <Comp\n        style={textShimmerStyle(duration)}\n        className={cn(\n          \"inline-block\",\n          TEXT_SHIMMER_CLASS_NAME,\n          className,\n        )}\n      >\n        {children}\n      </Comp>\n    </>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/motion-text-shimmer"
+  }
+}

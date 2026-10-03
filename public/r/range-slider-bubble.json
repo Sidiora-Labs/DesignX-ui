@@ -1,0 +1,32 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "range-slider-bubble",
+  "type": "registry:component",
+  "title": "Bubble Slider",
+  "description": "A slider with a value bubble that pops up on drag.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/lib-touch",
+    "@dx/use-slider",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/range-slider-bubble.tsx",
+      "type": "registry:component",
+      "target": "components/motion/range-slider-bubble.tsx",
+      "content": "import {\n  AnimatePresence,\n  motion,\n  useMotionTemplate,\n  useMotionValue,\n  useReducedMotion,\n  useSpring,\n  useTransform,\n  useVelocity,\n} from \"motion/react\";\nimport { useEffect } from \"react\";\n\nimport { SPRING_GLIDE, SPRING_PANEL, SPRING_PRESS } from \"@/lib/ease\";\nimport { type SliderOptions, useSlider } from \"@/lib/hooks/use-slider\";\nimport { TOUCH_GESTURE_CLASS } from \"@/lib/touch\";\nimport { cn } from \"@/lib/utils\";\n\n// Loose enough that the bubble keeps leaning a beat after the pointer stops.\nconst SPRING_TILT = { stiffness: 260, damping: 22, mass: 0.4 } as const;\n/** Drag speed (px/s of track percent) that maxes out lean and squash. */\nconst FULL_TILT = 320;\n\nexport interface BubbleSliderProps extends SliderOptions {\n  /** Formats the value shown in the bubble. */\n  format?: (value: number) => string;\n  className?: string;\n}\n\n/**\n * Slider with a value bubble that pops out of the thumb on grab and reacts to\n * how fast you drag: it leans into the direction of travel and squashes along\n * the way, then settles upright when you let go.\n */\nexport function BubbleSlider({ format, className, ...options }: BubbleSliderProps) {\n  const reduce = useReducedMotion();\n  // A bare number needs no valueTextit would only repeat aria-valuenow.\n  const { percent, current, dragging, trackProps, sliderProps } = useSlider({\n    ...options,\n    formatValueText: options.formatValueText ?? format,\n  });\n  // The value is already snapped to the steprounding here would only make\n  // the bubble disagree with aria-valuenow on a fractional scale.\n  const readout = format ? format(current) : current;\n\n  const target = useMotionValue(percent);\n  useEffect(() => {\n    target.set(percent);\n  }, [percent, target]);\n  const smooth = useSpring(target, SPRING_GLIDE);\n  const pos = reduce ? target : smooth;\n  const left = useMotionTemplate`${pos}%`;\n\n  // One spring drives the whole reaction: lean is signed, squash reads its\n  // magnitude. Two springs off the same velocity would just run twice.\n  const velocity = useVelocity(pos);\n  const lean = useSpring(\n    useTransform(velocity, [-FULL_TILT, 0, FULL_TILT], [1, 0, -1], { clamp: true }),\n    SPRING_TILT,\n  );\n  const tilt = useTransform(lean, (v) => v * 16);\n  const squash = useTransform(lean, (v) => 1 + Math.abs(v) * 0.18);\n  const stretch = useTransform(lean, (v) => 1 - Math.abs(v) * 0.12);\n\n  return (\n    <div\n      className={cn(\n        // px/pb leave room for the thumb, the bubble and the 48px hit area to\n        // overhang the 8px track without escaping the component's own box\n        \"relative flex h-20 w-full items-end px-5 pb-5\",\n        options.disabled ? \"pointer-events-none opacity-50\" : undefined,\n        className,\n      )}\n    >\n      <div\n        {...trackProps}\n        className={cn(\n          \"relative h-2 w-full touch-none rounded-full bg-muted\",\n          TOUCH_GESTURE_CLASS,\n          options.disabled ? undefined : \"cursor-grab active:cursor-grabbing\",\n        )}\n      >\n        <motion.div\n          className=\"absolute inset-y-0 left-0 rounded-full bg-foreground\"\n          style={{ width: left }}\n        />\n\n        {/* thumboverhangs the track by half its width at both ends, which the\n            wrapper's padding leaves room for */}\n        <motion.div\n          className=\"absolute top-1/2 size-5 rounded-full border-2 border-foreground bg-background shadow-sm\"\n          style={{ left, x: \"-50%\", y: \"-50%\" }}\n          animate={reduce ? undefined : { scale: dragging ? 1.25 : 1 }}\n          transition={SPRING_PRESS}\n        />\n\n        {/* bubbleanchored to the thumb, leaning with drag velocity */}\n        <motion.div\n          className=\"pointer-events-none absolute bottom-6\"\n          style={{ left, x: \"-50%\" }}\n        >\n          <AnimatePresence>\n            {dragging ? (\n              <motion.div\n                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.4, y: 10 }}\n                animate={reduce ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}\n                exit={\n                  reduce\n                    ? { opacity: 0, transition: { duration: 0.12 } }\n                    : { opacity: 0, scale: 0.5, y: 8, transition: { duration: 0.12 } }\n                }\n                transition={reduce ? { duration: 0.12 } : SPRING_PANEL}\n                style={\n                  reduce\n                    ? undefined\n                    : { rotate: tilt, scaleX: squash, scaleY: stretch, originY: 1 }\n                }\n                className=\"relative rounded-xl bg-foreground px-2.5 py-1 text-sm font-medium tabular-nums text-background shadow-md\"\n              >\n                {readout}\n                <span className=\"absolute -bottom-1 left-1/2 size-2.5 -translate-x-1/2 rotate-45 rounded-[3px] bg-foreground\" />\n              </motion.div>\n            ) : null}\n          </AnimatePresence>\n        </motion.div>\n\n        {/* 8px of track is not a touch targetpad the hit area out to 48px */}\n        <button\n          type=\"button\"\n          {...sliderProps}\n          className=\"absolute -inset-y-5 inset-x-0 touch-none rounded-full outline-none ring-foreground/30 focus-visible:ring-4\"\n        />\n      </div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/range-slider-bubble"
+  }
+}

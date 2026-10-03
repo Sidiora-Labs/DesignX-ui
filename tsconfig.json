@@ -1,0 +1,21 @@
+{
+	"files": [],
+	"references": [
+		{
+			"path": "./tsconfig.app.json"
+		},
+		{
+			"path": "./tsconfig.node.json"
+		}
+	],
+	"compilerOptions": {
+		"types": [
+			"node"
+		],
+		"paths": {
+			"@/*": [
+				"./src/web/*"
+			]
+		}
+	}
+}

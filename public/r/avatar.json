@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "avatar",
+  "type": "registry:ui",
+  "title": "Avatar",
+  "description": "An image element with a fallback for representing the user. Supports stacked groups.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/avatar.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { Avatar as AvatarPrimitive } from \"@base-ui/react/avatar\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Avatar({ className, ...props }: AvatarPrimitive.Root.Props) {\n  return (\n    <AvatarPrimitive.Root\n      data-slot=\"avatar\"\n      className={cn(\n        \"relative inline-flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full bg-container-high align-middle select-none\",\n        className,\n      )}\n      {...props}\n    />\n  );\n}\n\nfunction AvatarImage({ className, ...props }: AvatarPrimitive.Image.Props) {\n  return (\n    <AvatarPrimitive.Image data-slot=\"avatar-image\" className={cn(\"aspect-square size-full object-cover\", className)} {...props} />\n  );\n}\n\nfunction AvatarFallback({ className, ...props }: AvatarPrimitive.Fallback.Props) {\n  return (\n    <AvatarPrimitive.Fallback\n      data-slot=\"avatar-fallback\"\n      className={cn(\"flex size-full items-center justify-center text-[13px] font-medium text-muted-foreground\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AvatarGroup({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"avatar-group\"\n      className={cn(\"flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:ring-background\", className)}\n      {...props}\n    />\n  );\n}\n\nexport { Avatar, AvatarImage, AvatarFallback, AvatarGroup };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "avatar",
+    "docs": "https://ui.designx.dev/docs/components/avatar"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "alert-dialog",
+  "type": "registry:ui",
+  "title": "Alert Dialog",
+  "description": "A modal dialog that interrupts the user with important content and expects a response.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/button",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/alert-dialog.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { AlertDialog as AlertDialogPrimitive } from \"@base-ui/react/alert-dialog\";\n\nimport { cn } from \"@/lib/utils\";\nimport { buttonVariants } from \"@/components/ui/button\";\n\nfunction AlertDialog(props: AlertDialogPrimitive.Root.Props) {\n  return <AlertDialogPrimitive.Root data-slot=\"alert-dialog\" {...props} />;\n}\n\nfunction AlertDialogTrigger(props: AlertDialogPrimitive.Trigger.Props) {\n  return <AlertDialogPrimitive.Trigger data-slot=\"alert-dialog-trigger\" {...props} />;\n}\n\nfunction AlertDialogContent({ className, ...props }: AlertDialogPrimitive.Popup.Props) {\n  return (\n    <AlertDialogPrimitive.Portal>\n      <AlertDialogPrimitive.Backdrop\n        data-slot=\"alert-dialog-overlay\"\n        className=\"fixed inset-0 z-50 bg-overlay backdrop-blur-[2px] transition-opacity duration-200 ease-(--ease-dx) data-starting-style:opacity-0 data-ending-style:opacity-0\"\n      />\n      <AlertDialogPrimitive.Popup\n        data-slot=\"alert-dialog-content\"\n        className={cn(\n          \"fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-5 rounded-[28px] bg-popover p-6 text-popover-foreground shadow-float outline-none sm:max-w-md\",\n          \"transition-[opacity,scale] duration-220 ease-(--ease-dx) data-starting-style:scale-96 data-starting-style:opacity-0 data-ending-style:scale-96 data-ending-style:opacity-0\",\n          className,\n        )}\n        {...props}\n      />\n    </AlertDialogPrimitive.Portal>\n  );\n}\n\nfunction AlertDialogHeader({ className, ...props }: React.ComponentProps<\"div\">) {\n  return <div data-slot=\"alert-dialog-header\" className={cn(\"flex flex-col gap-2 text-left\", className)} {...props} />;\n}\n\nfunction AlertDialogMedia({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div\n      data-slot=\"alert-dialog-media\"\n      className={cn(\"mb-1 flex size-11 items-center justify-center rounded-full bg-container-high [&_svg:not([class*='size-'])]:size-5\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogFooter({ className, ...props }: React.ComponentProps<\"div\">) {\n  return (\n    <div data-slot=\"alert-dialog-footer\" className={cn(\"flex flex-col-reverse gap-2 sm:flex-row sm:justify-end\", className)} {...props} />\n  );\n}\n\nfunction AlertDialogTitle({ className, ...props }: AlertDialogPrimitive.Title.Props) {\n  return (\n    <AlertDialogPrimitive.Title\n      data-slot=\"alert-dialog-title\"\n      className={cn(\"text-[20px] leading-tight font-medium tracking-[-0.015em]\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogDescription({ className, ...props }: AlertDialogPrimitive.Description.Props) {\n  return (\n    <AlertDialogPrimitive.Description\n      data-slot=\"alert-dialog-description\"\n      className={cn(\"text-muted-foreground text-sm leading-relaxed\", className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogAction({\n  className,\n  variant = \"default\",\n  ...props\n}: AlertDialogPrimitive.Close.Props & { variant?: \"default\" | \"destructive\" }) {\n  return (\n    <AlertDialogPrimitive.Close\n      data-slot=\"alert-dialog-action\"\n      className={cn(buttonVariants({ variant }), className)}\n      {...props}\n    />\n  );\n}\n\nfunction AlertDialogCancel({ className, ...props }: AlertDialogPrimitive.Close.Props) {\n  return (\n    <AlertDialogPrimitive.Close\n      data-slot=\"alert-dialog-cancel\"\n      className={cn(buttonVariants({ variant: \"tonal\" }), className)}\n      {...props}\n    />\n  );\n}\n\nexport {\n  AlertDialog,\n  AlertDialogAction,\n  AlertDialogCancel,\n  AlertDialogContent,\n  AlertDialogDescription,\n  AlertDialogFooter,\n  AlertDialogHeader,\n  AlertDialogMedia,\n  AlertDialogTitle,\n  AlertDialogTrigger,\n};\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "alert-dialog",
+    "docs": "https://ui.designx.dev/docs/components/alert-dialog"
+  }
+}

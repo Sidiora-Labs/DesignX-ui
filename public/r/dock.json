@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "dock",
+  "type": "registry:component",
+  "title": "Dock",
+  "description": "A macOS-style dock with magnification.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/dock.tsx",
+      "type": "registry:component",
+      "target": "components/motion/dock.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\nimport { createContext, useContext, useId, useMemo, type ReactNode } from \"react\";\nimport { SPRING_LAYOUT } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\ntype DockContextValue = {\n  size: number;\n  pillLayoutId: string;\n};\n\nconst DockContext = createContext<DockContextValue | null>(null);\n\nexport interface DockProps {\n  children: ReactNode;\n  className?: string;\n  /** Size of each item in px. */\n  size?: number;\n}\n\nexport function Dock({ children, size = 44, className }: DockProps) {\n  const pillLayoutId = useId();\n  const ctx = useMemo<DockContextValue>(\n    () => ({ size, pillLayoutId }),\n    [size, pillLayoutId],\n  );\n\n  return (\n    <DockContext.Provider value={ctx}>\n      <div\n        className={cn(\n          \"inline-flex h-auto items-end gap-1.5 rounded-2xl border border-border bg-card/80 px-2 py-1 shadow-2xl backdrop-blur-xl\",\n          className,\n        )}\n      >\n        {children}\n      </div>\n    </DockContext.Provider>\n  );\n}\n\nexport interface DockItemProps {\n  children: ReactNode;\n  className?: string;\n  /** When set, the item renders as a <button>. Omit when children carry their own link or button. */\n  onClick?: () => void;\n  active?: boolean;\n  \"aria-label\"?: string;\n}\n\nexport function DockItem({\n  children,\n  className,\n  onClick,\n  active,\n  ...rest\n}: DockItemProps) {\n  const dock = useContext(DockContext);\n  const reduce = useReducedMotion();\n  const size = dock?.size ?? 44;\n  const pillLayoutId = dock?.pillLayoutId ?? \"dock-pill\";\n\n  const pill = active ? (\n    <motion.span\n      layoutId={pillLayoutId}\n      transition={reduce ? { duration: 0 } : SPRING_LAYOUT}\n      className=\"absolute inset-0.5 -z-10 rounded-xl bg-muted/60\"\n    />\n  ) : null;\n  const sharedStyle = { width: size, height: size };\n  const sharedClass = cn(\n    \"relative flex shrink-0 items-center justify-center rounded-full text-foreground\",\n    className,\n  );\n\n  if (onClick) {\n    return (\n      <button\n        type=\"button\"\n        onClick={onClick}\n        aria-label={rest[\"aria-label\"]}\n        aria-pressed={active}\n        style={sharedStyle}\n        className={cn(\n          sharedClass,\n          \"cursor-pointer border-0 bg-transparent p-0 outline-none\",\n          \"focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n        )}\n      >\n        {pill}\n        {children}\n      </button>\n    );\n  }\n\n  // Children carry their own link or button (and its accessible name).\n  return (\n    <div style={sharedStyle} className={sharedClass}>\n      {pill}\n      {children}\n    </div>\n  );\n}\n\nexport function DockSeparator({ className }: { className?: string }) {\n  return (\n    <span\n      aria-hidden\n      className={cn(\"mx-1 h-6 w-px self-center bg-border\", className)}\n    />\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/dock"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "hover-card",
+  "type": "registry:ui",
+  "title": "Hover Card",
+  "description": "Preview content available behind a link on hover.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/hover-card.tsx",
+      "type": "registry:ui",
+      "content": "import { PreviewCard as PreviewCardPrimitive } from \"@base-ui/react/preview-card\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction HoverCard(props: PreviewCardPrimitive.Root.Props) {\n  return <PreviewCardPrimitive.Root data-slot=\"hover-card\" {...props} />;\n}\n\nfunction HoverCardTrigger(props: PreviewCardPrimitive.Trigger.Props) {\n  return <PreviewCardPrimitive.Trigger data-slot=\"hover-card-trigger\" {...props} />;\n}\n\nfunction HoverCardContent({\n  className,\n  align = \"center\",\n  side = \"bottom\",\n  sideOffset = 8,\n  ...props\n}: PreviewCardPrimitive.Popup.Props & Pick<PreviewCardPrimitive.Positioner.Props, \"align\" | \"side\" | \"sideOffset\">) {\n  return (\n    <PreviewCardPrimitive.Portal>\n      <PreviewCardPrimitive.Positioner className=\"z-50\" align={align} side={side} sideOffset={sideOffset}>\n        <PreviewCardPrimitive.Popup\n          data-slot=\"hover-card-content\"\n          className={cn(\n            \"popup-motion w-72 rounded-lg border border-outline-variant bg-popover p-4 text-popover-foreground shadow-float outline-none\",\n            className,\n          )}\n          {...props}\n        />\n      </PreviewCardPrimitive.Positioner>\n    </PreviewCardPrimitive.Portal>\n  );\n}\n\nexport { HoverCard, HoverCardTrigger, HoverCardContent };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "preview-card",
+    "docs": "https://ui.designx.dev/docs/components/hover-card"
+  }
+}

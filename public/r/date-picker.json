@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "date-picker",
+  "type": "registry:ui",
+  "title": "Date Picker",
+  "description": "A date and range picker composed from Popover and Calendar.",
+  "dependencies": [
+    "date-fns@^4.4.0",
+    "lucide-react@^0.577.0",
+    "react-day-picker@^9.11"
+  ],
+  "registryDependencies": [
+    "@dx/button",
+    "@dx/calendar",
+    "@dx/popover",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/date-picker.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { format } from \"date-fns\";\nimport { CalendarIcon } from \"lucide-react\";\nimport type { DateRange } from \"react-day-picker\";\n\nimport { cn } from \"@/lib/utils\";\nimport { Button } from \"@/components/ui/button\";\nimport { Calendar } from \"@/components/ui/calendar\";\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/components/ui/popover\";\n\ntype DatePickerProps = {\n  value?: Date;\n  onChange?: (date: Date | undefined) => void;\n  placeholder?: string;\n  className?: string;\n};\n\nfunction DatePicker({ value, onChange, placeholder = \"Pick a date\", className }: DatePickerProps) {\n  const [open, setOpen] = React.useState(false);\n  const [internal, setInternal] = React.useState<Date | undefined>(value);\n  const date = value ?? internal;\n  return (\n    <Popover open={open} onOpenChange={setOpen}>\n      <PopoverTrigger\n        render={\n          <Button variant=\"outline\" className={cn(\"w-60 justify-start rounded-md px-3.5 font-normal\", !date && \"text-muted-foreground\", className)} />\n        }\n      >\n        <CalendarIcon className=\"text-muted-foreground\" />\n        {date ? format(date, \"PPP\") : placeholder}\n      </PopoverTrigger>\n      <PopoverContent className=\"w-auto p-0\" align=\"start\">\n        <Calendar\n          mode=\"single\"\n          selected={date}\n          onSelect={(d) => {\n            setInternal(d);\n            onChange?.(d);\n            setOpen(false);\n          }}\n          captionLayout=\"dropdown\"\n        />\n      </PopoverContent>\n    </Popover>\n  );\n}\n\ntype DateRangePickerProps = {\n  value?: DateRange;\n  onChange?: (range: DateRange | undefined) => void;\n  className?: string;\n};\n\nfunction DateRangePicker({ value, onChange, className }: DateRangePickerProps) {\n  const [internal, setInternal] = React.useState<DateRange | undefined>(value);\n  const range = value ?? internal;\n  return (\n    <Popover>\n      <PopoverTrigger\n        render={<Button variant=\"outline\" className={cn(\"w-72 justify-start rounded-md px-3.5 font-normal\", !range?.from && \"text-muted-foreground\", className)} />}\n      >\n        <CalendarIcon className=\"text-muted-foreground\" />\n        {range?.from ? (\n          range.to ? (\n            <>\n              {format(range.from, \"LLL d, y\")} – {format(range.to, \"LLL d, y\")}\n            </>\n          ) : (\n            format(range.from, \"LLL d, y\")\n          )\n        ) : (\n          \"Pick a date range\"\n        )}\n      </PopoverTrigger>\n      <PopoverContent className=\"w-auto p-0\" align=\"start\">\n        <Calendar\n          mode=\"range\"\n          numberOfMonths={2}\n          selected={range}\n          defaultMonth={range?.from}\n          onSelect={(r) => {\n            setInternal(r);\n            onChange?.(r);\n          }}\n        />\n      </PopoverContent>\n    </Popover>\n  );\n}\n\nexport { DatePicker, DateRangePicker };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/date-picker"
+  }
+}

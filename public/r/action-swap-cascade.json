@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "action-swap-cascade",
+  "type": "registry:component",
+  "title": "Action Swap Cascade",
+  "description": "Letters cascade into the next label.",
+  "registryDependencies": [
+    "@dx/action-swap"
+  ],
+  "files": [
+    {
+      "path": "components/motion/action-swap-cascade.tsx",
+      "type": "registry:component",
+      "target": "components/motion/action-swap-cascade.tsx",
+      "content": "import {\n  ActionSwapButton,\n  ActionSwapIcon,\n  ActionSwapText,\n  type ActionSwapButtonProps,\n  type ActionSwapIconProps,\n  type ActionSwapTextProps,\n} from \"./action-swap\";\n\nexport type {\n  ActionSwapButtonSize,\n  ActionSwapButtonVariant,\n  ActionSwapItem,\n} from \"./action-swap\";\n\nexport type ActionSwapCascadeButtonProps = Omit<ActionSwapButtonProps, \"animation\">;\nexport type ActionSwapCascadeTextProps = Omit<ActionSwapTextProps, \"animation\">;\nexport type ActionSwapCascadeIconProps = Omit<ActionSwapIconProps, \"animation\">;\n\nexport function ActionSwapCascadeButton(props: ActionSwapCascadeButtonProps) {\n  return <ActionSwapButton {...props} animation=\"cascade\" />;\n}\n\nexport function ActionSwapCascadeText(props: ActionSwapCascadeTextProps) {\n  return <ActionSwapText {...props} animation=\"cascade\" />;\n}\n\nexport function ActionSwapCascadeIcon(props: ActionSwapCascadeIconProps) {\n  return <ActionSwapIcon {...props} animation=\"cascade\" />;\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/action-swap-cascade"
+  }
+}

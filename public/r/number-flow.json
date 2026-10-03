@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "number-flow",
+  "type": "registry:component",
+  "title": "Number Flow",
+  "description": "Animated number transitions — every digit slides to its new value.",
+  "dependencies": [
+    "motion@^14.0.0",
+    "react-use-measure@^2.1.7"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/number-flow.tsx",
+      "type": "registry:component",
+      "target": "components/dx/number-flow.tsx",
+      "content": "import * as React from \"react\";\nimport { LayoutGroup, MotionConfig, motion } from \"motion/react\";\nimport useMeasure from \"react-use-measure\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * NumberFlowformatted numbers whose characters morph into place via shared layout.\n *\n */\n\ntype NumberFlowProps = {\n  value: number;\n  prefix?: string;\n  suffix?: string;\n  locale?: string;\n  format?: Intl.NumberFormatOptions;\n  className?: string;\n  /** Spring used for every character. */\n  transition?: React.ComponentProps<typeof MotionConfig>[\"transition\"];\n};\n\nfunction NumberFlow({\n  value,\n  prefix,\n  suffix,\n  locale = \"en-US\",\n  format = { maximumFractionDigits: 2 },\n  className,\n  transition = { type: \"spring\", stiffness: 400, damping: 35 },\n}: NumberFlowProps) {\n  const id = React.useId();\n  const [ref, bounds] = useMeasure();\n  const text = React.useMemo(() => new Intl.NumberFormat(locale, format).format(value), [value, locale, format]);\n\n  const counts: Record<string, number> = {};\n  const chars = text.split(\"\").map((ch) => {\n    counts[ch] = (counts[ch] ?? 0) + 1;\n    return { ch, key: counts[ch] > 1 ? `${ch}-${counts[ch]}` : ch };\n  });\n\n  return (\n    <MotionConfig transition={transition}>\n      <LayoutGroup id={id}>\n        <motion.span\n          data-slot=\"number-flow\"\n          aria-label={`${prefix ?? \"\"}${text}${suffix ?? \"\"}`}\n          initial={false}\n          animate={{ width: bounds.width || \"auto\" }}\n          className={cn(\"inline-flex overflow-hidden align-bottom tabular-nums\", className)}\n        >\n          <span ref={ref} aria-hidden className=\"inline-flex whitespace-nowrap\">\n            {prefix && <motion.span layout=\"position\" className=\"inline-block\">{prefix}</motion.span>}\n            {chars.map(({ ch, key }) => (\n              <motion.span key={key} layoutId={key} className=\"inline-block\">\n                {ch}\n              </motion.span>\n            ))}\n            {suffix && <motion.span layout=\"position\" className=\"inline-block\">{suffix}</motion.span>}\n          </span>\n        </motion.span>\n      </LayoutGroup>\n    </MotionConfig>\n  );\n}\n\nexport { NumberFlow };\nexport type { NumberFlowProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/number-flow"
+  }
+}

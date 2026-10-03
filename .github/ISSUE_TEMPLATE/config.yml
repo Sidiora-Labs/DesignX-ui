@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://dxuireact.com
+    about: Usage guides, component APIs, and CLI reference.
+  - name: Report a security vulnerability
+    url: https://github.com/Sidiora-Labs/DesignX-ui/security/advisories/new
+    about: Please report security issues privately, not in public issues.

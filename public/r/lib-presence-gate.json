@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-presence-gate",
+  "type": "registry:lib",
+  "title": "lib-presence-gate",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "lib/presence-gate.tsx",
+      "type": "registry:lib",
+      "target": "lib/presence-gate.tsx",
+      "content": "import { useIsPresent } from \"motion/react\";\nimport type { CSSProperties, ReactNode } from \"react\";\n\nexport type PresenceGateProps = {\n  children: (state: { isPresent: boolean; gate: { style: CSSProperties; \"aria-hidden\"?: boolean } }) => ReactNode;\n};\n\n/**\n * Releases interaction the moment an AnimatePresence child starts exiting,\n * rather than when the exit animation ends. Spread `gate` onto the element.\n */\nexport function PresenceGate({ children }: PresenceGateProps) {\n  const isPresent = useIsPresent();\n  const gate = isPresent ? { style: {} } : { style: { pointerEvents: \"none\" } as CSSProperties, \"aria-hidden\": true };\n  return <>{children({ isPresent, gate })}</>;\n}\n"
+    }
+  ]
+}

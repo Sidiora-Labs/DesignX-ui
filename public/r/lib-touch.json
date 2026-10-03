@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-touch",
+  "type": "registry:lib",
+  "title": "lib-touch",
+  "files": [
+    {
+      "path": "lib/touch.ts",
+      "type": "registry:lib",
+      "target": "lib/touch.ts",
+      "content": "/** Classes for surfaces that own their pointer gestures (drag, scrub, long-press). */\nexport const TOUCH_GESTURE_CLASS = \"touch-none select-none [-webkit-tap-highlight-color:transparent]\";\n/** For long-press content: no text selection or iOS callout while held. */\nexport const TOUCH_GESTURE_CONTENT_CLASS = \"select-none [-webkit-touch-callout:none] [-webkit-tap-highlight-color:transparent]\";\n\n/** Capture a pointer, ignoring the InvalidStateError some browsers throw for released pointers. */\nexport function capturePointer(element: Element, pointerId: number) {\n  try {\n    element.setPointerCapture(pointerId);\n  } catch {\n    /* pointer already gone */\n  }\n}\n\nexport function releasePointer(element: Element, pointerId: number) {\n  try {\n    if (element.hasPointerCapture(pointerId)) element.releasePointerCapture(pointerId);\n  } catch {\n    /* pointer already gone */\n  }\n}\n\n/**\n * Block text selection document-wide while a press is held (long-press menus\n * would otherwise select the word under the finger). Returns a release function.\n */\nexport function holdSelection(_element?: Element) {\n  const root = document.documentElement;\n  const prev = root.style.userSelect;\n  const prevWebkit = root.style.getPropertyValue(\"-webkit-user-select\");\n  root.style.userSelect = \"none\";\n  root.style.setProperty(\"-webkit-user-select\", \"none\");\n  window.getSelection()?.removeAllRanges();\n  return () => {\n    root.style.userSelect = prev;\n    root.style.setProperty(\"-webkit-user-select\", prevWebkit);\n  };\n}\n"
+    }
+  ]
+}

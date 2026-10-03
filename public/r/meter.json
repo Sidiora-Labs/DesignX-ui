@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "meter",
+  "type": "registry:ui",
+  "title": "Meter",
+  "description": "A graphical display of a numeric value within a known range.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/meter.tsx",
+      "type": "registry:ui",
+      "content": "import { Meter as MeterPrimitive } from \"@base-ui/react/meter\";\n\nimport { cn } from \"@/lib/utils\";\n\nfunction Meter({ className, children, indicatorClassName, ...props }: MeterPrimitive.Root.Props & { indicatorClassName?: string }) {\n  return (\n    <MeterPrimitive.Root data-slot=\"meter\" className={cn(\"flex w-full flex-wrap items-center gap-x-3 gap-y-2\", className)} {...props}>\n      {children}\n      <MeterPrimitive.Track data-slot=\"meter-track\" className=\"relative h-2 w-full basis-full overflow-hidden rounded-full bg-container-highest\">\n        <MeterPrimitive.Indicator\n          data-slot=\"meter-indicator\"\n          className={cn(\"h-full rounded-full bg-chart-1 transition-[width] duration-500 ease-(--ease-dx)\", indicatorClassName)}\n        />\n      </MeterPrimitive.Track>\n    </MeterPrimitive.Root>\n  );\n}\n\nfunction MeterLabel({ className, ...props }: MeterPrimitive.Label.Props) {\n  return <MeterPrimitive.Label data-slot=\"meter-label\" className={cn(\"text-sm font-medium\", className)} {...props} />;\n}\n\nfunction MeterValue({ className, ...props }: MeterPrimitive.Value.Props) {\n  return <MeterPrimitive.Value data-slot=\"meter-value\" className={cn(\"ml-auto text-sm text-muted-foreground tabular-nums\", className)} {...props} />;\n}\n\nexport { Meter, MeterLabel, MeterValue };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "base": "meter",
+    "docs": "https://ui.designx.dev/docs/components/meter"
+  }
+}

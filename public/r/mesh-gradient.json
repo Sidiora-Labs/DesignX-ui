@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "mesh-gradient",
+  "type": "registry:component",
+  "title": "Mesh Gradient",
+  "description": "A slow, blurred animated mesh of colour blobs for backgrounds.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/mesh-gradient.tsx",
+      "type": "registry:component",
+      "target": "components/dx/mesh-gradient.tsx",
+      "content": "import * as React from \"react\";\nimport { motion, useReducedMotion } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * MeshGradienta slow, drifting mesh of blurred color fields. Pure CSS +\n * motion, no WebGL. Use behind hero sections and AI surfaces.\n */\n\nconst DEFAULT_COLORS = [\"var(--dx-blue-2)\", \"var(--dx-blue-3)\", \"var(--dx-purple-2)\", \"var(--dx-pink-1)\"];\n\n// Each blob drifts between these anchor points (percent of the container).\nconst PATHS = [\n  { x: [-10, 30, 5, -10], y: [-20, 10, 35, -20] },\n  { x: [55, 20, 60, 55], y: [-10, 25, 40, -10] },\n  { x: [10, 50, 25, 10], y: [50, 30, 0, 50] },\n  { x: [60, 35, 70, 60], y: [45, 60, 15, 45] },\n  { x: [25, 60, 0, 25], y: [15, 50, 60, 15] },\n];\n\ntype MeshGradientProps = React.ComponentProps<\"div\"> & {\n  colors?: string[];\n  /** Seconds per full drift cycle. Lower is faster. */\n  duration?: number;\n  /** Blur radius in px. */\n  blur?: number;\n  /** Add a faint film grain. */\n  grain?: boolean;\n};\n\nfunction MeshGradient({ colors = DEFAULT_COLORS, duration = 18, blur = 64, grain = false, className, style, children, ...props }: MeshGradientProps) {\n  const reduce = useReducedMotion();\n  return (\n    <div\n      data-slot=\"mesh-gradient\"\n      className={cn(\"relative isolate overflow-hidden\", className)}\n      style={{ background: colors[colors.length - 1], ...style }}\n      {...props}\n    >\n      <div aria-hidden className=\"absolute inset-0 -z-10\" style={{ filter: `blur(${blur}px)` }}>\n        {colors.map((color, i) => {\n          const p = PATHS[i % PATHS.length];\n          return (\n            <motion.div\n              key={`${color}-${i}`}\n              className=\"absolute size-[70%] rounded-full mix-blend-normal\"\n              style={{ background: color, left: `${p.x[0]}%`, top: `${p.y[0]}%` }}\n              animate={reduce ? undefined : { left: p.x.map((v) => `${v}%`), top: p.y.map((v) => `${v}%`), scale: [1, 1.15, 0.9, 1] }}\n              transition={{ duration: duration + i * 2, repeat: Infinity, ease: \"easeInOut\" }}\n            />\n          );\n        })}\n      </div>\n      {grain && (\n        <svg aria-hidden className=\"pointer-events-none absolute inset-0 -z-10 size-full opacity-[0.12] mix-blend-overlay\">\n          <filter id=\"dx-mesh-grain\">\n            <feTurbulence type=\"fractalNoise\" baseFrequency=\"0.9\" numOctaves=\"2\" stitchTiles=\"stitch\" />\n          </filter>\n          <rect width=\"100%\" height=\"100%\" filter=\"url(#dx-mesh-grain)\" />\n        </svg>\n      )}\n      {children}\n    </div>\n  );\n}\n\nexport { MeshGradient };\nexport type { MeshGradientProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/mesh-gradient"
+  }
+}

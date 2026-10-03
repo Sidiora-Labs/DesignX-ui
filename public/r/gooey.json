@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "gooey",
+  "type": "registry:component",
+  "title": "Gooey Filter",
+  "description": "SVG gooey and squircle filters for liquid, blob-like UI.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/gooey.tsx",
+      "type": "registry:component",
+      "target": "components/dx/gooey.tsx",
+      "content": "import * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * Gooey / Squircle SVG filters. Render <GooeyFilter /> once, then apply\n * `style={{ filter: \"url(#dx-goo)\" }}` (or <Gooey>) to any group of shapes.\n *\n */\n\ntype GooeyFilterProps = {\n  id?: string;\n  /** Blur radiushigher melts shapes together from further away. */\n  blur?: number;\n  /** Alpha contrast multiplier. */\n  contrast?: number;\n  /** Alpha threshold offset. */\n  threshold?: number;\n};\n\nfunction GooeyFilter({ id = \"dx-goo\", blur = 4.4, contrast = 20, threshold = -7 }: GooeyFilterProps) {\n  return (\n    <svg aria-hidden className=\"pointer-events-none absolute size-0\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">\n      <defs>\n        <filter id={id}>\n          <feGaussianBlur in=\"SourceGraphic\" stdDeviation={blur} result=\"blur\" />\n          <feColorMatrix\n            in=\"blur\"\n            mode=\"matrix\"\n            values={`1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 ${contrast} ${threshold}`}\n            result=\"goo\"\n          />\n          <feBlend in=\"SourceGraphic\" in2=\"goo\" />\n        </filter>\n      </defs>\n    </svg>\n  );\n}\n\n/** Squircle preset: a heavier blur that rounds rectangles into superellipses. */\nfunction SquircleFilter({ id = \"dx-squircle\", blur = 10 }: { id?: string; blur?: number }) {\n  return <GooeyFilter id={id} blur={blur} />;\n}\n\ntype GooeyProps = React.ComponentProps<\"div\"> & { filterId?: string; blur?: number };\n\n/** Wraps children in a gooey filter, rendering its own scoped <filter>. */\nfunction Gooey({ filterId, blur = 4.4, className, style, children, ...props }: GooeyProps) {\n  const auto = React.useId().replace(/:/g, \"\");\n  const id = filterId ?? `dx-goo-${auto}`;\n  return (\n    <>\n      <GooeyFilter id={id} blur={blur} />\n      <div data-slot=\"gooey\" className={cn(\"relative\", className)} style={{ filter: `url(#${id})`, ...style }} {...props}>\n        {children}\n      </div>\n    </>\n  );\n}\n\nexport { Gooey, GooeyFilter, SquircleFilter };\nexport type { GooeyFilterProps, GooeyProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/gooey"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "theme-provider",
+  "type": "registry:component",
+  "title": "Theme Provider",
+  "description": "Light / dark / system theme and the DX Gradient accent, persisted to localStorage.",
+  "files": [
+    {
+      "path": "components/theme-provider.tsx",
+      "type": "registry:component",
+      "target": "components/theme-provider.tsx",
+      "content": "import * as React from \"react\";\n\ntype Theme = \"light\" | \"dark\" | \"system\";\ntype Accent = \"ink\" | \"dx-gradient\";\n\ntype ThemeContextValue = {\n  theme: Theme;\n  resolvedTheme: \"light\" | \"dark\";\n  accent: Accent;\n  setTheme: (t: Theme) => void;\n  setAccent: (a: Accent) => void;\n  toggleTheme: () => void;\n};\n\nconst ThemeContext = React.createContext<ThemeContextValue | null>(null);\n\nfunction getSystem(): \"light\" | \"dark\" {\n  if (typeof window === \"undefined\") return \"light\";\n  return window.matchMedia(\"(prefers-color-scheme: dark)\").matches ? \"dark\" : \"light\";\n}\n\nexport function ThemeProvider({ children }: { children: React.ReactNode }) {\n  const [theme, setThemeState] = React.useState<Theme>(() => (localStorage.getItem(\"dx-theme\") as Theme) || \"system\");\n  const [accent, setAccentState] = React.useState<Accent>(() => (localStorage.getItem(\"dx-accent\") as Accent) || \"ink\");\n  const [system, setSystem] = React.useState<\"light\" | \"dark\">(getSystem);\n\n  React.useEffect(() => {\n    const mq = window.matchMedia(\"(prefers-color-scheme: dark)\");\n    const fn = () => setSystem(mq.matches ? \"dark\" : \"light\");\n    mq.addEventListener(\"change\", fn);\n    return () => mq.removeEventListener(\"change\", fn);\n  }, []);\n\n  // Keep every same-origin document (e.g. block preview iframes) in sync.\n  React.useEffect(() => {\n    const onStorage = (e: StorageEvent) => {\n      if (e.key === \"dx-theme\" && e.newValue) setThemeState(e.newValue as Theme);\n      if (e.key === \"dx-accent\" && e.newValue) setAccentState(e.newValue as Accent);\n    };\n    window.addEventListener(\"storage\", onStorage);\n    return () => window.removeEventListener(\"storage\", onStorage);\n  }, []);\n\n  const resolvedTheme = theme === \"system\" ? system : theme;\n\n  React.useEffect(() => {\n    const root = document.documentElement;\n    root.classList.toggle(\"dark\", resolvedTheme === \"dark\");\n    root.classList.toggle(\"accent-dx-gradient\", accent === \"dx-gradient\");\n  }, [resolvedTheme, accent]);\n\n  const setTheme = React.useCallback((t: Theme) => {\n    localStorage.setItem(\"dx-theme\", t);\n    setThemeState(t);\n  }, []);\n  const setAccent = React.useCallback((a: Accent) => {\n    localStorage.setItem(\"dx-accent\", a);\n    setAccentState(a);\n  }, []);\n  const toggleTheme = React.useCallback(() => setTheme(resolvedTheme === \"dark\" ? \"light\" : \"dark\"), [resolvedTheme, setTheme]);\n\n  return (\n    <ThemeContext.Provider value={{ theme, resolvedTheme, accent, setTheme, setAccent, toggleTheme }}>{children}</ThemeContext.Provider>\n  );\n}\n\nexport function useTheme() {\n  const ctx = React.useContext(ThemeContext);\n  if (!ctx) throw new Error(\"useTheme must be used within ThemeProvider\");\n  return ctx;\n}\n"
+    }
+  ]
+}

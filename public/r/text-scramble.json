@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-scramble",
+  "type": "registry:component",
+  "title": "Text Scramble",
+  "description": "Text that scrambles through glyphs before settling.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/text-scramble.tsx",
+      "type": "registry:component",
+      "target": "components/motion/text-scramble.tsx",
+      "content": "import { useReducedMotion } from \"motion/react\";\nimport {\n  useEffect,\n  useRef,\n  useState,\n  type CSSProperties,\n} from \"react\";\nimport { cn } from \"@/lib/utils\";\n\nconst DEFAULT_GLYPHS = \"ABCDEFGHJKLMNPQRSTUVWXYZ0123456789#%&@$?/\";\n\nexport interface TextScrambleProps {\n  /** Final text revealed by the scramble animation. */\n  text: string;\n  /** Maximum animation duration in milliseconds. */\n  duration?: number;\n  /** Characters sampled while unresolved positions are scrambling. */\n  glyphs?: string;\n  className?: string;\n  style?: CSSProperties;\n}\n\n/** Character scramble that resolves to `text` and respects reduced motion. */\nexport function TextScramble({\n  text,\n  duration,\n  glyphs = DEFAULT_GLYPHS,\n  className,\n  style,\n}: TextScrambleProps) {\n  const reduce = useReducedMotion() ?? false;\n  const [display, setDisplay] = useState(text);\n  const mounted = useRef(false);\n\n  useEffect(() => {\n    if (!mounted.current) {\n      mounted.current = true;\n      setDisplay(text);\n      return;\n    }\n\n    if (reduce || !glyphs) {\n      setDisplay(text);\n      return;\n    }\n\n    const characters = text.split(\"\");\n    const startedAt = performance.now();\n    const animationDuration = duration\n      ?? Math.min(760, Math.max(420, characters.length * 32));\n    let frame = 0;\n    let lastUpdate = 0;\n\n    const animate = (now: number) => {\n      if (now - lastUpdate >= 40) {\n        lastUpdate = now;\n        const progress = Math.min((now - startedAt) / animationDuration, 1);\n        const settled = Math.floor(progress * characters.length);\n        setDisplay(characters.map((character, index) => {\n          if (index < settled || character === \" \") return character;\n          return glyphs[Math.floor(Math.random() * glyphs.length)];\n        }).join(\"\"));\n      }\n\n      if (now - startedAt < animationDuration) {\n        frame = requestAnimationFrame(animate);\n      } else {\n        setDisplay(text);\n      }\n    };\n\n    frame = requestAnimationFrame(animate);\n    return () => cancelAnimationFrame(frame);\n  }, [duration, glyphs, reduce, text]);\n\n  return (\n    <span className={cn(\"inline-block whitespace-pre\", className)} style={style}>\n      <span className=\"sr-only\">{text}</span>\n      <span aria-hidden=\"true\">{reduce ? text : display}</span>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/text-scramble"
+  }
+}

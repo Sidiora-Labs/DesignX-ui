@@ -1,0 +1,2483 @@
+[
+  {
+    "name": "utils",
+    "type": "registry:lib",
+    "title": "Utils",
+    "description": "The cn() helper — clsx + tailwind-merge.",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-mobile",
+    "type": "registry:hook",
+    "title": "use-mobile",
+    "registryDependencies": []
+  },
+  {
+    "name": "theme-provider",
+    "type": "registry:component",
+    "title": "Theme Provider",
+    "description": "Light / dark / system theme and the DX Gradient accent, persisted to localStorage.",
+    "registryDependencies": []
+  },
+  {
+    "name": "theme",
+    "type": "registry:style",
+    "title": "DX Theme",
+    "description": "Tokens, surface ladder, state layers and the DX Gradient accent. Import after tailwindcss.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "accordion",
+    "type": "registry:ui",
+    "title": "Accordion",
+    "description": "A vertically stacked set of interactive headings that each reveal a section of content.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "alert",
+    "type": "registry:ui",
+    "title": "Alert",
+    "description": "A callout for important, contextual messages. Six tonal variants mapped to the status palette.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "alert-dialog",
+    "type": "registry:ui",
+    "title": "Alert Dialog",
+    "description": "A modal dialog that interrupts the user with important content and expects a response.",
+    "registryDependencies": [
+      "button",
+      "utils"
+    ]
+  },
+  {
+    "name": "aspect-ratio",
+    "type": "registry:ui",
+    "title": "Aspect Ratio",
+    "description": "Displays content within a desired ratio.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "avatar",
+    "type": "registry:ui",
+    "title": "Avatar",
+    "description": "An image element with a fallback for representing the user. Supports stacked groups.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "badge",
+    "type": "registry:ui",
+    "title": "Badge",
+    "description": "A pill-shaped label for status, counts and metadata.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "breadcrumb",
+    "type": "registry:ui",
+    "title": "Breadcrumb",
+    "description": "Displays the path to the current resource using a hierarchy of links.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "button",
+    "type": "registry:ui",
+    "title": "Button",
+    "description": "Pill-shaped actions with a shared state-layer system. Seven variants, eight sizes.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "button-group",
+    "type": "registry:ui",
+    "title": "Button Group",
+    "description": "Groups related buttons together with joined edges.",
+    "registryDependencies": [
+      "separator",
+      "utils"
+    ]
+  },
+  {
+    "name": "calendar",
+    "type": "registry:ui",
+    "title": "Calendar",
+    "description": "A date field component that allows users to enter and edit dates.",
+    "registryDependencies": [
+      "button",
+      "utils"
+    ]
+  },
+  {
+    "name": "card",
+    "type": "registry:ui",
+    "title": "Card",
+    "description": "A tonal container for grouping related content. Outline, tonal and elevated variants.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "carousel",
+    "type": "registry:ui",
+    "title": "Carousel",
+    "description": "A swipeable carousel with motion and keyboard support.",
+    "registryDependencies": [
+      "button",
+      "utils"
+    ]
+  },
+  {
+    "name": "chart",
+    "type": "registry:ui",
+    "title": "Chart",
+    "description": "Beautiful charts built on Recharts, themed with the DX data-vis palette.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "checkbox",
+    "type": "registry:ui",
+    "title": "Checkbox",
+    "description": "A control that allows the user to toggle between checked and not checked.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "collapsible",
+    "type": "registry:ui",
+    "title": "Collapsible",
+    "description": "An interactive component which expands and collapses a panel.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "combobox",
+    "type": "registry:ui",
+    "title": "Combobox",
+    "description": "An input combined with a list of predefined items to select. Supports multiple chips.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "command",
+    "type": "registry:ui",
+    "title": "Command",
+    "description": "A fast, composable command menu for search and actions.",
+    "registryDependencies": [
+      "dialog",
+      "utils"
+    ]
+  },
+  {
+    "name": "context-menu",
+    "type": "registry:ui",
+    "title": "Context Menu",
+    "description": "A menu that appears on right click or long press.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "data-table",
+    "type": "registry:ui",
+    "title": "Data Table",
+    "description": "Sortable, filterable, paginated tables powered by TanStack Table.",
+    "registryDependencies": [
+      "button",
+      "dropdown-menu",
+      "input",
+      "table",
+      "utils"
+    ]
+  },
+  {
+    "name": "date-picker",
+    "type": "registry:ui",
+    "title": "Date Picker",
+    "description": "A date and range picker composed from Popover and Calendar.",
+    "registryDependencies": [
+      "button",
+      "calendar",
+      "popover",
+      "utils"
+    ]
+  },
+  {
+    "name": "dialog",
+    "type": "registry:ui",
+    "title": "Dialog",
+    "description": "A window overlaid on the primary content. Spring-scaled, 28px radius.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "drawer",
+    "type": "registry:ui",
+    "title": "Drawer",
+    "description": "A swipeable panel that slides in from the edge of the screen.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "dropdown-menu",
+    "type": "registry:ui",
+    "title": "Dropdown Menu",
+    "description": "Displays a menu of actions or options triggered by a button.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "empty",
+    "type": "registry:ui",
+    "title": "Empty",
+    "description": "An empty state with media, title, description and actions.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "field",
+    "type": "registry:ui",
+    "title": "Field",
+    "description": "Label, control, description and error — wired together for accessible forms.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "form",
+    "type": "registry:ui",
+    "title": "Form",
+    "description": "A native form element with consolidated error handling.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "hover-card",
+    "type": "registry:ui",
+    "title": "Hover Card",
+    "description": "Preview content available behind a link on hover.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "input",
+    "type": "registry:ui",
+    "title": "Input",
+    "description": "A text field with a 12px radius and hairline outline.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "input-group",
+    "type": "registry:ui",
+    "title": "Input Group",
+    "description": "Add icons, text, buttons and kbd hints inside an input.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "input-otp",
+    "type": "registry:ui",
+    "title": "Input OTP",
+    "description": "Accessible one-time password input with copy-paste support.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "kbd",
+    "type": "registry:ui",
+    "title": "Kbd",
+    "description": "Displays a keyboard key or shortcut.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "label",
+    "type": "registry:ui",
+    "title": "Label",
+    "description": "Renders an accessible label associated with a control.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "menubar",
+    "type": "registry:ui",
+    "title": "Menubar",
+    "description": "A persistent menu common in desktop applications.",
+    "registryDependencies": [
+      "dropdown-menu",
+      "utils"
+    ]
+  },
+  {
+    "name": "meter",
+    "type": "registry:ui",
+    "title": "Meter",
+    "description": "A graphical display of a numeric value within a known range.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "navigation-menu",
+    "type": "registry:ui",
+    "title": "Navigation Menu",
+    "description": "A collection of links for navigating websites, with animated popups.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "number-field",
+    "type": "registry:ui",
+    "title": "Number Field",
+    "description": "A numeric input with steppers and a scrub area.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "pagination",
+    "type": "registry:ui",
+    "title": "Pagination",
+    "description": "Navigation between pages of content.",
+    "registryDependencies": [
+      "button",
+      "utils"
+    ]
+  },
+  {
+    "name": "popover",
+    "type": "registry:ui",
+    "title": "Popover",
+    "description": "Displays rich content in a portal, triggered by a button.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "progress",
+    "type": "registry:ui",
+    "title": "Progress",
+    "description": "Displays the status of a task. Supports an indeterminate state.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "radio-group",
+    "type": "registry:ui",
+    "title": "Radio Group",
+    "description": "A set of checkable buttons where only one can be checked at a time.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "resizable",
+    "type": "registry:ui",
+    "title": "Resizable",
+    "description": "Accessible resizable panel groups and layouts.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "scroll-area",
+    "type": "registry:ui",
+    "title": "Scroll Area",
+    "description": "A native scroll container with custom, auto-hiding scrollbars.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "select",
+    "type": "registry:ui",
+    "title": "Select",
+    "description": "Displays a list of options for the user to pick from.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "separator",
+    "type": "registry:ui",
+    "title": "Separator",
+    "description": "Visually or semantically separates content.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "sheet",
+    "type": "registry:ui",
+    "title": "Sheet",
+    "description": "Extends Dialog to display content that complements the main screen.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "sidebar",
+    "type": "registry:ui",
+    "title": "Sidebar",
+    "description": "A composable, themeable and collapsible application sidebar.",
+    "registryDependencies": [
+      "button",
+      "sheet",
+      "tooltip",
+      "use-mobile",
+      "utils"
+    ]
+  },
+  {
+    "name": "skeleton",
+    "type": "registry:ui",
+    "title": "Skeleton",
+    "description": "A shimmering placeholder while content loads.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "slider",
+    "type": "registry:ui",
+    "title": "Slider",
+    "description": "An input where the user selects a value from within a given range.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "sonner",
+    "type": "registry:ui",
+    "title": "Toast",
+    "description": "An opinionated toast component, themed to the DX surface ladder.",
+    "registryDependencies": [
+      "theme-provider"
+    ]
+  },
+  {
+    "name": "spinner",
+    "type": "registry:ui",
+    "title": "Spinner",
+    "description": "A twelve-blade activity indicator that inherits currentColor.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "switch",
+    "type": "registry:ui",
+    "title": "Switch",
+    "description": "A control that toggles between on and off.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "table",
+    "type": "registry:ui",
+    "title": "Table",
+    "description": "A responsive table for structured data.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "tabs",
+    "type": "registry:ui",
+    "title": "Tabs",
+    "description": "Layered sections of content with a sliding indicator. Pill and line variants.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "textarea",
+    "type": "registry:ui",
+    "title": "Textarea",
+    "description": "A multi-line text field.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "toggle",
+    "type": "registry:ui",
+    "title": "Toggle",
+    "description": "A two-state button that can be on or off.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "toggle-group",
+    "type": "registry:ui",
+    "title": "Toggle Group",
+    "description": "A set of two-state buttons that can be toggled on or off.",
+    "registryDependencies": [
+      "toggle",
+      "utils"
+    ]
+  },
+  {
+    "name": "toolbar",
+    "type": "registry:ui",
+    "title": "Toolbar",
+    "description": "A container for grouping a set of controls, with roving focus.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "tooltip",
+    "type": "registry:ui",
+    "title": "Tooltip",
+    "description": "A popup that displays information on hover or focus.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "typography",
+    "type": "registry:ui",
+    "title": "Typography",
+    "description": "The DX type scale as a single component — display to eyebrow.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "smooth-input",
+    "type": "registry:component",
+    "title": "Smooth Input",
+    "description": "A text input whose caret glides between characters on a spring.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "digit-input",
+    "type": "registry:component",
+    "title": "Digit Input",
+    "description": "One-time-code input where each digit rolls in with motion.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "number-flow",
+    "type": "registry:component",
+    "title": "Number Flow",
+    "description": "Animated number transitions — every digit slides to its new value.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "autoscale-input",
+    "type": "registry:component",
+    "title": "Autoscale Input",
+    "description": "A giant amount field that shrinks its type to always fit, with locale formatting.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "expanding-tabs",
+    "type": "registry:component",
+    "title": "Expanding Tabs",
+    "description": "Icon tabs that expand to reveal their label, plus a morphing panel.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "media-scrubber",
+    "type": "registry:component",
+    "title": "Media Scrubber",
+    "description": "A tactile, spring-driven seek bar for audio and video.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "glow-border",
+    "type": "registry:component",
+    "title": "Glow Border",
+    "description": "The animated dx-gradient palette border for AI and focus moments.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "gooey",
+    "type": "registry:component",
+    "title": "Gooey Filter",
+    "description": "SVG gooey and squircle filters for liquid, blob-like UI.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "animated-icons",
+    "type": "registry:component",
+    "title": "Animated Icons",
+    "description": "Twenty-one micro-interaction icon buttons with morphing motion.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "stack-scroll",
+    "type": "registry:component",
+    "title": "Stack Scroll",
+    "description": "Scroll-driven stacked steps with per-step progress rails.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "icon-accordion",
+    "type": "registry:component",
+    "title": "Icon Accordion",
+    "description": "A horizontal accordion where icons expand into cards.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "text-roll",
+    "type": "registry:component",
+    "title": "Text Roll",
+    "description": "Letters roll vertically on hover, staggered from the edge or the center.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "text-loop",
+    "type": "registry:component",
+    "title": "Text Loop",
+    "description": "Cycles through words with a blurred vertical slide, plus a useLoop hook.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "count-up",
+    "type": "registry:component",
+    "title": "Count Up",
+    "description": "Counts to a number when it scrolls into view — tween, scramble or flow.",
+    "registryDependencies": [
+      "number-flow",
+      "utils"
+    ]
+  },
+  {
+    "name": "animated-link",
+    "type": "registry:component",
+    "title": "Animated Link",
+    "description": "Underline and fill hover treatments for links, router-ready via render.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "theme-toggle",
+    "type": "registry:component",
+    "title": "Theme Toggle",
+    "description": "Animated theme icons with View Transition reveals — circle, blur, wipe and more.",
+    "registryDependencies": [
+      "theme-provider",
+      "utils"
+    ]
+  },
+  {
+    "name": "morph-confirm",
+    "type": "registry:component",
+    "title": "Morph Confirm",
+    "description": "A button that morphs into its own confirmation card.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "mouse-follow",
+    "type": "registry:component",
+    "title": "Mouse Follow",
+    "description": "A springy custom cursor that follows the pointer within an area.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "tick-scrollbar",
+    "type": "registry:component",
+    "title": "Tick Scrollbar",
+    "description": "A ruler-style scroll indicator with drag, seek and keyboard control.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "dev-tools",
+    "type": "registry:component",
+    "title": "Dev Tools",
+    "description": "A breakpoint indicator and live debug panel that only render in development.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-composer",
+    "type": "registry:component",
+    "title": "AI Composer",
+    "description": "A compound prompt box — rotating placeholders, toggles, model picker and a morphing send/stop button.",
+    "registryDependencies": [
+      "dropdown-menu",
+      "utils"
+    ]
+  },
+  {
+    "name": "mention-composer",
+    "type": "registry:component",
+    "title": "Mention Composer",
+    "description": "A prompt box where @mentions become tilted tool cards above the input.",
+    "registryDependencies": [
+      "ai-composer",
+      "utils"
+    ]
+  },
+  {
+    "name": "chat-thread",
+    "type": "registry:component",
+    "title": "Chat Thread",
+    "description": "An auto-scrolling message log with bubbles and a thinking indicator.",
+    "registryDependencies": [
+      "text-shimmer",
+      "utils"
+    ]
+  },
+  {
+    "name": "text-shimmer",
+    "type": "registry:component",
+    "title": "Text Shimmer",
+    "description": "A light sweep across text for loading and thinking states.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "mesh-gradient",
+    "type": "registry:component",
+    "title": "Mesh Gradient",
+    "description": "A slow, blurred animated mesh of colour blobs for backgrounds.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "country-select",
+    "type": "registry:component",
+    "title": "Country Select",
+    "description": "A region picker dialog with flags, search and locale detection.",
+    "registryDependencies": [
+      "dialog",
+      "utils"
+    ]
+  },
+  {
+    "name": "token-swap",
+    "type": "registry:component",
+    "title": "Token Swap",
+    "description": "A swap input with animated digits, max toggle, fiat value and balance errors.",
+    "registryDependencies": [
+      "digit-input",
+      "number-flow",
+      "utils"
+    ]
+  },
+  {
+    "name": "wallet-cards",
+    "type": "registry:component",
+    "title": "Wallet Cards",
+    "description": "A grid of cards that expand in place to reveal copy and customise actions.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "auth-drawer",
+    "type": "registry:component",
+    "title": "Auth Drawer",
+    "description": "A floating sign-in sheet with providers, one-time codes, passkeys and wallets.",
+    "registryDependencies": [
+      "input-otp",
+      "moving-border",
+      "utils"
+    ]
+  },
+  {
+    "name": "moving-border",
+    "type": "registry:component",
+    "title": "Moving Border",
+    "description": "A glowing highlight that travels around an element's border.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "dynamic-island",
+    "type": "registry:component",
+    "title": "Dynamic Island",
+    "description": "A pill that morphs between live states — calls, timers, music and more.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "color-list",
+    "type": "registry:component",
+    "title": "Color List",
+    "description": "A scroll list where the focused row washes the background in its colour.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "music-toggle",
+    "type": "registry:component",
+    "title": "Music Toggle",
+    "description": "A play/pause button with animated equaliser bars and optional audio.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "parallax",
+    "type": "registry:component",
+    "title": "Parallax",
+    "description": "Scroll-linked parallax images and a scale-down reveal.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "infinite-canvas",
+    "type": "registry:component",
+    "title": "Infinite Canvas",
+    "description": "A pannable grid that wraps forever — drag, scroll or use the arrow keys.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "feature-explorer",
+    "type": "registry:component",
+    "title": "Feature Explorer",
+    "description": "Product feature pills that expand into descriptions over a crossfading stage.",
+    "registryDependencies": [
+      "carousel",
+      "utils"
+    ]
+  },
+  {
+    "name": "project-showcase",
+    "type": "registry:component",
+    "title": "Project Showcase",
+    "description": "A hover-preview project list that morphs into a detail page.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "chat-app",
+    "type": "registry:component",
+    "title": "Chat App",
+    "description": "A complete agent chat surface — sidebar, thread, tool calls and a composer, wired together.",
+    "registryDependencies": [
+      "animated-sidebar",
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-sidebar",
+    "type": "registry:component",
+    "title": "AI Sidebar",
+    "description": "A collapsible assistant panel that docks beside your app and slides over on small screens.",
+    "registryDependencies": [
+      "lib-ease",
+      "popover-morph",
+      "use-media-query",
+      "use-touch-capable",
+      "utils"
+    ]
+  },
+  {
+    "name": "message",
+    "type": "registry:component",
+    "title": "Message",
+    "description": "Composable message parts — header, body, actions and attachments — for assistant and user turns.",
+    "registryDependencies": [
+      "lib-ease",
+      "message-bubble",
+      "message-scroller",
+      "utils"
+    ]
+  },
+  {
+    "name": "message-bubble",
+    "type": "registry:component",
+    "title": "Message Bubble",
+    "description": "Chat bubbles with grouping, avatars and collapsible long messages.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "message-scroller",
+    "type": "registry:component",
+    "title": "Message Scroller",
+    "description": "A stick-to-bottom scroll container with a jump-to-latest button for streaming threads.",
+    "registryDependencies": [
+      "preview-rail",
+      "utils"
+    ]
+  },
+  {
+    "name": "prompt-input",
+    "type": "registry:component",
+    "title": "Prompt Input",
+    "description": "An auto-growing prompt box with model picker, attachments and a morphing submit button.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-button",
+      "motion-select",
+      "popover-morph",
+      "utils"
+    ]
+  },
+  {
+    "name": "streaming-response",
+    "type": "registry:component",
+    "title": "Streaming Response",
+    "description": "Token-by-token text reveal with inline citations and a blinking caret.",
+    "registryDependencies": [
+      "citations",
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "agent-activity",
+    "type": "registry:component",
+    "title": "Agent Activity",
+    "description": "A live log of what an agent is doing — steps, searches, tool calls and traces.",
+    "registryDependencies": [
+      "lib-ease",
+      "thinking-shimmer",
+      "utils"
+    ]
+  },
+  {
+    "name": "code-block",
+    "type": "registry:component",
+    "title": "Code Block",
+    "description": "A code block with filename, language badge, copy action and line highlights.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "file-diff",
+    "type": "registry:component",
+    "title": "File Diff",
+    "description": "A unified diff view with added and removed lines, collapsible hunks and stats.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "tool-result",
+    "type": "registry:component",
+    "title": "Tool Result",
+    "description": "Renders tool calls — terminal output, HTTP requests — with status and timing.",
+    "registryDependencies": [
+      "action-swap-roll",
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "tool-approval",
+    "type": "registry:component",
+    "title": "Tool Approval",
+    "description": "Ask the user before an agent runs a sensitive tool — approve, deny or always allow.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "approval-card",
+    "type": "registry:component",
+    "title": "Approval Card",
+    "description": "Question and review cards an agent uses to ask for a decision mid-task.",
+    "registryDependencies": [
+      "action-swap-roll",
+      "lib-ease",
+      "motion-button",
+      "motion-checkbox",
+      "motion-input",
+      "radio",
+      "utils"
+    ]
+  },
+  {
+    "name": "todo-list",
+    "type": "registry:component",
+    "title": "Todo List",
+    "description": "An agent plan that checks itself off as steps complete.",
+    "registryDependencies": [
+      "action-swap-roll",
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "citations",
+    "type": "registry:component",
+    "title": "Citations",
+    "description": "Source chips with favicons, a stacked overflow and hover previews.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-favicon",
+      "utils"
+    ]
+  },
+  {
+    "name": "image-generation",
+    "type": "registry:component",
+    "title": "Image Generation",
+    "description": "A progressive reveal for generated images, from noise to final frame.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "thinking-shimmer",
+    "type": "registry:component",
+    "title": "Thinking Shimmer",
+    "description": "A shimmering “Thinking…” label for the moment before the first token.",
+    "registryDependencies": [
+      "motion-text-shimmer",
+      "utils"
+    ]
+  },
+  {
+    "name": "reasoning-text",
+    "type": "registry:component",
+    "title": "Reasoning Text",
+    "description": "Rotating reasoning phrases with shimmer, scramble and per-letter variants.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-text-shimmer",
+      "loader",
+      "text-scramble",
+      "utils"
+    ]
+  },
+  {
+    "name": "agent-progress",
+    "type": "registry:component",
+    "title": "Agent Progress",
+    "description": "A step progress indicator for long-running agent tasks.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "composition-chart",
+    "type": "registry:component",
+    "title": "Composition Chart",
+    "description": "Stacked composition over time — hover a band to isolate it.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "number-ticker",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "funnel-chart",
+    "type": "registry:component",
+    "title": "Funnel Chart",
+    "description": "A smooth conversion funnel with stage drop-off and hover detail.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "number-ticker",
+      "utils"
+    ]
+  },
+  {
+    "name": "liquidity-heatmap",
+    "type": "registry:component",
+    "title": "Liquidity Heatmap",
+    "description": "Price-by-time liquidity density with a crosshair readout.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "number-ticker",
+      "utils"
+    ]
+  },
+  {
+    "name": "bump-chart",
+    "type": "registry:component",
+    "title": "Bump Chart",
+    "description": "Rank changes over time, with series that lift on hover.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "order-book",
+    "type": "registry:component",
+    "title": "Order Book",
+    "description": "A live depth ladder — bids, asks, spread and cumulative size.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "heat-calendar",
+    "type": "registry:component",
+    "title": "Heat Calendar",
+    "description": "A contribution-style calendar heatmap with tooltips.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "number-ticker",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "returns-calendar",
+    "type": "registry:component",
+    "title": "Returns Calendar",
+    "description": "Monthly returns as a diverging calendar grid.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "number-ticker",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "price-target-fan",
+    "type": "registry:component",
+    "title": "Price Target Fan",
+    "description": "Historical price with a fan of low, mean and high forecasts.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "number-ticker",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-button",
+    "type": "registry:component",
+    "title": "Button",
+    "description": "Spring-pressed buttons with stateful, magnetic and metallic variants.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-input",
+    "type": "registry:component",
+    "title": "Input",
+    "description": "A text field with a floating label and animated validation.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-select",
+    "type": "registry:component",
+    "title": "Select",
+    "description": "A select whose popup grows out of its trigger.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "select-morph",
+    "type": "registry:component",
+    "title": "Select Morph",
+    "description": "A select that morphs its trigger into the option list.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-combobox",
+    "type": "registry:component",
+    "title": "Combobox",
+    "description": "A searchable select with a sliding highlight.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "multi-select",
+    "type": "registry:component",
+    "title": "Multi Select",
+    "description": "Pick many options; chips spring in and out of the trigger.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-combobox",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-checkbox",
+    "type": "registry:component",
+    "title": "Checkbox",
+    "description": "A checkbox with a drawn tick and squash on press.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "radio",
+    "type": "registry:component",
+    "title": "Radio",
+    "description": "Radio options with a dot that glides between choices.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-switch",
+    "type": "registry:component",
+    "title": "Switch",
+    "description": "A switch with a stretchy thumb.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-tabs",
+    "type": "registry:component",
+    "title": "Tabs",
+    "description": "Scrollable tabs with a shared-layout indicator.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "otp-input",
+    "type": "registry:component",
+    "title": "OTP Input",
+    "description": "One-time-code slots with a travelling caret and success state.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "range-slider",
+    "type": "registry:component",
+    "title": "Range Slider",
+    "description": "A spring-smoothed slider with step ticks.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "use-slider",
+      "utils"
+    ]
+  },
+  {
+    "name": "range-slider-inline",
+    "type": "registry:component",
+    "title": "Inline Slider",
+    "description": "A compact slider with its label and value inside the track.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "use-slider",
+      "utils"
+    ]
+  },
+  {
+    "name": "range-slider-fluid",
+    "type": "registry:component",
+    "title": "Fluid Slider",
+    "description": "A slider whose fill swells as you drag.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "use-slider",
+      "utils"
+    ]
+  },
+  {
+    "name": "range-slider-wave",
+    "type": "registry:component",
+    "title": "Wave Slider",
+    "description": "An equaliser-style slider of animated bars.",
+    "registryDependencies": [
+      "lib-touch",
+      "use-slider",
+      "utils"
+    ]
+  },
+  {
+    "name": "range-slider-bubble",
+    "type": "registry:component",
+    "title": "Bubble Slider",
+    "description": "A slider with a value bubble that pops up on drag.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "use-slider",
+      "utils"
+    ]
+  },
+  {
+    "name": "range-slider-ruler",
+    "type": "registry:component",
+    "title": "Ruler Slider",
+    "description": "A draggable ruler with momentum and detents.",
+    "registryDependencies": [
+      "lib-touch",
+      "use-slider",
+      "utils"
+    ]
+  },
+  {
+    "name": "wheel-picker",
+    "type": "registry:component",
+    "title": "Wheel Picker",
+    "description": "An iOS-style 3D wheel picker with ticks and inertia.",
+    "registryDependencies": [
+      "lib-tick-sound",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "date-range-picker",
+    "type": "registry:component",
+    "title": "Date Range Picker",
+    "description": "A calendar range picker with presets and animated months.",
+    "registryDependencies": [
+      "lib-ease",
+      "popover-morph",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "color-selector",
+    "type": "registry:component",
+    "title": "Color Selector",
+    "description": "A swatch picker that expands into a palette.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "adaptive-stepper",
+    "type": "registry:component",
+    "title": "Adaptive Stepper",
+    "description": "A numeric stepper whose controls adapt to the value.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "expandable-control",
+    "type": "registry:component",
+    "title": "Expandable Control",
+    "description": "A compact control that expands into a full adjuster.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "signup-form",
+    "type": "registry:component",
+    "title": "Signup Form",
+    "description": "A multi-step sign-up form with morphing transitions.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-button",
+      "motion-checkbox",
+      "motion-input",
+      "utils"
+    ]
+  },
+  {
+    "name": "action-swap",
+    "type": "registry:component",
+    "title": "Action Swap",
+    "description": "Swap a button's icon and label with a slide.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "action-swap-blur",
+    "type": "registry:component",
+    "title": "Action Swap Blur",
+    "description": "Swap a button's content through a blur.",
+    "registryDependencies": [
+      "action-swap"
+    ]
+  },
+  {
+    "name": "action-swap-roll",
+    "type": "registry:component",
+    "title": "Action Swap Roll",
+    "description": "Roll a button's label to the next state.",
+    "registryDependencies": [
+      "action-swap"
+    ]
+  },
+  {
+    "name": "action-swap-cascade",
+    "type": "registry:component",
+    "title": "Action Swap Cascade",
+    "description": "Letters cascade into the next label.",
+    "registryDependencies": [
+      "action-swap"
+    ]
+  },
+  {
+    "name": "expanding-arrow-button",
+    "type": "registry:component",
+    "title": "Expanding Arrow Button",
+    "description": "A button whose arrow stretches on hover.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "hold-action-button",
+    "type": "registry:component",
+    "title": "Hold Action Button",
+    "description": "Press and hold to confirm a destructive action.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "slide-action-button",
+    "type": "registry:component",
+    "title": "Slide Action Button",
+    "description": "Slide to confirm, with snap-back and success states.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "expandable-action-bar",
+    "type": "registry:component",
+    "title": "Expandable Action Bar",
+    "description": "A floating bar that expands into a set of actions.",
+    "registryDependencies": [
+      "use-dismiss",
+      "use-hover-gesture",
+      "use-tap-gesture",
+      "utils"
+    ]
+  },
+  {
+    "name": "overflow-actions",
+    "type": "registry:component",
+    "title": "Overflow Actions",
+    "description": "Actions that collapse into a morphing overflow menu.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "bloom-menu",
+    "type": "registry:component",
+    "title": "Bloom Menu",
+    "description": "A button that blooms into a radial menu.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-theme-toggle",
+    "type": "registry:component",
+    "title": "Transition Toggle",
+    "description": "A sun–moon toggle with rect, circle, blur and blinds View Transitions.",
+    "registryDependencies": [
+      "action-swap",
+      "lib-ease",
+      "theme-provider",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-popover",
+    "type": "registry:component",
+    "title": "Popover",
+    "description": "A hover or click popover that springs from its anchor.",
+    "registryDependencies": [
+      "use-dismiss",
+      "use-hover-gesture",
+      "use-tap-gesture",
+      "utils"
+    ]
+  },
+  {
+    "name": "popover-morph",
+    "type": "registry:component",
+    "title": "Popover Morph",
+    "description": "A trigger that morphs into its popover.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-tooltip",
+    "type": "registry:component",
+    "title": "Tooltip",
+    "description": "Tooltips that glide between anchors and can follow the cursor.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-dismiss",
+      "use-hover-gesture",
+      "use-tap-gesture",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-context-menu",
+    "type": "registry:component",
+    "title": "Context Menu",
+    "description": "A right-click and long-press menu with spring entrance.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-drawer",
+    "type": "registry:component",
+    "title": "Drawer",
+    "description": "A draggable drawer with snap points.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-presence-gate",
+      "utils"
+    ]
+  },
+  {
+    "name": "bottom-sheet",
+    "type": "registry:component",
+    "title": "Bottom Sheet",
+    "description": "A mobile bottom sheet with drag-to-dismiss.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-presence-gate",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "morphing-modal",
+    "type": "registry:component",
+    "title": "Morphing Modal",
+    "description": "A card that morphs into a full modal.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-presence-gate",
+      "utils"
+    ]
+  },
+  {
+    "name": "center-morph-modal",
+    "type": "registry:component",
+    "title": "Center Morph Modal",
+    "description": "A trigger that morphs into a centered dialog.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-presence-gate",
+      "utils"
+    ]
+  },
+  {
+    "name": "morphing-lightbox",
+    "type": "registry:component",
+    "title": "Morphing Lightbox",
+    "description": "Thumbnails that morph into a full-screen viewer.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-presence-gate",
+      "use-modal-scope",
+      "utils"
+    ]
+  },
+  {
+    "name": "command-palette",
+    "type": "registry:component",
+    "title": "Command Palette",
+    "description": "A ⌘K palette with grouped results and a sliding cursor.",
+    "registryDependencies": [
+      "lib-command-search",
+      "lib-ease",
+      "lib-presence-gate",
+      "use-media-query",
+      "use-on-open",
+      "use-row-cursor",
+      "use-touch-capable",
+      "utils"
+    ]
+  },
+  {
+    "name": "morphing-search",
+    "type": "registry:component",
+    "title": "Morphing Search",
+    "description": "A search button that morphs into a results panel.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-on-open",
+      "use-row-cursor",
+      "utils"
+    ]
+  },
+  {
+    "name": "feedback-widget",
+    "type": "registry:component",
+    "title": "Feedback Widget",
+    "description": "A floating feedback button that morphs into a form.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-button",
+      "utils"
+    ]
+  },
+  {
+    "name": "notification-stack",
+    "type": "registry:component",
+    "title": "Notification Stack",
+    "description": "Stacked notifications that fan out on hover.",
+    "registryDependencies": [
+      "action-swap",
+      "lib-ease",
+      "use-dismiss",
+      "use-hover-gesture",
+      "use-tap-gesture",
+      "utils"
+    ]
+  },
+  {
+    "name": "animated-toast-stack",
+    "type": "registry:component",
+    "title": "Toast Stack",
+    "description": "Stacked toasts with swipe-to-dismiss.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-dynamic-island",
+    "type": "registry:component",
+    "title": "Live Activity Island",
+    "description": "A pill that morphs between live activities.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-breadcrumb",
+    "type": "registry:component",
+    "title": "Breadcrumb",
+    "description": "Breadcrumbs that collapse and expand with motion.",
+    "registryDependencies": [
+      "lib-ease",
+      "popover-morph",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "animated-sidebar",
+    "type": "registry:component",
+    "title": "Animated Sidebar",
+    "description": "A collapsible app sidebar with nested sections and springs.",
+    "registryDependencies": [
+      "lib-ease",
+      "shared-layout-bg",
+      "utils"
+    ]
+  },
+  {
+    "name": "bounce-sidebar",
+    "type": "registry:component",
+    "title": "Bounce Sidebar",
+    "description": "A section rail with a bouncy active indicator.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "dock",
+    "type": "registry:component",
+    "title": "Dock",
+    "description": "A macOS-style dock with magnification.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "expandable-tabs",
+    "type": "registry:component",
+    "title": "Expandable Tabs",
+    "description": "Icon tabs that expand to show labels.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "morphing-tabs",
+    "type": "registry:component",
+    "title": "Morphing Tabs",
+    "description": "Tabs whose panel morphs between sizes.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "shared-layout-bg",
+    "type": "registry:component",
+    "title": "Shared Layout Background",
+    "description": "A hover highlight that glides between items.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "file-tree",
+    "type": "registry:component",
+    "title": "File Tree",
+    "description": "A collapsible file tree with animated folders.",
+    "registryDependencies": [
+      "lib-ease",
+      "shared-layout-bg",
+      "utils"
+    ]
+  },
+  {
+    "name": "preview-rail",
+    "type": "registry:component",
+    "title": "Preview Rail",
+    "description": "A link rail that previews each destination on hover.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-dismiss",
+      "use-hover-gesture",
+      "use-tap-gesture",
+      "utils"
+    ]
+  },
+  {
+    "name": "bouncy-accordion",
+    "type": "registry:component",
+    "title": "Bouncy Accordion",
+    "description": "An accordion with springy open and close.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "pull-to-refresh",
+    "type": "registry:component",
+    "title": "Pull To Refresh",
+    "description": "Pull down to refresh with a rubber-band spinner.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "swipeable-list",
+    "type": "registry:component",
+    "title": "Swipeable List",
+    "description": "List rows with swipe actions.",
+    "registryDependencies": [
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "sortable-list",
+    "type": "registry:component",
+    "title": "Sortable List",
+    "description": "Drag to reorder with spring layout.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-table",
+    "type": "registry:component",
+    "title": "Table",
+    "description": "Sort, resize, reorder, select and edit — a motion data table.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-touch",
+      "motion-checkbox",
+      "utils"
+    ]
+  },
+  {
+    "name": "card-folder",
+    "type": "registry:component",
+    "title": "Card Folder",
+    "description": "Cards that fan out of a folder.",
+    "registryDependencies": [
+      "digit-swap",
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "project-folder",
+    "type": "registry:component",
+    "title": "Project Folder",
+    "description": "A folder that opens to reveal project files.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "tilt-card",
+    "type": "registry:component",
+    "title": "Tilt Card",
+    "description": "A card that tilts toward the pointer.",
+    "registryDependencies": [
+      "lib-ease",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "wallet-card",
+    "type": "registry:component",
+    "title": "Wallet Card",
+    "description": "A crypto wallet card with account switcher and balances.",
+    "registryDependencies": [
+      "action-swap",
+      "lib-ease",
+      "motion-button",
+      "use-dismiss",
+      "utils"
+    ]
+  },
+  {
+    "name": "swap",
+    "type": "registry:component",
+    "title": "Swap",
+    "description": "A token swap widget with quotes and a token picker.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "prediction-market",
+    "type": "registry:component",
+    "title": "Prediction Market",
+    "description": "A market detail view with outcome odds and a trade panel.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-button",
+      "motion-tabs",
+      "number-ticker",
+      "utils"
+    ]
+  },
+  {
+    "name": "prediction-market-card",
+    "type": "registry:component",
+    "title": "Prediction Market Card",
+    "description": "A compact market card with yes/no odds.",
+    "registryDependencies": [
+      "action-swap",
+      "lib-ease",
+      "motion-tooltip",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "availability-scheduler",
+    "type": "registry:component",
+    "title": "Availability Scheduler",
+    "description": "Weekly hours with copy-to-days and time selects.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-checkbox",
+      "motion-select",
+      "motion-switch",
+      "motion-tooltip",
+      "popover-morph",
+      "utils"
+    ]
+  },
+  {
+    "name": "file-upload",
+    "type": "registry:component",
+    "title": "File Upload",
+    "description": "A drop zone with per-file progress.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "attachment-upload",
+    "type": "registry:component",
+    "title": "Attachment Upload",
+    "description": "Attachment chips with upload progress and previews.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-presence-gate",
+      "motion-tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "knockout-bracket",
+    "type": "registry:component",
+    "title": "Knockout Bracket",
+    "description": "A tournament bracket with hover paths.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "knockout-wheel",
+    "type": "registry:component",
+    "title": "Knockout Wheel",
+    "description": "A radial tournament bracket.",
+    "registryDependencies": [
+      "lib-ease",
+      "motion-tooltip",
+      "use-dismiss",
+      "use-hover-capable",
+      "use-hover-gesture",
+      "use-media-query",
+      "use-tap-gesture",
+      "utils"
+    ]
+  },
+  {
+    "name": "infinite-masonry",
+    "type": "registry:component",
+    "title": "Infinite Masonry",
+    "description": "A virtualised masonry grid that loads forever.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "cylinder-carousel",
+    "type": "registry:component",
+    "title": "Cylinder Carousel",
+    "description": "A 3D cylinder carousel with drag and inertia.",
+    "registryDependencies": [
+      "lib-touch",
+      "utils"
+    ]
+  },
+  {
+    "name": "marquee",
+    "type": "registry:component",
+    "title": "Marquee",
+    "description": "An infinite marquee that pauses on hover.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "not-found",
+    "type": "registry:component",
+    "title": "Not Found",
+    "description": "Five animated 404 pages — glitch, magnetic, spotlight, stacked and terminal.",
+    "registryDependencies": [
+      "lib-ease",
+      "text-reveal",
+      "use-hover-capable",
+      "use-media-query",
+      "utils"
+    ]
+  },
+  {
+    "name": "text-reveal",
+    "type": "registry:component",
+    "title": "Text Reveal",
+    "description": "Words blur and rise into place.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "text-cascade",
+    "type": "registry:component",
+    "title": "Text Cascade",
+    "description": "Letters cascade in on a stagger.",
+    "registryDependencies": [
+      "action-swap"
+    ]
+  },
+  {
+    "name": "text-scramble",
+    "type": "registry:component",
+    "title": "Text Scramble",
+    "description": "Text that scrambles through glyphs before settling.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-text-shimmer",
+    "type": "registry:component",
+    "title": "Shimmer Text",
+    "description": "A light sweep across text.",
+    "registryDependencies": [
+      "lib-text-shimmer",
+      "utils"
+    ]
+  },
+  {
+    "name": "chromatic-text-reveal",
+    "type": "registry:component",
+    "title": "Chromatic Text Reveal",
+    "description": "Text revealed through RGB-split colour fringes.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "animated-number",
+    "type": "registry:component",
+    "title": "Animated Number",
+    "description": "Numbers that spring between values.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "number-ticker",
+    "type": "registry:component",
+    "title": "Number Ticker",
+    "description": "Rolling digit columns for counters and prices.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "digit-swap",
+    "type": "registry:component",
+    "title": "Digit Swap",
+    "description": "Digits swap with a vertical slide.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "animated-badge",
+    "type": "registry:component",
+    "title": "Animated Badge",
+    "description": "Badges that morph between states.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "loader",
+    "type": "registry:component",
+    "title": "Loader",
+    "description": "A set of small, calm loading indicators.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "smooth-scroll",
+    "type": "registry:component",
+    "title": "Smooth Scroll",
+    "description": "Inertial wheel scrolling with shared scroll motion values.",
+    "registryDependencies": []
+  },
+  {
+    "name": "scroll-progress",
+    "type": "registry:component",
+    "title": "Scroll Progress",
+    "description": "A reading progress bar.",
+    "registryDependencies": [
+      "smooth-scroll",
+      "utils"
+    ]
+  },
+  {
+    "name": "scroll-reveal",
+    "type": "registry:component",
+    "title": "Scroll Reveal",
+    "description": "Reveal content as it scrolls into view.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
+    "name": "scroll-to",
+    "type": "registry:component",
+    "title": "Scroll To",
+    "description": "Smooth anchor scrolling with offsets.",
+    "registryDependencies": [
+      "smooth-scroll",
+      "utils"
+    ]
+  },
+  {
+    "name": "motion-parallax",
+    "type": "registry:component",
+    "title": "Parallax Layers",
+    "description": "Scroll-linked parallax layers.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "shader-background",
+    "type": "registry:component",
+    "title": "Shader Background",
+    "description": "An animated WebGL gradient background.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "lib-command-search",
+    "type": "registry:lib",
+    "title": "lib-command-search",
+    "registryDependencies": []
+  },
+  {
+    "name": "lib-ease",
+    "type": "registry:lib",
+    "title": "lib-ease",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-dismiss",
+    "type": "registry:hook",
+    "title": "use-dismiss",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-favicon",
+    "type": "registry:hook",
+    "title": "use-favicon",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-hover-capable",
+    "type": "registry:hook",
+    "title": "use-hover-capable",
+    "registryDependencies": [
+      "use-media-query"
+    ]
+  },
+  {
+    "name": "use-hover-gesture",
+    "type": "registry:hook",
+    "title": "use-hover-gesture",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-media-query",
+    "type": "registry:hook",
+    "title": "use-media-query",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-modal-scope",
+    "type": "registry:hook",
+    "title": "use-modal-scope",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-on-open",
+    "type": "registry:hook",
+    "title": "use-on-open",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-row-cursor",
+    "type": "registry:hook",
+    "title": "use-row-cursor",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-slider",
+    "type": "registry:hook",
+    "title": "use-slider",
+    "registryDependencies": [
+      "lib-touch"
+    ]
+  },
+  {
+    "name": "use-tap-gesture",
+    "type": "registry:hook",
+    "title": "use-tap-gesture",
+    "registryDependencies": []
+  },
+  {
+    "name": "use-touch-capable",
+    "type": "registry:hook",
+    "title": "use-touch-capable",
+    "registryDependencies": [
+      "use-media-query"
+    ]
+  },
+  {
+    "name": "lib-presence-gate",
+    "type": "registry:lib",
+    "title": "lib-presence-gate",
+    "registryDependencies": []
+  },
+  {
+    "name": "lib-text-shimmer",
+    "type": "registry:lib",
+    "title": "lib-text-shimmer",
+    "registryDependencies": []
+  },
+  {
+    "name": "lib-tick-sound",
+    "type": "registry:lib",
+    "title": "lib-tick-sound",
+    "registryDependencies": []
+  },
+  {
+    "name": "lib-touch",
+    "type": "registry:lib",
+    "title": "lib-touch",
+    "registryDependencies": []
+  },
+  {
+    "name": "dashboard-01",
+    "type": "registry:block",
+    "title": "Dashboard",
+    "description": "Collapsible sidebar, animated KPI cards, interactive charts and a data table.",
+    "registryDependencies": [
+      "avatar",
+      "badge",
+      "button",
+      "card",
+      "chart",
+      "data-table",
+      "dropdown-menu",
+      "meter",
+      "number-flow",
+      "separator",
+      "sidebar",
+      "sonner",
+      "toggle-group"
+    ]
+  },
+  {
+    "name": "login-01",
+    "type": "registry:block",
+    "title": "Login — split screen",
+    "description": "Split-screen sign in with social providers and a brand panel.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "field",
+      "glow-border",
+      "input",
+      "label",
+      "sonner",
+      "spinner"
+    ]
+  },
+  {
+    "name": "signup-01",
+    "type": "registry:block",
+    "title": "Sign up",
+    "description": "Account creation with field validation and a password meter.",
+    "registryDependencies": [
+      "button",
+      "card",
+      "checkbox",
+      "field",
+      "input",
+      "label",
+      "meter",
+      "sonner"
+    ]
+  },
+  {
+    "name": "otp-01",
+    "type": "registry:block",
+    "title": "Verify code",
+    "description": "One-time code verification with the animated Digit Input.",
+    "registryDependencies": [
+      "button",
+      "digit-input",
+      "sonner"
+    ]
+  },
+  {
+    "name": "forgot-01",
+    "type": "registry:block",
+    "title": "Forgot password",
+    "description": "Request a reset link, with a success state.",
+    "registryDependencies": [
+      "button",
+      "field",
+      "input",
+      "spinner"
+    ]
+  },
+  {
+    "name": "settings-01",
+    "type": "registry:block",
+    "title": "Settings",
+    "description": "Profile, account, notifications, billing and team in one layout.",
+    "registryDependencies": [
+      "avatar",
+      "badge",
+      "button",
+      "card",
+      "dropdown-menu",
+      "field",
+      "input",
+      "label",
+      "meter",
+      "radio-group",
+      "select",
+      "separator",
+      "sonner",
+      "switch",
+      "textarea",
+      "theme-provider",
+      "utils"
+    ]
+  }
+]

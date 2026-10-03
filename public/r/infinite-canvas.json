@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "infinite-canvas",
+  "type": "registry:component",
+  "title": "Infinite Canvas",
+  "description": "A pannable grid that wraps forever — drag, scroll or use the arrow keys.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/infinite-canvas.tsx",
+      "type": "registry:component",
+      "target": "components/dx/infinite-canvas.tsx",
+      "content": "import * as React from \"react\";\nimport { motion, useMotionValue, useReducedMotion, useSpring, useTransform } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * InfiniteCanvasan endless, pannable wall of media. Wheel, trackpad,\n * drag or arrow keys move it in any direction; the grid tiles 2×2 and wraps\n * so it never runs out. Motion eases out with a soft spring.\n */\n\ntype InfiniteCanvasProps = Omit<React.ComponentProps<\"section\">, \"children\"> & {\n  /** Anything to tileimages, cards, video. */\n  items: React.ReactNode[];\n  columns?: number;\n  /** Gap between items (CSS length). */\n  gap?: string;\n  /** Padding around each tile (CSS length). Keep it half the gap for even spacing. */\n  padding?: string;\n  itemClassName?: string;\n  /** Drag multiplier. */\n  dragSpeed?: number;\n};\n\nconst wrap = (min: number, max: number, v: number) => {\n  const r = max - min;\n  return r === 0 ? v : ((((v - min) % r) + r) % r) + min;\n};\n\nfunction InfiniteCanvas({\n  items,\n  columns = 5,\n  gap = \"6rem\",\n  padding,\n  itemClassName = \"w-40\",\n  dragSpeed = 1.5,\n  className,\n  ...props\n}: InfiniteCanvasProps) {\n  const section = React.useRef<HTMLElement>(null);\n  const tile = React.useRef<HTMLDivElement>(null);\n  const [size, setSize] = React.useState({ w: 0, h: 0 });\n  const reduce = useReducedMotion();\n\n  const tx = useMotionValue(0);\n  const ty = useMotionValue(0);\n  const spring = reduce ? { duration: 0 } : { stiffness: 90, damping: 22, mass: 0.6 };\n  const sx = useSpring(tx, spring);\n  const sy = useSpring(ty, spring);\n  const x = useTransform(sx, (v) => (size.w ? wrap(-size.w, 0, v) : v));\n  const y = useTransform(sy, (v) => (size.h ? wrap(-size.h, 0, v) : v));\n\n  React.useLayoutEffect(() => {\n    const el = tile.current;\n    if (!el) return;\n    const ro = new ResizeObserver(() => setSize({ w: el.offsetWidth, h: el.offsetHeight }));\n    ro.observe(el);\n    return () => ro.disconnect();\n  }, []);\n\n  // Wheel needs a non-passive listener to stop the page from scrolling.\n  React.useEffect(() => {\n    const el = section.current;\n    if (!el) return;\n    const onWheel = (e: WheelEvent) => {\n      e.preventDefault();\n      tx.set(tx.get() - e.deltaX);\n      ty.set(ty.get() - e.deltaY);\n    };\n    el.addEventListener(\"wheel\", onWheel, { passive: false });\n    return () => el.removeEventListener(\"wheel\", onWheel);\n  }, [tx, ty]);\n\n  const drag = React.useRef<{ x: number; y: number } | null>(null);\n\n  const tileGrid = (dup: boolean, i: number) => (\n    <div\n      key={i}\n      ref={i === 0 ? tile : undefined}\n      aria-hidden={dup || undefined}\n      className=\"grid w-max\"\n      style={{ gridTemplateColumns: `repeat(${columns}, auto)`, gap, padding: padding ?? `calc(${gap} / 2)` }}\n    >\n      {items.map((item, j) => (\n        <div key={j} className={cn(\"select-none\", itemClassName)}>\n          {item}\n        </div>\n      ))}\n    </div>\n  );\n\n  return (\n    // oxlint-disable-next-line jsx-a11y/no-noninteractive-element-interactions\n    <section\n      ref={section}\n      data-slot=\"infinite-canvas\"\n      // oxlint-disable-next-line jsx-a11y/no-noninteractive-tabindex\n      tabIndex={0}\n      aria-roledescription=\"canvas\"\n      aria-label={props[\"aria-label\"] ?? \"Pannable gallery. Drag, scroll or use the arrow keys.\"}\n      onPointerDown={(e) => {\n        drag.current = { x: e.clientX, y: e.clientY };\n        e.currentTarget.setPointerCapture(e.pointerId);\n      }}\n      onPointerMove={(e) => {\n        if (!drag.current) return;\n        tx.set(tx.get() + (e.clientX - drag.current.x) * dragSpeed);\n        ty.set(ty.get() + (e.clientY - drag.current.y) * dragSpeed);\n        drag.current = { x: e.clientX, y: e.clientY };\n      }}\n      onPointerUp={() => {\n        drag.current = null;\n      }}\n      onPointerCancel={() => {\n        drag.current = null;\n      }}\n      onKeyDown={(e) => {\n        const step = 160;\n        const d: Record<string, [number, number]> = {\n          ArrowLeft: [step, 0],\n          ArrowRight: [-step, 0],\n          ArrowUp: [0, step],\n          ArrowDown: [0, -step],\n        };\n        const move = d[e.key];\n        if (!move) return;\n        e.preventDefault();\n        tx.set(tx.get() + move[0]);\n        ty.set(ty.get() + move[1]);\n      }}\n      className={cn(\n        \"focus-ring relative h-[480px] w-full cursor-grab touch-none overflow-hidden active:cursor-grabbing\",\n        className,\n      )}\n      {...props}\n    >\n      <motion.div style={{ x, y }} className=\"grid w-max grid-cols-2 will-change-transform\">\n        {[0, 1, 2, 3].map((i) => tileGrid(i > 0, i))}\n      </motion.div>\n    </section>\n  );\n}\n\nexport { InfiniteCanvas };\nexport type { InfiniteCanvasProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/infinite-canvas"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "digit-swap",
+  "type": "registry:component",
+  "title": "Digit Swap",
+  "description": "Digits swap with a vertical slide.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/motion/digit-swap.tsx",
+      "type": "registry:component",
+      "target": "components/motion/digit-swap.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { EASE_OUT } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\nexport type DigitSwapDirection = \"up\" | \"down\";\n\nexport interface DigitSwapProps {\n  /** Numeric or masked value rendered in fixed character slots. */\n  value: string | number;\n  /** Replays every glyph when the value itself contains unchanged characters. */\n  animationKey?: string | number;\n  /** Direction the next glyph enters from. */\n  direction?: DigitSwapDirection;\n  /** Per-glyph transition duration in seconds. */\n  duration?: number;\n  /** Delay in seconds between neighboring glyphs. */\n  stagger?: number;\n  /** Number of final characters that receive `suffixClassName`. */\n  suffixLength?: number;\n  className?: string;\n  glyphClassName?: string;\n  suffixClassName?: string;\n}\n\ntype GlyphMotionContext = {\n  direction: DigitSwapDirection;\n  reduceMotion: boolean;\n};\n\nconst GLYPH_VARIANTS = {\n  enter: ({ direction, reduceMotion }: GlyphMotionContext) => ({\n    opacity: 0,\n    transform: reduceMotion\n      ? \"none\"\n      : `translateY(${direction === \"up\" ? \"45%\" : \"-45%\"})`,\n  }),\n  visible: {\n    opacity: 1,\n    transform: \"translateY(0%)\",\n  },\n  exit: ({ direction, reduceMotion }: GlyphMotionContext) => ({\n    opacity: 0,\n    transform: reduceMotion\n      ? \"none\"\n      : `translateY(${direction === \"up\" ? \"-45%\" : \"45%\"})`,\n  }),\n};\n\n/** Fixed-slot digits and mask glyphs that roll when their value changes. */\nexport function DigitSwap({\n  value,\n  animationKey,\n  direction = \"up\",\n  duration = 0.18,\n  stagger = 0.006,\n  suffixLength = 0,\n  className,\n  glyphClassName,\n  suffixClassName,\n}: DigitSwapProps) {\n  const reduceMotion = useReducedMotion() ?? false;\n  const text = String(value);\n  const suffixStart = Math.max(0, text.length - Math.max(0, suffixLength));\n  const motionContext: GlyphMotionContext = { direction, reduceMotion };\n  const glyphs = Array.from(text, (character, position) => ({\n    character,\n    id: `glyph-${position}`,\n    position,\n  }));\n\n  return (\n    <span\n      data-slot=\"digit-swap\"\n      data-direction={direction}\n      className={cn(\"inline-flex items-center whitespace-nowrap\", className)}\n    >\n      <span className=\"sr-only\">{text}</span>\n      <span aria-hidden=\"true\" className=\"inline-flex items-center\">\n        {glyphs.map(({ character, id, position }) => {\n          if (character === \" \") {\n            return <span key={id} className=\"inline-block w-[0.7ch]\" />;\n          }\n\n          const glyphKey =\n            animationKey === undefined\n              ? `${id}-${character}`\n              : `${id}-${character}-${animationKey}`;\n\n          return (\n            <span\n              key={id}\n              data-slot=\"digit-swap-glyph\"\n              className=\"relative inline-block h-[1.1em] w-[1ch] shrink-0 overflow-hidden align-bottom\"\n            >\n              <AnimatePresence initial={false} custom={motionContext}>\n                <motion.span\n                  key={glyphKey}\n                  custom={motionContext}\n                  variants={GLYPH_VARIANTS}\n                  initial=\"enter\"\n                  animate=\"visible\"\n                  exit=\"exit\"\n                  transition={{\n                    duration: reduceMotion ? Math.min(duration, 0.12) : duration,\n                    delay: reduceMotion ? 0 : position * stagger,\n                    ease: EASE_OUT,\n                  }}\n                  className={cn(\n                    \"absolute inset-0 flex items-center justify-center leading-none\",\n                    glyphClassName,\n                    position >= suffixStart ? suffixClassName : undefined,\n                  )}\n                >\n                  {character}\n                </motion.span>\n              </AnimatePresence>\n            </span>\n          );\n        })}\n      </span>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "motion-kit"
+  ],
+  "meta": {
+    "group": "motion",
+    "docs": "https://ui.designx.dev/docs/components/digit-swap"
+  }
+}

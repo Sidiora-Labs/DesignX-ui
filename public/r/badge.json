@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "badge",
+  "type": "registry:ui",
+  "title": "Badge",
+  "description": "A pill-shaped label for status, counts and metadata.",
+  "dependencies": [
+    "@base-ui/react@^1.8.0",
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "ui/badge.tsx",
+      "type": "registry:ui",
+      "content": "import * as React from \"react\";\nimport { useRender } from \"@base-ui/react/use-render\";\nimport { mergeProps } from \"@base-ui/react/merge-props\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst badgeVariants = cva(\n  \"inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden rounded-full px-2.5 py-0.5 text-xs font-medium whitespace-nowrap transition-colors [&>svg]:pointer-events-none [&>svg]:size-3\",\n  {\n    variants: {\n      variant: {\n        default: \"bg-primary primary-fill text-primary-foreground\",\n        tonal: \"bg-container-high text-foreground\",\n        outline: \"border border-border text-foreground\",\n        destructive: \"bg-destructive-container text-destructive\",\n        success: \"bg-success-container text-success\",\n        warning: \"bg-warning-container text-warning\",\n        info: \"bg-info-container text-info\",\n      },\n    },\n    defaultVariants: { variant: \"default\" },\n  },\n);\n\ntype BadgeProps = useRender.ComponentProps<\"span\"> & VariantProps<typeof badgeVariants>;\n\nfunction Badge({ className, variant, render, ...props }: BadgeProps) {\n  return useRender({\n    defaultTagName: \"span\",\n    render,\n    props: mergeProps<\"span\">(\n      { className: cn(badgeVariants({ variant }), className), \"data-slot\": \"badge\" } as React.ComponentProps<\"span\">,\n      props,\n    ),\n  });\n}\n\nexport { Badge, badgeVariants };\n"
+    }
+  ],
+  "categories": [
+    "components"
+  ],
+  "meta": {
+    "group": "ui",
+    "docs": "https://ui.designx.dev/docs/components/badge"
+  }
+}

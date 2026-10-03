@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "agent-progress",
+  "type": "registry:component",
+  "title": "Agent Progress",
+  "description": "A step progress indicator for long-running agent tasks.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-ease",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/agents/loading-states/agent-progress.tsx",
+      "type": "registry:component",
+      "target": "components/agents/loading-states/agent-progress.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\nimport { EASE_IN_OUT } from \"@/lib/ease\";\nimport { cn } from \"@/lib/utils\";\n\nconst GRID_CELLS = [\n  { id: \"top-left\", delay: 0 },\n  { id: \"top-center\", delay: 0.14 },\n  { id: \"top-right\", delay: 0.28 },\n  { id: \"middle-left\", delay: 0.42 },\n  { id: \"middle-center\", delay: 0.56 },\n  { id: \"middle-right\", delay: 0.7 },\n  { id: \"bottom-left\", delay: 0.84 },\n  { id: \"bottom-center\", delay: 0.98 },\n  { id: \"bottom-right\", delay: 1.12 },\n];\n\nexport interface AgentProgressProps {\n  /** Verb describing the agent's current activity. */\n  label?: string;\n  /** Controlled elapsed time in seconds. */\n  elapsedSeconds?: number;\n  /** Starting time for the internal timer, in seconds. */\n  initialSeconds?: number;\n  /** Whether the internal timer should advance. Ignored when elapsedSeconds is provided. */\n  running?: boolean;\n  className?: string;\n}\n\nfunction formatElapsed(totalSeconds: number) {\n  const safeSeconds = Math.max(0, totalSeconds);\n  const minutes = Math.floor(safeSeconds / 60);\n  const seconds = (safeSeconds % 60).toFixed(1);\n  return minutes > 0 ? `${minutes}m ${seconds}s` : `${seconds}s`;\n}\n\nexport function AgentProgress({\n  label = \"Churning\",\n  elapsedSeconds,\n  initialSeconds = 0,\n  running = true,\n  className,\n}: AgentProgressProps) {\n  const reduce = useReducedMotion() ?? false;\n  const [internalSeconds, setInternalSeconds] = useState(initialSeconds);\n\n  useEffect(() => {\n    if (elapsedSeconds !== undefined || !running) return;\n\n    const startedAt = performance.now() - initialSeconds * 1000;\n    const timer = window.setInterval(() => {\n      setInternalSeconds((performance.now() - startedAt) / 1000);\n    }, 100);\n\n    return () => window.clearInterval(timer);\n  }, [elapsedSeconds, initialSeconds, running]);\n\n  const elapsed = elapsedSeconds ?? internalSeconds;\n\n  return (\n    <span\n      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n      role=\"status\"\n      aria-label={`${label}, in progress`}\n      className={cn(\n        \"inline-flex items-center gap-3 font-mono text-sm text-muted-foreground\",\n        className,\n      )}\n    >\n      <span\n        aria-hidden=\"true\"\n        className=\"grid size-5 shrink-0 grid-cols-3 gap-[2px]\"\n      >\n        {GRID_CELLS.map(({ id, delay }) => (\n          <motion.span\n            key={id}\n            className=\"rounded-[1px] bg-current\"\n            animate={\n              reduce\n                ? { opacity: [0.35, 0.8, 0.35] }\n                : {\n                    opacity: [0.28, 1, 0.28],\n                    scale: [0.72, 1, 0.72],\n                  }\n            }\n            transition={{\n              duration: 1.55,\n              ease: EASE_IN_OUT,\n              repeat: Infinity,\n              delay,\n            }}\n          />\n        ))}\n      </span>\n      <span className=\"font-sans font-medium\">{label}</span>\n      <span\n        aria-hidden=\"true\"\n        className=\"tabular-nums text-muted-foreground/70\"\n      >\n        {formatElapsed(elapsed)}\n      </span>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "agents"
+  ],
+  "meta": {
+    "group": "agents",
+    "docs": "https://ui.designx.dev/docs/components/agent-progress"
+  }
+}

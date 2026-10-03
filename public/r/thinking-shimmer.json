@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "thinking-shimmer",
+  "type": "registry:component",
+  "title": "Thinking Shimmer",
+  "description": "A shimmering “Thinking…” label for the moment before the first token.",
+  "registryDependencies": [
+    "@dx/motion-text-shimmer",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/agents/loading-states/thinking-shimmer.tsx",
+      "type": "registry:component",
+      "target": "components/agents/loading-states/thinking-shimmer.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport { TextShimmer } from \"@/components/motion/text-shimmer\";\nimport { cn } from \"@/lib/utils\";\n\nexport interface ThinkingShimmerProps {\n  /** Loading message shown to the user. */\n  children?: ReactNode;\n  /** Seconds taken for one shimmer pass. */\n  duration?: number;\n  className?: string;\n}\n\nexport function ThinkingShimmer({\n  children = \"Thinking…\",\n  duration = 1.8,\n  className,\n}: ThinkingShimmerProps) {\n  return (\n    <TextShimmer\n      as=\"span\"\n      duration={duration}\n      className={cn(\"font-medium\", className)}\n    >\n      {children}\n    </TextShimmer>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "agents"
+  ],
+  "meta": {
+    "group": "agents",
+    "docs": "https://ui.designx.dev/docs/components/thinking-shimmer"
+  }
+}

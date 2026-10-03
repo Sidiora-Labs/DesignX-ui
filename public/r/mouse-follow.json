@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "mouse-follow",
+  "type": "registry:component",
+  "title": "Mouse Follow",
+  "description": "A springy custom cursor that follows the pointer within an area.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/mouse-follow.tsx",
+      "type": "registry:component",
+      "target": "components/dx/mouse-follow.tsx",
+      "content": "import * as React from \"react\";\nimport { motion, useMotionValue, useSpring, type SpringOptions } from \"motion/react\";\n\nimport { cn } from \"@/lib/utils\";\n\n/**\n * MouseFollowa region with a custom cursor that tracks the pointer, either\n * 1:1 or on a spring.\n */\n\nconst DEFAULT_SPRING: SpringOptions = { mass: 0.1, damping: 10, stiffness: 131 };\n\ntype MouseFollowProps = Omit<React.ComponentProps<\"div\">, \"onPointerMove\" | \"onPointerEnter\" | \"onPointerLeave\"> & {\n  /** Follow on a spring (true) or exactly (false). */\n  spring?: boolean | SpringOptions;\n  /** The follower. Defaults to a dot. */\n  cursor?: React.ReactNode;\n  /** Diameter of the default dot in px. */\n  size?: number;\n  /** Hide the native cursor inside the region. */\n  hideCursor?: boolean;\n  cursorClassName?: string;\n};\n\nfunction MouseFollow({\n  spring = true,\n  cursor,\n  size = 20,\n  hideCursor = false,\n  className,\n  cursorClassName,\n  children,\n  ...props\n}: MouseFollowProps) {\n  const opts = spring === true ? DEFAULT_SPRING : spring || { stiffness: 100000, damping: 1000, mass: 0.001 };\n  const rawX = useMotionValue(0);\n  const rawY = useMotionValue(0);\n  const sx = useSpring(rawX, opts);\n  const sy = useSpring(rawY, opts);\n  const presence = useSpring(0, spring ? opts : { stiffness: 600, damping: 40 });\n  const x = spring ? sx : rawX;\n  const y = spring ? sy : rawY;\n\n  return (\n    <div\n      data-slot=\"mouse-follow\"\n      className={cn(\"relative overflow-hidden\", hideCursor && \"cursor-none\", className)}\n      onPointerMove={(e) => {\n        const r = e.currentTarget.getBoundingClientRect();\n        rawX.set(e.clientX - r.left);\n        rawY.set(e.clientY - r.top);\n      }}\n      onPointerEnter={(e) => {\n        const r = e.currentTarget.getBoundingClientRect();\n        rawX.jump(e.clientX - r.left);\n        rawY.jump(e.clientY - r.top);\n        sx.jump(e.clientX - r.left);\n        sy.jump(e.clientY - r.top);\n        presence.set(1);\n      }}\n      onPointerLeave={() => presence.set(0)}\n      {...props}\n    >\n      {children}\n      <motion.div\n        aria-hidden\n        data-slot=\"mouse-follow-cursor\"\n        style={{ x, y, opacity: presence, scale: presence, translateX: \"-50%\", translateY: \"-50%\" }}\n        className={cn(\"pointer-events-none absolute top-0 left-0 z-10\", cursorClassName)}\n      >\n        {cursor ?? <div style={{ width: size, height: size }} className=\"rounded-full bg-foreground/80\" />}\n      </motion.div>\n    </div>\n  );\n}\n\nexport { MouseFollow };\nexport type { MouseFollowProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/mouse-follow"
+  }
+}

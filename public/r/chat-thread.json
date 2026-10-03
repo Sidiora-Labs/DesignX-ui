@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "chat-thread",
+  "type": "registry:component",
+  "title": "Chat Thread",
+  "description": "An auto-scrolling message log with bubbles and a thinking indicator.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/text-shimmer",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "dx/chat-thread.tsx",
+      "type": "registry:component",
+      "target": "components/dx/chat-thread.tsx",
+      "content": "import * as React from \"react\";\nimport { AnimatePresence, motion } from \"motion/react\";\n\nimport { TextShimmer } from \"@/components/dx/text-shimmer\";\nimport { cn } from \"@/lib/utils\";\n\n/**\n * ChatThreada scrolling message list that sticks to the newest message,\n * with spring-in bubbles and a shimmering \"thinking\" row.\n */\n\ntype ChatThreadProps = React.ComponentProps<\"div\"> & {\n  /** Fade messages under the top edge. */\n  fade?: boolean;\n};\n\nfunction ChatThread({ className, children, fade = true, ...props }: ChatThreadProps) {\n  const ref = React.useRef<HTMLDivElement>(null);\n  const endRef = React.useRef<HTMLDivElement>(null);\n  const count = React.Children.count(children);\n\n  React.useLayoutEffect(() => {\n    const el = ref.current;\n    if (!el) return;\n    el.scrollTo({ top: el.scrollHeight, behavior: \"smooth\" });\n  }, [count]);\n\n  return (\n    <div\n      ref={ref}\n      data-slot=\"chat-thread\"\n      role=\"log\"\n      aria-live=\"polite\"\n      className={cn(\"flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain px-1 py-4\", className)}\n      style={fade ? { maskImage: \"linear-gradient(to bottom, transparent 0, #000 40px)\", WebkitMaskImage: \"linear-gradient(to bottom, transparent 0, #000 40px)\" } : undefined}\n      {...props}\n    >\n      <div className=\"mt-auto\" />\n      <AnimatePresence initial={false}>{children}</AnimatePresence>\n      <div ref={endRef} />\n    </div>\n  );\n}\n\ntype ChatBubbleProps = Omit<React.ComponentProps<typeof motion.div>, \"children\"> & {\n  from?: \"user\" | \"assistant\";\n  children?: React.ReactNode;\n};\n\nfunction ChatBubble({ from = \"user\", className, children, ...props }: ChatBubbleProps) {\n  const user = from === \"user\";\n  return (\n    <motion.div\n      layout=\"position\"\n      data-slot=\"chat-bubble\"\n      data-from={from}\n      initial={{ opacity: 0, y: 14, scale: 0.98 }}\n      animate={{ opacity: 1, y: 0, scale: 1 }}\n      exit={{ opacity: 0, scale: 0.96 }}\n      transition={{ type: \"spring\", stiffness: 380, damping: 30 }}\n      className={cn(\n        \"w-fit max-w-[80%] px-4 py-2.5 text-[15px] leading-[1.45] break-words\",\n        user\n          ? \"self-end rounded-[18px_18px_6px_18px] bg-container-high text-foreground\"\n          : \"self-start rounded-[18px_18px_18px_6px] text-foreground\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </motion.div>\n  );\n}\n\nfunction ChatThinking({ label = \"Thinking…\", className }: { label?: string; className?: string }) {\n  return (\n    <motion.div\n      data-slot=\"chat-thinking\"\n      initial={{ opacity: 0, y: 10 }}\n      animate={{ opacity: 1, y: 0 }}\n      exit={{ opacity: 0 }}\n      transition={{ delay: 0.2 }}\n      className={cn(\"self-start px-4 py-2.5 text-[15px]\", className)}\n    >\n      <TextShimmer>{label}</TextShimmer>\n    </motion.div>\n  );\n}\n\nexport { ChatBubble, ChatThinking, ChatThread };\nexport type { ChatBubbleProps, ChatThreadProps };\n"
+    }
+  ],
+  "categories": [
+    "motion"
+  ],
+  "meta": {
+    "group": "dx",
+    "docs": "https://ui.designx.dev/docs/components/chat-thread"
+  }
+}
