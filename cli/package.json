@@ -10,7 +10,7 @@
   },
   "license": "MIT",
   "bin": {
-    "dx-ui": "./bin/dx-ui.mjs"
+    "dx-ui": "bin/dx-ui.mjs"
   },
   "files": [
     "bin/",
