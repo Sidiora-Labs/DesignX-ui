@@ -2,11 +2,33 @@
  
 ![designx.png](designx.png)
 
+<p align="center">
+  <a href="https://www.npmjs.com/package/@sidioralabs/designx-ui"><img alt="npm version" src="https://img.shields.io/npm/v/@sidioralabs/designx-ui?style=flat-square&color=3b6bff"></a>
+  <a href="https://www.npmjs.com/package/@sidioralabs/designx-ui"><img alt="npm downloads" src="https://img.shields.io/npm/dm/@sidioralabs/designx-ui?style=flat-square"></a>
+  <a href="https://github.com/Sidiora-Labs/DesignX-ui/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/Sidiora-Labs/DesignX-ui/ci.yml?style=flat-square&label=CI"></a>
+  <a href="https://github.com/Sidiora-Labs/DesignX-ui/actions/workflows/release.yml"><img alt="Release" src="https://img.shields.io/github/actions/workflow/status/Sidiora-Labs/DesignX-ui/release.yml?style=flat-square&label=release"></a>
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/Sidiora-Labs/DesignX-ui?style=flat-square"></a>
+  <a href="https://www.npmjs.com/package/@sidioralabs/designx-ui"><img alt="Node.js version" src="https://img.shields.io/node/v/@sidioralabs/designx-ui?style=flat-square"></a>
+  <a href="https://github.com/Sidiora-Labs/DesignX-ui/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Sidiora-Labs/DesignX-ui?style=flat-square"></a>
+  <a href="CONTRIBUTING.md"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square"></a>
+</p>
+
+<p align="center">
+  <img alt="React 19" src="https://img.shields.io/badge/React-19-61dafb?style=flat-square&logo=react&logoColor=white">
+  <img alt="Tailwind CSS 4" src="https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?style=flat-square&logo=tailwindcss&logoColor=white">
+  <img alt="Base UI" src="https://img.shields.io/badge/Base_UI-1.x-121317?style=flat-square">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178c6?style=flat-square&logo=typescript&logoColor=white">
+  <img alt="shadcn compatible" src="https://img.shields.io/badge/shadcn-compatible-000000?style=flat-square&logo=shadcnui&logoColor=white">
+</p>
+
+<p align="center">
+  
 Accessible, motion-first React components built on [Base UI](https://base-ui.com), [Tailwind CSS 4](https://tailwindcss.com), and [Motion](https://motion.dev).
 
 DesignX UI is not a dependency you wrap. You copy components into your project, and the source becomes yours to read, change, and ship. The CLI handles registry dependencies, npm packages, and import aliases.
 
 **Documentation:** [dxuireact.com](https://dxuireact.com)
+</p>
 
 ## Quick start
 
