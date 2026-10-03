@@ -53,9 +53,9 @@ function Cmd({ value, dim }: { value: string; dim?: boolean }) {
 export function GettingStarted() {
   return (
     <section aria-labelledby="landing-start" className="mx-auto max-w-[1200px] px-4 pb-24 md:px-6">
-      <div className="mb-8 px-1">
+      <div className="mb-7 px-1 sm:mb-8">
         <p className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">Getting started</p>
-        <h2 id="landing-start" className="mt-3 text-[clamp(1.9rem,4vw,2.75rem)] leading-[1.08] font-normal tracking-[-0.03em]">
+        <h2 id="landing-start" className="mt-3 text-[clamp(1.8rem,7vw,2.75rem)] leading-[1.08] font-normal tracking-[-0.03em]">
           Three commands. <span className="text-muted-foreground">Then it's your code.</span>
         </h2>
       </div>
@@ -63,7 +63,7 @@ export function GettingStarted() {
         {STEPS.map((s) => {
           const Icon = s.icon;
           return (
-            <li key={s.n} className="flex flex-col gap-4 rounded-[28px] border border-outline-variant bg-background p-5">
+            <li key={s.n} className="flex min-w-0 flex-col gap-4 rounded-[24px] border border-outline-variant bg-background p-4 sm:rounded-[28px] sm:p-5">
               <div className="flex items-center justify-between">
                 <span className="grid size-10 place-items-center rounded-full bg-container">
                   <Icon className="size-4" />
@@ -74,7 +74,7 @@ export function GettingStarted() {
                 <h3 className="text-lg font-medium tracking-[-0.01em]">{s.title}</h3>
                 <p className="mt-1 text-[14px] leading-relaxed text-muted-foreground">{s.body}</p>
               </div>
-              <div className="mt-auto grid gap-2">
+              <div className="mt-auto grid min-w-0 gap-2">
                 <Cmd value={s.cmd} />
                 {s.alt && <Cmd value={s.alt} dim />}
               </div>
@@ -126,10 +126,10 @@ const FAQ = [
 
 export function Faq() {
   return (
-    <section aria-labelledby="landing-faq" className="mx-auto grid max-w-[1200px] gap-8 px-4 pb-24 md:grid-cols-[1fr_1.4fr] md:px-6">
+    <section aria-labelledby="landing-faq" className="mx-auto grid max-w-[1200px] gap-6 px-4 pb-20 sm:gap-8 sm:pb-24 md:grid-cols-[1fr_1.4fr] md:px-6">
       <div className="px-1">
         <p className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">FAQ</p>
-        <h2 id="landing-faq" className="mt-3 text-[clamp(1.9rem,4vw,2.75rem)] leading-[1.08] font-normal tracking-[-0.03em]">
+        <h2 id="landing-faq" className="mt-3 text-[clamp(1.8rem,7vw,2.75rem)] leading-[1.08] font-normal tracking-[-0.03em]">
           Questions, answered.
         </h2>
         <p className="mt-3 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
@@ -146,8 +146,8 @@ export function Faq() {
 
 export function BuildCta() {
   return (
-    <section className="mx-auto max-w-[1200px] px-4 pb-24 md:px-6">
-      <div className="accent-dx-gradient relative isolate overflow-hidden rounded-[36px] border border-outline-variant bg-background px-6 py-16 text-center md:py-24">
+    <section className="mx-auto max-w-[1200px] px-4 pb-20 sm:pb-24 md:px-6">
+      <div className="accent-dx-gradient relative isolate overflow-hidden rounded-[28px] border border-outline-variant bg-background px-4 py-12 text-center sm:rounded-[36px] sm:px-6 sm:py-16 md:py-24">
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 opacity-70 blur-3xl dark:opacity-50"
@@ -158,7 +158,7 @@ export function BuildCta() {
         />
         <div className="bg-grid pointer-events-none absolute inset-0 -z-10 opacity-40 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
         <DxMark className="mx-auto size-12" />
-        <h2 className="mx-auto mt-6 max-w-2xl text-[clamp(2rem,5vw,3.5rem)] leading-[1.04] font-normal tracking-[-0.04em]">
+        <h2 className="mx-auto mt-6 max-w-2xl text-[clamp(1.9rem,8vw,3.5rem)] leading-[1.04] font-normal tracking-[-0.04em] sm:text-[clamp(2rem,5vw,3.5rem)]">
           Build with DX UI.
         </h2>
         <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed text-muted-foreground">

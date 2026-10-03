@@ -49,7 +49,7 @@ export function KitCard({ slug, size = "s" }: { slug: string; size?: CardSize })
   return (
     <article
       ref={ref}
-      className={cn("group/card relative h-full min-h-[260px]", SPAN[size])}
+      className={cn("group/card relative h-full min-h-[220px] sm:min-h-[260px]", SPAN[size])}
       onPointerEnter={() => setHover(true)}
       onPointerLeave={() => setHover(false)}
       onFocus={() => setHover(true)}

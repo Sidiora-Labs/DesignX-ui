@@ -236,13 +236,15 @@ export default function Index() {
         <section className="relative overflow-hidden">
           <div className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-60" />
           <div className="relative mx-auto max-w-[1200px] px-4 pt-20 pb-14 text-center md:px-6 md:pt-28">
-            <Link href="/docs/components/chat-app" className="animate-rise focus-ring mb-7 inline-flex rounded-full">
-              <Badge variant="tonal" className="h-7 gap-2 px-3">
-                <span className="size-1.5 rounded-full bg-[var(--dx-blue-3)]" /> {kits} new: Agents · Charts · Motion Kit <ArrowRightIcon />
+            <Link href="/docs/components/chat-app" className="animate-rise focus-ring mb-6 inline-flex max-w-full rounded-full sm:mb-7">
+              <Badge variant="tonal" className="h-auto min-h-7 max-w-full gap-2 px-3 py-1 text-left text-xs sm:text-sm">
+                <span className="size-1.5 shrink-0 rounded-full bg-[var(--dx-blue-3)]" />
+                <span className="min-w-0">{kits} new: Agents · Charts · Motion Kit</span>
+                <ArrowRightIcon className="size-3.5 shrink-0" />
               </Badge>
             </Link>
             <h1
-              className="animate-rise mx-auto max-w-4xl text-[clamp(2.75rem,7vw,5.5rem)] leading-[1.02] font-normal tracking-[-0.045em]"
+              className="animate-rise mx-auto max-w-4xl text-[clamp(2.25rem,9vw,5.5rem)] leading-[1.02] font-normal tracking-[-0.045em] sm:text-[clamp(2.75rem,7vw,5.5rem)]"
               style={{ animationDelay: "60ms" }}
             >
               The component system
@@ -251,33 +253,34 @@ export default function Index() {
                 for calm interfaces.
               </span>
             </h1>
-            <p className="animate-rise mx-auto mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground" style={{ animationDelay: "120ms" }}>
+            <p className="animate-rise mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg" style={{ animationDelay: "120ms" }}>
               {catalog.length - (catalog.length % 10)}+ accessible components on Base UI, Tailwind 4 and Motion. Copy them in, then make them yours.
             </p>
-            <div className="animate-rise mt-9 flex flex-wrap items-center justify-center gap-3" style={{ animationDelay: "180ms" }}>
-              <Button size="lg" render={<Link href="/docs" />}>
+            <div className="animate-rise mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-9 sm:flex-row sm:items-center" style={{ animationDelay: "180ms" }}>
+              <Button size="lg" className="w-full sm:w-auto" render={<Link href="/docs" />}>
                 Get started <ArrowRightIcon />
               </Button>
-              <Button size="lg" variant="tonal" render={<Link href="/docs/components/button" />}>
+              <Button size="lg" variant="tonal" className="w-full sm:w-auto" render={<Link href="/docs/components/button" />}>
                 Browse components
               </Button>
             </div>
             <div
-              className="animate-rise mx-auto mt-6 flex w-fit items-center gap-3 rounded-full border border-outline-variant bg-background py-1.5 pr-1.5 pl-4 font-mono text-[13px]"
+              className="animate-rise mx-auto mt-5 flex w-full max-w-full items-center gap-2 rounded-2xl border border-outline-variant bg-background p-2 pl-3 text-left font-mono text-[11px] sm:mt-6 sm:w-fit sm:items-center sm:gap-3 sm:rounded-full sm:py-1.5 sm:pr-1.5 sm:pl-4 sm:text-[13px]"
               style={{ animationDelay: "240ms" }}
             >
-              <span className="text-muted-foreground">$</span> {INSTALL}
-              <CopyButton value={INSTALL} />
+              <span className="shrink-0 text-muted-foreground">$</span>
+              <code className="min-w-0 flex-1 break-all sm:flex-none sm:break-normal">{INSTALL}</code>
+              <CopyButton text={INSTALL} className="shrink-0" />
             </div>
           </div>
         </section>
         <section className="mx-auto max-w-[1200px] px-4 pb-24 md:px-6">
-          <div className="mb-6 flex flex-wrap items-end justify-between gap-4 px-1">
-            <div>
-              <h2 className="text-2xl font-normal tracking-[-0.02em]">Everything here is live.</h2>
-              <p className="mt-1 text-[15px] text-muted-foreground">Click, type and drag. Every tile is built from registry components.</p>
+          <div className="mb-6 flex flex-col gap-4 px-1 sm:flex-row sm:items-end sm:justify-between">
+            <div className="min-w-0">
+              <h2 className="text-xl font-normal tracking-[-0.02em] sm:text-2xl">Everything here is live.</h2>
+              <p className="mt-1 max-w-2xl text-sm text-muted-foreground sm:text-[15px]">Click, type and drag. Every tile is built from registry components.</p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <Button variant="outline" render={<Link href="/blocks" />}>
                 View blocks
               </Button>
@@ -286,7 +289,7 @@ export default function Index() {
               </Button>
             </div>
           </div>
-          <div className="rounded-[36px] bg-container p-3 md:p-4">
+          <div className="rounded-[24px] bg-container p-2 sm:rounded-[36px] sm:p-3 md:p-4">
             <Showcase />
           </div>
         </section>

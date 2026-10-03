@@ -77,13 +77,13 @@ export function KitsSection() {
 
   return (
     <section aria-labelledby="landing-kits" className="mx-auto max-w-[1200px] px-4 pb-24 md:px-6">
-      <div className="mb-8 flex flex-col items-center text-center">
+      <div className="mb-7 flex flex-col items-center text-center sm:mb-8">
         <p className="text-[11px] font-medium tracking-[0.14em] text-muted-foreground uppercase">New in DX UI</p>
-        <h2 id="landing-kits" className="mt-3 max-w-2xl text-[clamp(1.9rem,4vw,2.75rem)] leading-[1.08] font-normal tracking-[-0.03em]">
+        <h2 id="landing-kits" className="mt-3 max-w-2xl text-[clamp(1.8rem,7vw,2.75rem)] leading-[1.08] font-normal tracking-[-0.03em] sm:text-[clamp(1.9rem,4vw,2.75rem)]">
           Three new kits.{" "}
           <span className="text-muted-foreground">{catalog.filter((c) => c.src).length} components, all live below.</span>
         </h2>
-        <div role="tablist" aria-label="Kits" className="mt-8 inline-flex rounded-full bg-container p-1">
+        <div role="tablist" aria-label="Kits" className="mt-6 grid w-full max-w-full grid-cols-3 rounded-[20px] bg-container p-1 sm:mt-8 sm:inline-flex sm:w-auto sm:rounded-full">
           {KITS.map((k) => {
             const on = k.id === active;
             const Icon = k.icon;
@@ -96,7 +96,7 @@ export function KitsSection() {
                 aria-controls="landing-kit-panel"
                 onClick={() => setActive(k.id)}
                 className={cn(
-                  "focus-ring relative flex h-10 items-center gap-2 rounded-full px-4 text-sm font-medium transition-colors",
+                  "focus-ring relative flex h-10 min-w-0 items-center justify-center gap-1.5 rounded-[16px] px-2 text-xs font-medium transition-colors sm:gap-2 sm:rounded-full sm:px-4 sm:text-sm",
                   on ? "text-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
@@ -107,9 +107,9 @@ export function KitsSection() {
                     className="absolute inset-0 rounded-full bg-background shadow-[0_1px_2px_rgba(0,0,0,0.06),0_2px_8px_rgba(0,0,0,0.04)]"
                   />
                 )}
-                <Icon className="relative size-4" />
-                <span className="relative">{k.label}</span>
-                <span className="relative font-mono text-[11px] text-muted-foreground tabular-nums">
+                <Icon className="relative size-4 shrink-0" />
+                <span className="relative truncate">{k.label}</span>
+                <span className="relative hidden font-mono text-[11px] text-muted-foreground tabular-nums sm:inline">
                   {catalog.filter((c) => c.group === k.id).length}
                 </span>
               </button>
@@ -127,13 +127,13 @@ export function KitsSection() {
             exit={reduce ? undefined : { opacity: 0, y: -8, filter: "blur(4px)" }}
             transition={{ duration: 0.35, ease: EASE_OUT }}
           >
-            <div className="mb-5 flex flex-col justify-between gap-4 px-1 sm:flex-row sm:items-end">
-              <p className="max-w-xl text-[15px] leading-relaxed text-muted-foreground">{kit.blurb}</p>
-              <Button variant="outline" className="shrink-0" render={<Link href={`/docs/components/${kit.first}`} />}>
+            <div className="mb-5 flex flex-col justify-between gap-3 px-1 sm:flex-row sm:items-end sm:gap-4">
+              <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-[15px]">{kit.blurb}</p>
+              <Button variant="outline" className="w-full shrink-0 sm:w-auto" render={<Link href={`/docs/components/${kit.first}`} />}>
                 Browse all {count} <ArrowRightIcon />
               </Button>
             </div>
-            <div className="grid auto-rows-[280px] grid-flow-dense gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="grid auto-rows-[240px] grid-flow-dense gap-3 sm:auto-rows-[280px] sm:grid-cols-2 lg:grid-cols-4">
               {kit.cards.map(([slug, size]) => (
                 <KitCard key={slug} slug={slug} size={size} />
               ))}
