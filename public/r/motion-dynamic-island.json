@@ -4,7 +4,7 @@
   "name": "motion-dynamic-island",
   "type": "registry:component",
   "title": "Live Activity Island",
-  "description": "A pill that morphs between live states.",
+  "description": "A pill that morphs between live activities.",
   "dependencies": [
     "motion@^14.0.0"
   ],
