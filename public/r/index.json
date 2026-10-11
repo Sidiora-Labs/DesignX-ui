@@ -1131,6 +1131,200 @@
     ]
   },
   {
+    "name": "agent-avatar",
+    "type": "registry:component",
+    "title": "Agent Avatar",
+    "description": "A generative pixel avatar for AI agents — unique per seed, drawn on canvas.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-approval",
+    "type": "registry:component",
+    "title": "AI Approval",
+    "description": "A human-in-the-loop card where the chosen option expands to fill it while the rest collapse away.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-artifact",
+    "type": "registry:component",
+    "title": "AI Artifact",
+    "description": "A generated-artifact frame whose preview and code panes swap along a shared axis.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-branch",
+    "type": "registry:component",
+    "title": "AI Branch",
+    "description": "Step between alternate responses in a conversation, with a sliding branch counter.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-citation",
+    "type": "registry:component",
+    "title": "AI Citation",
+    "description": "An inline citation pill that opens a source card anchored to where it came from.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-context-meter",
+    "type": "registry:component",
+    "title": "Context Meter",
+    "description": "A context-window ring that fills and shifts hue at the warning threshold.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-conversation",
+    "type": "registry:component",
+    "title": "AI Conversation",
+    "description": "A thread container that follows the bottom only while you're there, with a jump-to-latest pill.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-core",
+    "type": "registry:component",
+    "title": "AI Core",
+    "description": "The shared AI state contract — per-state motion presets and microphone amplitude hooks.",
+    "registryDependencies": []
+  },
+  {
+    "name": "ai-diff",
+    "type": "registry:component",
+    "title": "AI Diff",
+    "description": "A proposed edit where added lines wipe in and rejected lines collapse to nothing.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-loader",
+    "type": "registry:component",
+    "title": "AI Loader",
+    "description": "A family of waiting indicators — dots, sweep bar and pixel grid — on one shared cycle.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-message",
+    "type": "registry:component",
+    "title": "AI Message",
+    "description": "A message bubble whose action row slides out of its own edge on hover and focus.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-orb-face",
+    "type": "registry:component",
+    "title": "Orb Face",
+    "description": "A character orb whose expression carries the AI state — gaze, blinks, thinking and joy.",
+    "registryDependencies": [
+      "ai-core",
+      "orb",
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-prompt-input",
+    "type": "registry:component",
+    "title": "AI Prompt Input",
+    "description": "An autogrowing composer with attachment chips and a send-to-stop morph.",
+    "registryDependencies": [
+      "ai-core",
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-reasoning",
+    "type": "registry:component",
+    "title": "AI Reasoning",
+    "description": "A collapsible reasoning trace that shimmers while the model works and reports how long it took.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-response",
+    "type": "registry:component",
+    "title": "AI Response",
+    "description": "Streaming text where words animate in as they arrive, with a riding caret and citation pills.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-sources",
+    "type": "registry:component",
+    "title": "AI Sources",
+    "description": "A favicon stack that fans out and expands into a source list, each icon morphing into its row.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-suggestions",
+    "type": "registry:component",
+    "title": "AI Suggestions",
+    "description": "Prompt chips that radiate in from the centre of the row.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-task-list",
+    "type": "registry:component",
+    "title": "AI Task List",
+    "description": "A live agent plan with nested steps, drawn checkmarks and a travelling underline.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "ai-tool-call",
+    "type": "registry:component",
+    "title": "AI Tool Call",
+    "description": "A collapsible tool invocation whose status ring breathes, spins, then draws a check or cross.",
+    "registryDependencies": [
+      "utils"
+    ]
+  },
+  {
+    "name": "image-generation-panel",
+    "type": "registry:component",
+    "title": "Image Generation Panel",
+    "description": "A text-to-image console — prompt and settings, then a 2×2 batch resolving from mosaic to sharp.",
+    "registryDependencies": [
+      "ai-core",
+      "ai-loader",
+      "ai-prompt-input",
+      "utils"
+    ]
+  },
+  {
+    "name": "voice-orb",
+    "type": "registry:component",
+    "title": "Voice Orb",
+    "description": "A softly rotating conic orb for voice assistants and AI presence.",
+    "registryDependencies": [
+      "ai-core",
+      "utils"
+    ]
+  },
+  {
     "name": "composition-chart",
     "type": "registry:component",
     "title": "Composition Chart",
@@ -1723,7 +1917,7 @@
     "name": "motion-dynamic-island",
     "type": "registry:component",
     "title": "Live Activity Island",
-    "description": "A pill that morphs between live states.",
+    "description": "A pill that morphs between live activities.",
     "registryDependencies": [
       "lib-ease",
       "utils"
@@ -2201,200 +2395,6 @@
     "title": "Shader Background",
     "description": "An animated WebGL gradient background.",
     "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "agent-avatar",
-    "type": "registry:component",
-    "title": "Agent Avatar",
-    "description": "A generative pixel avatar for AI agents — unique per seed, drawn on canvas.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-approval",
-    "type": "registry:component",
-    "title": "AI Approval",
-    "description": "A human-in-the-loop card where the chosen option expands to fill it while the rest collapse away.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-artifact",
-    "type": "registry:component",
-    "title": "AI Artifact",
-    "description": "A generated-artifact frame whose preview and code panes swap along a shared axis.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-branch",
-    "type": "registry:component",
-    "title": "AI Branch",
-    "description": "Step between alternate responses in a conversation, with a sliding branch counter.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-citation",
-    "type": "registry:component",
-    "title": "AI Citation",
-    "description": "An inline citation pill that opens a source card anchored to where it came from.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-context-meter",
-    "type": "registry:component",
-    "title": "Context Meter",
-    "description": "A context-window ring that fills and shifts hue at the warning threshold.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-conversation",
-    "type": "registry:component",
-    "title": "AI Conversation",
-    "description": "A thread container that follows the bottom only while you're there, with a jump-to-latest pill.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-core",
-    "type": "registry:component",
-    "title": "AI Core",
-    "description": "The shared AI state contract — per-state motion presets and microphone amplitude hooks.",
-    "registryDependencies": []
-  },
-  {
-    "name": "ai-diff",
-    "type": "registry:component",
-    "title": "AI Diff",
-    "description": "A proposed edit where added lines wipe in and rejected lines collapse to nothing.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-loader",
-    "type": "registry:component",
-    "title": "AI Loader",
-    "description": "A family of waiting indicators — dots, sweep bar and pixel grid — on one shared cycle.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-message",
-    "type": "registry:component",
-    "title": "AI Message",
-    "description": "A message bubble whose action row slides out of its own edge on hover and focus.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-orb-face",
-    "type": "registry:component",
-    "title": "Orb Face",
-    "description": "A character orb whose expression carries the AI state — gaze, blinks, thinking and joy.",
-    "registryDependencies": [
-      "ai-core",
-      "orb",
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-prompt-input",
-    "type": "registry:component",
-    "title": "AI Prompt Input",
-    "description": "An autogrowing composer with attachment chips and a send-to-stop morph.",
-    "registryDependencies": [
-      "ai-core",
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-reasoning",
-    "type": "registry:component",
-    "title": "AI Reasoning",
-    "description": "A collapsible reasoning trace that shimmers while the model works and reports how long it took.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-response",
-    "type": "registry:component",
-    "title": "AI Response",
-    "description": "Streaming text where words animate in as they arrive, with a riding caret and citation pills.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-sources",
-    "type": "registry:component",
-    "title": "AI Sources",
-    "description": "A favicon stack that fans out and expands into a source list, each icon morphing into its row.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-suggestions",
-    "type": "registry:component",
-    "title": "AI Suggestions",
-    "description": "Prompt chips that radiate in from the centre of the row.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-task-list",
-    "type": "registry:component",
-    "title": "AI Task List",
-    "description": "A live agent plan with nested steps, drawn checkmarks and a travelling underline.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "ai-tool-call",
-    "type": "registry:component",
-    "title": "AI Tool Call",
-    "description": "A collapsible tool invocation whose status ring breathes, spins, then draws a check or cross.",
-    "registryDependencies": [
-      "utils"
-    ]
-  },
-  {
-    "name": "image-generation-panel",
-    "type": "registry:component",
-    "title": "Image Generation Panel",
-    "description": "A text-to-image console — prompt and settings, then a 2×2 batch resolving from mosaic to sharp.",
-    "registryDependencies": [
-      "ai-core",
-      "ai-loader",
-      "ai-prompt-input",
-      "utils"
-    ]
-  },
-  {
-    "name": "voice-orb",
-    "type": "registry:component",
-    "title": "Voice Orb",
-    "description": "A softly rotating conic orb for voice assistants and AI presence.",
-    "registryDependencies": [
-      "ai-core",
       "utils"
     ]
   },

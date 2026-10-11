@@ -3522,6 +3522,584 @@
     },
     {
       "author": "DesignX <ui@designx.dev>",
+      "name": "agent-avatar",
+      "type": "registry:component",
+      "title": "Agent Avatar",
+      "description": "A generative pixel avatar for AI agents — unique per seed, drawn on canvas.",
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/agent-avatar.tsx",
+          "type": "registry:component",
+          "target": "components/agents/agent-avatar.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/agent-avatar"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-approval",
+      "type": "registry:component",
+      "title": "AI Approval",
+      "description": "A human-in-the-loop card where the chosen option expands to fill it while the rest collapse away.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-approval.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-approval.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-approval"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-artifact",
+      "type": "registry:component",
+      "title": "AI Artifact",
+      "description": "A generated-artifact frame whose preview and code panes swap along a shared axis.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-artifact.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-artifact.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-artifact"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-branch",
+      "type": "registry:component",
+      "title": "AI Branch",
+      "description": "Step between alternate responses in a conversation, with a sliding branch counter.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-branch.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-branch.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-branch"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-citation",
+      "type": "registry:component",
+      "title": "AI Citation",
+      "description": "An inline citation pill that opens a source card anchored to where it came from.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-citation.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-citation.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-citation"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-context-meter",
+      "type": "registry:component",
+      "title": "Context Meter",
+      "description": "A context-window ring that fills and shifts hue at the warning threshold.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-context-meter.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-context-meter.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-context-meter"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-conversation",
+      "type": "registry:component",
+      "title": "AI Conversation",
+      "description": "A thread container that follows the bottom only while you're there, with a jump-to-latest pill.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-conversation.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-conversation.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-conversation"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-core",
+      "type": "registry:component",
+      "title": "AI Core",
+      "description": "The shared AI state contract — per-state motion presets and microphone amplitude hooks.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-core.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-core.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-core"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-diff",
+      "type": "registry:component",
+      "title": "AI Diff",
+      "description": "A proposed edit where added lines wipe in and rejected lines collapse to nothing.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-diff.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-diff.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-diff"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-loader",
+      "type": "registry:component",
+      "title": "AI Loader",
+      "description": "A family of waiting indicators — dots, sweep bar and pixel grid — on one shared cycle.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-loader.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-loader.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-loader"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-message",
+      "type": "registry:component",
+      "title": "AI Message",
+      "description": "A message bubble whose action row slides out of its own edge on hover and focus.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-message.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-message.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-message"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-orb-face",
+      "type": "registry:component",
+      "title": "Orb Face",
+      "description": "A character orb whose expression carries the AI state — gaze, blinks, thinking and joy.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/ai-core",
+        "@dx/orb",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-orb-face.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-orb-face.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-orb-face"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-prompt-input",
+      "type": "registry:component",
+      "title": "AI Prompt Input",
+      "description": "An autogrowing composer with attachment chips and a send-to-stop morph.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/ai-core",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-prompt-input.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-prompt-input.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-prompt-input"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-reasoning",
+      "type": "registry:component",
+      "title": "AI Reasoning",
+      "description": "A collapsible reasoning trace that shimmers while the model works and reports how long it took.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-reasoning.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-reasoning.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-reasoning"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-response",
+      "type": "registry:component",
+      "title": "AI Response",
+      "description": "Streaming text where words animate in as they arrive, with a riding caret and citation pills.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-response.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-response.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-response"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-sources",
+      "type": "registry:component",
+      "title": "AI Sources",
+      "description": "A favicon stack that fans out and expands into a source list, each icon morphing into its row.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-sources.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-sources.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-sources"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-suggestions",
+      "type": "registry:component",
+      "title": "AI Suggestions",
+      "description": "Prompt chips that radiate in from the centre of the row.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-suggestions.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-suggestions.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-suggestions"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-task-list",
+      "type": "registry:component",
+      "title": "AI Task List",
+      "description": "A live agent plan with nested steps, drawn checkmarks and a travelling underline.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-task-list.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-task-list.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-task-list"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "ai-tool-call",
+      "type": "registry:component",
+      "title": "AI Tool Call",
+      "description": "A collapsible tool invocation whose status ring breathes, spins, then draws a check or cross.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/ai-tool-call.tsx",
+          "type": "registry:component",
+          "target": "components/agents/ai-tool-call.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/ai-tool-call"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "image-generation-panel",
+      "type": "registry:component",
+      "title": "Image Generation Panel",
+      "description": "A text-to-image console — prompt and settings, then a 2×2 batch resolving from mosaic to sharp.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/ai-core",
+        "@dx/ai-loader",
+        "@dx/ai-prompt-input",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/image-generation-panel.tsx",
+          "type": "registry:component",
+          "target": "components/agents/image-generation-panel.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/image-generation-panel"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "voice-orb",
+      "type": "registry:component",
+      "title": "Voice Orb",
+      "description": "A softly rotating conic orb for voice assistants and AI presence.",
+      "dependencies": [
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/ai-core",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/agents/voice-orb.tsx",
+          "type": "registry:component",
+          "target": "components/agents/voice-orb.tsx"
+        }
+      ],
+      "categories": [
+        "agents"
+      ],
+      "meta": {
+        "group": "agents",
+        "docs": "https://dxuireact.com/docs/components/voice-orb"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
       "name": "composition-chart",
       "type": "registry:component",
       "title": "Composition Chart",
@@ -5434,7 +6012,7 @@
       "name": "motion-dynamic-island",
       "type": "registry:component",
       "title": "Live Activity Island",
-      "description": "A pill that morphs between live states.",
+      "description": "A pill that morphs between live activities.",
       "dependencies": [
         "motion@^14.0.0"
       ],
@@ -6972,584 +7550,6 @@
       "meta": {
         "group": "motion",
         "docs": "https://dxuireact.com/docs/components/shader-background"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "agent-avatar",
-      "type": "registry:component",
-      "title": "Agent Avatar",
-      "description": "A generative pixel avatar for AI agents — unique per seed, drawn on canvas.",
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/agent-avatar.tsx",
-          "type": "registry:component",
-          "target": "components/agents/agent-avatar.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/agent-avatar"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-approval",
-      "type": "registry:component",
-      "title": "AI Approval",
-      "description": "A human-in-the-loop card where the chosen option expands to fill it while the rest collapse away.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-approval.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-approval.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-approval"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-artifact",
-      "type": "registry:component",
-      "title": "AI Artifact",
-      "description": "A generated-artifact frame whose preview and code panes swap along a shared axis.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-artifact.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-artifact.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-artifact"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-branch",
-      "type": "registry:component",
-      "title": "AI Branch",
-      "description": "Step between alternate responses in a conversation, with a sliding branch counter.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-branch.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-branch.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-branch"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-citation",
-      "type": "registry:component",
-      "title": "AI Citation",
-      "description": "An inline citation pill that opens a source card anchored to where it came from.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-citation.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-citation.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-citation"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-context-meter",
-      "type": "registry:component",
-      "title": "Context Meter",
-      "description": "A context-window ring that fills and shifts hue at the warning threshold.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-context-meter.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-context-meter.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-context-meter"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-conversation",
-      "type": "registry:component",
-      "title": "AI Conversation",
-      "description": "A thread container that follows the bottom only while you're there, with a jump-to-latest pill.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-conversation.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-conversation.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-conversation"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-core",
-      "type": "registry:component",
-      "title": "AI Core",
-      "description": "The shared AI state contract — per-state motion presets and microphone amplitude hooks.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-core.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-core.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-core"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-diff",
-      "type": "registry:component",
-      "title": "AI Diff",
-      "description": "A proposed edit where added lines wipe in and rejected lines collapse to nothing.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-diff.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-diff.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-diff"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-loader",
-      "type": "registry:component",
-      "title": "AI Loader",
-      "description": "A family of waiting indicators — dots, sweep bar and pixel grid — on one shared cycle.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-loader.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-loader.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-loader"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-message",
-      "type": "registry:component",
-      "title": "AI Message",
-      "description": "A message bubble whose action row slides out of its own edge on hover and focus.",
-      "dependencies": [
-        "lucide-react@^0.577.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-message.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-message.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-message"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-orb-face",
-      "type": "registry:component",
-      "title": "Orb Face",
-      "description": "A character orb whose expression carries the AI state — gaze, blinks, thinking and joy.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/ai-core",
-        "@dx/orb",
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-orb-face.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-orb-face.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-orb-face"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-prompt-input",
-      "type": "registry:component",
-      "title": "AI Prompt Input",
-      "description": "An autogrowing composer with attachment chips and a send-to-stop morph.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/ai-core",
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-prompt-input.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-prompt-input.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-prompt-input"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-reasoning",
-      "type": "registry:component",
-      "title": "AI Reasoning",
-      "description": "A collapsible reasoning trace that shimmers while the model works and reports how long it took.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-reasoning.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-reasoning.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-reasoning"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-response",
-      "type": "registry:component",
-      "title": "AI Response",
-      "description": "Streaming text where words animate in as they arrive, with a riding caret and citation pills.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-response.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-response.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-response"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-sources",
-      "type": "registry:component",
-      "title": "AI Sources",
-      "description": "A favicon stack that fans out and expands into a source list, each icon morphing into its row.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-sources.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-sources.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-sources"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-suggestions",
-      "type": "registry:component",
-      "title": "AI Suggestions",
-      "description": "Prompt chips that radiate in from the centre of the row.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-suggestions.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-suggestions.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-suggestions"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-task-list",
-      "type": "registry:component",
-      "title": "AI Task List",
-      "description": "A live agent plan with nested steps, drawn checkmarks and a travelling underline.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-task-list.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-task-list.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-task-list"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "ai-tool-call",
-      "type": "registry:component",
-      "title": "AI Tool Call",
-      "description": "A collapsible tool invocation whose status ring breathes, spins, then draws a check or cross.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/ai-tool-call.tsx",
-          "type": "registry:component",
-          "target": "components/agents/ai-tool-call.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/ai-tool-call"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "image-generation-panel",
-      "type": "registry:component",
-      "title": "Image Generation Panel",
-      "description": "A text-to-image console — prompt and settings, then a 2×2 batch resolving from mosaic to sharp.",
-      "dependencies": [
-        "lucide-react@^0.577.0",
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/ai-core",
-        "@dx/ai-loader",
-        "@dx/ai-prompt-input",
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/image-generation-panel.tsx",
-          "type": "registry:component",
-          "target": "components/agents/image-generation-panel.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/image-generation-panel"
-      }
-    },
-    {
-      "author": "DesignX <ui@designx.dev>",
-      "name": "voice-orb",
-      "type": "registry:component",
-      "title": "Voice Orb",
-      "description": "A softly rotating conic orb for voice assistants and AI presence.",
-      "dependencies": [
-        "motion@^14.0.0"
-      ],
-      "registryDependencies": [
-        "@dx/ai-core",
-        "@dx/utils"
-      ],
-      "files": [
-        {
-          "path": "components/agents/voice-orb.tsx",
-          "type": "registry:component",
-          "target": "components/agents/voice-orb.tsx"
-        }
-      ],
-      "categories": [
-        "agents"
-      ],
-      "meta": {
-        "group": "agents",
-        "docs": "https://dxuireact.com/docs/components/voice-orb"
       }
     },
     {
@@ -12408,24 +12408,24 @@
           "target": "components/blocks/dashboard-01/section-cards.tsx"
         },
         {
-          "path": "blocks/dashboard-01/projects-table.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/dashboard-01/projects-table.tsx"
-        },
-        {
-          "path": "blocks/dashboard-01/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/dashboard-01/index.tsx"
-        },
-        {
           "path": "blocks/dashboard-01/app-sidebar.tsx",
           "type": "registry:block",
           "target": "components/blocks/dashboard-01/app-sidebar.tsx"
         },
         {
+          "path": "blocks/dashboard-01/projects-table.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-01/projects-table.tsx"
+        },
+        {
           "path": "blocks/dashboard-01/chart-area.tsx",
           "type": "registry:block",
           "target": "components/blocks/dashboard-01/chart-area.tsx"
+        },
+        {
+          "path": "blocks/dashboard-01/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-01/index.tsx"
         }
       ],
       "categories": [
@@ -12591,14 +12591,14 @@
       ],
       "files": [
         {
-          "path": "blocks/settings-01/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/settings-01/index.tsx"
-        },
-        {
           "path": "blocks/settings-01/sections.tsx",
           "type": "registry:block",
           "target": "components/blocks/settings-01/sections.tsx"
+        },
+        {
+          "path": "blocks/settings-01/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/settings-01/index.tsx"
         }
       ],
       "categories": [
@@ -12624,14 +12624,14 @@
       ],
       "files": [
         {
-          "path": "blocks/header-1/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/header-1/index.tsx"
-        },
-        {
           "path": "blocks/header-1/hero-grid.module.css",
           "type": "registry:block",
           "target": "components/blocks/header-1/hero-grid.module.css"
+        },
+        {
+          "path": "blocks/header-1/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/header-1/index.tsx"
         },
         {
           "path": "blocks/shared/animated-group.tsx",
@@ -12761,14 +12761,14 @@
       ],
       "files": [
         {
-          "path": "blocks/header-4/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/header-4/index.tsx"
-        },
-        {
           "path": "blocks/header-4/hero-grid.module.css",
           "type": "registry:block",
           "target": "components/blocks/header-4/hero-grid.module.css"
+        },
+        {
+          "path": "blocks/header-4/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/header-4/index.tsx"
         },
         {
           "path": "blocks/shared/animated-group.tsx",
