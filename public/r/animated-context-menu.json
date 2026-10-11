@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-context-menu",
+  "type": "registry:component",
+  "title": "Animated Context Menu",
+  "description": "A right-click menu with nested submenus and spring motion.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/context-menu",
+    "@dx/lib-animation",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-context-menu.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-context-menu.tsx",
+      "content": "import {\n  ContextMenuContent,\n  ContextMenuGroup,\n  ContextMenuItem,\n  ContextMenuLabel,\n  ContextMenu as ContextMenuRoot,\n  ContextMenuSeparator,\n  ContextMenuShortcut,\n  ContextMenuSub,\n  ContextMenuSubContent,\n  ContextMenuSubTrigger,\n  ContextMenuTrigger,\n} from \"@/components/ui/context-menu\";\nimport { cn } from \"@/lib/utils\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport type React from \"react\";\nimport { SPRING_DEFAULT } from \"@/lib/animation\";\n\nexport interface ContextMenuProps {\n  /** The trigger element that opens the context menu on right-click */\n  children: React.ReactNode;\n  /** Optional CSS class for the content container */\n  className?: string;\n  /** Menu items to render */\n  items: ContextMenuItemConfig[];\n}\n\nexport interface ContextMenuItemConfig {\n  /** Nested submenu items */\n  children?: ContextMenuItemConfig[];\n  /** Whether the item is disabled */\n  disabled?: boolean;\n  /** Renders a group label instead of an item */\n  groupLabel?: string;\n  /** Optional icon to display before the label */\n  icon?: React.ReactNode;\n  /** Unique key for the item */\n  key: string;\n  /** Display label */\n  label: string;\n  /** Callback when item is selected */\n  onSelect?: () => void;\n  /** Renders a separator instead of an item */\n  separator?: boolean;\n  /** Optional keyboard shortcut text to display */\n  shortcut?: string;\n  /** Destructive variant styling */\n  variant?: \"default\" | \"destructive\";\n}\n\nexport default function ContextMenu({\n  children,\n  items,\n  className,\n}: ContextMenuProps) {\n  const shouldReduceMotion = useReducedMotion();\n\n  const renderItem = (item: ContextMenuItemConfig, index: number) => {\n    if (item.separator) {\n      return <ContextMenuSeparator key={item.key} />;\n    }\n\n    if (item.groupLabel) {\n      return (\n        <ContextMenuLabel key={item.key}>{item.groupLabel}</ContextMenuLabel>\n      );\n    }\n\n    if (item.children && item.children.length > 0) {\n      return (\n        <ContextMenuSub key={item.key}>\n          <ContextMenuSubTrigger disabled={item.disabled}>\n            {item.icon ? <span className=\"mr-2\">{item.icon}</span> : null}\n            {item.label}\n          </ContextMenuSubTrigger>\n          <ContextMenuSubContent>\n            {item.children.map((child, childIndex) =>\n              renderItem(child, childIndex)\n            )}\n          </ContextMenuSubContent>\n        </ContextMenuSub>\n      );\n    }\n\n    return (\n      <motion.div\n        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}\n        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -4 }}\n        key={item.key}\n        transition={\n          shouldReduceMotion\n            ? { duration: 0 }\n            : { ...SPRING_DEFAULT, delay: index * 0.02 }\n        }\n      >\n        <ContextMenuItem\n          disabled={item.disabled}\n          onClick={item.onSelect}\n          variant={item.variant}\n        >\n          {item.icon ? <span className=\"mr-2\">{item.icon}</span> : null}\n          {item.label}\n          {item.shortcut ? (\n            <ContextMenuShortcut>{item.shortcut}</ContextMenuShortcut>\n          ) : null}\n        </ContextMenuItem>\n      </motion.div>\n    );\n  };\n\n  return (\n    <ContextMenuRoot>\n      <ContextMenuTrigger>{children}</ContextMenuTrigger>\n      <ContextMenuContent className={cn(\"origin-top\", className)}>\n        <motion.div\n          animate={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }\n          }\n          initial={\n            shouldReduceMotion\n              ? { opacity: 1 }\n              : { opacity: 0, scale: 0.95, y: -4 }\n          }\n          transition={shouldReduceMotion ? { duration: 0 } : SPRING_DEFAULT}\n        >\n          <ContextMenuGroup>\n            {items.map((item, index) => renderItem(item, index))}\n          </ContextMenuGroup>\n        </motion.div>\n      </ContextMenuContent>\n    </ContextMenuRoot>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-context-menu"
+  }
+}

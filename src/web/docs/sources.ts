@@ -19,14 +19,23 @@ const componentSources = Object.fromEntries(Object.entries(rawComponents).map(([
 const demos = Object.fromEntries(Object.entries(demoModules).map(([p, l]) => [keyOf(p).replace(/^demos\//, ""), l]));
 const demoSources = Object.fromEntries(Object.entries(rawDemos).map(([p, l]) => [keyOf(p).replace(/^demos\//, ""), l]));
 
-export function loadComponentSource(group: "ui" | "dx", slug: string) {
+export function loadComponentSource(group: string, slug: string) {
   const loader = componentSources[`${group}/${slug}`];
   return loader ? loader() : Promise.resolve("");
 }
 
 /** Raw sources of the multi-file kits plus lib/, keyed by path relative to src/web ("components/motion/swap.tsx"). */
 const rawKit = import.meta.glob<string>(
-  ["../components/agents/**/*.{ts,tsx}", "../components/charts/**/*.{ts,tsx}", "../components/motion/**/*.{ts,tsx}", "../lib/**/*.{ts,tsx}"],
+  [
+    "../components/agents/**/*.{ts,tsx}",
+    "../components/charts/**/*.{ts,tsx}",
+    "../components/motion/**/*.{ts,tsx}",
+    "../components/text/**/*.{ts,tsx}",
+    "../components/transitions/**/*.{ts,tsx}",
+    "../components/effects/**/*.{ts,tsx}",
+    "../components/elements/**/*.{ts,tsx}",
+    "../lib/**/*.{ts,tsx}",
+  ],
   { query: "?raw", import: "default" },
 );
 const kitSources = Object.fromEntries(Object.entries(rawKit).map(([p, l]) => [p.replace(/^\.\.\//, ""), l]));
@@ -87,7 +96,7 @@ export function parseDependencies(source: string) {
 /* ---------------------------------------------------------------- blocks */
 
 const blockModules = import.meta.glob<{ default: ComponentType }>(["../blocks/*.tsx", "../blocks/*/index.tsx"]);
-const rawBlocks = import.meta.glob<string>("../blocks/**/*.tsx", { query: "?raw", import: "default" });
+const rawBlocks = import.meta.glob<string>("../blocks/**/*.{tsx,css}", { query: "?raw", import: "default" });
 
 const blockSlugOf = (path: string) => path.replace(/^\.\.\/blocks\//, "").replace(/\/index\.tsx$|\.tsx$/, "");
 
@@ -100,8 +109,20 @@ export function loadBlock(slug: string) {
 /** All files of a block as `{ path, code }`, index first. Paths are relative to the user's `components/` folder. */
 export async function loadBlockFiles(slug: string) {
   const entries = Object.entries(rawBlocks).filter(([p]) => p === `../blocks/${slug}.tsx` || p.startsWith(`../blocks/${slug}/`));
-  const files = await Promise.all(
-    entries.map(async ([p, l]) => ({ path: p.replace(/^\.\.\/blocks\//, "blocks/"), code: await l() })),
-  );
-  return files.sort((a, b) => Number(b.path.endsWith("index.tsx")) - Number(a.path.endsWith("index.tsx")) || a.path.localeCompare(b.path));
+  const own = await Promise.all(entries.map(async ([p, l]) => ({ path: p.replace(/^\.\.\/blocks\//, "blocks/"), code: await l() })));
+  const shared: { path: string; code: string }[] = [];
+  const queue = own.map((f) => f.code);
+  const seen = new Set<string>();
+  while (queue.length) {
+    for (const m of queue.shift()!.matchAll(/from\s+"\.\.?\/(?:\.\.\/)?shared\/([\w-]+)"/g)) {
+      const key = `../blocks/shared/${m[1]}.tsx`;
+      if (seen.has(key) || !rawBlocks[key]) continue;
+      seen.add(key);
+      const code = await rawBlocks[key]();
+      shared.push({ path: `blocks/shared/${m[1]}.tsx`, code });
+      queue.push(code);
+    }
+  }
+  own.sort((a, b) => Number(b.path.endsWith("index.tsx")) - Number(a.path.endsWith("index.tsx")) || a.path.localeCompare(b.path));
+  return [...own, ...shared.sort((a, b) => a.path.localeCompare(b.path))];
 }

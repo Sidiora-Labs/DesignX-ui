@@ -12,8 +12,6 @@
     "@dx/lib-ease",
     "@dx/motion-tooltip",
     "@dx/number-ticker",
-    "@dx/use-hover-capable",
-    "@dx/use-media-query",
     "@dx/utils"
   ],
   "files": [
@@ -71,6 +69,6 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://ui.designx.dev/docs/components/price-target-fan"
+    "docs": "https://dxuireact.com/docs/components/price-target-fan"
   }
 }

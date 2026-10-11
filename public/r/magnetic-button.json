@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "magnetic-button",
+  "type": "registry:component",
+  "title": "Magnetic Button",
+  "description": "A button that subtly follows the cursor.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1",
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-slot",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/magnetic-button.tsx",
+      "type": "registry:component",
+      "target": "components/elements/magnetic-button.tsx",
+      "content": "import { Slot } from \"@/lib/slot\";\nimport { cn } from \"@/lib/utils\";\nimport { cva, type VariantProps } from \"class-variance-authority\";\nimport { motion, useReducedMotion, useSpring } from \"motion/react\";\nimport type { ButtonHTMLAttributes, ReactNode } from \"react\";\nimport { useCallback, useEffect, useRef, useState } from \"react\";\n\nconst magneticButtonVariants = cva(\n  \"inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50\",\n  {\n    defaultVariants: {\n      size: \"default\",\n      variant: \"default\",\n    },\n    variants: {\n      size: {\n        default: \"h-10 px-4 py-2\",\n        icon: \"h-10 w-10\",\n        lg: \"h-11 rounded-md px-8\",\n        sm: \"h-9 rounded-md px-3\",\n      },\n      variant: {\n        default: \"bg-primary text-primary-foreground hover:bg-primary/90\",\n        destructive:\n          \"bg-destructive text-destructive-foreground hover:bg-destructive/90\",\n        ghost: \"hover:bg-accent hover:text-accent-foreground\",\n        link: \"text-foreground underline-offset-4 hover:underline\",\n        outline:\n          \"border border-input bg-background hover:bg-accent hover:text-accent-foreground\",\n        secondary:\n          \"bg-secondary text-secondary-foreground hover:bg-secondary/80\",\n      },\n    },\n  }\n);\n\nexport type MagneticButtonProps = {\n  children: ReactNode;\n  strength?: number;\n  radius?: number;\n  springConfig?: { duration?: number; bounce?: number };\n  disabled?: boolean;\n  asChild?: boolean;\n  className?: string;\n} & ButtonHTMLAttributes<HTMLButtonElement> &\n  VariantProps<typeof magneticButtonVariants>;\n\nconst MagneticButton = ({\n  children,\n  strength = 0.3,\n  radius = 150,\n  springConfig = { bounce: 0.1, duration: 0.4 },\n  disabled = false,\n  asChild = false,\n  variant,\n  size,\n  className,\n  ...props\n}: MagneticButtonProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const [isHoverDevice, setIsHoverDevice] = useState(false);\n  const buttonRef = useRef<HTMLButtonElement>(null);\n  const wrapperRef = useRef<HTMLDivElement>(null);\n\n  const x = useSpring(0, {\n    bounce: springConfig.bounce ?? 0.1,\n    duration: springConfig.duration ?? 0.4,\n  });\n  const y = useSpring(0, {\n    bounce: springConfig.bounce ?? 0.1,\n    duration: springConfig.duration ?? 0.4,\n  });\n\n  useEffect(() => {\n    const mediaQuery = window.matchMedia(\"(hover: hover) and (pointer: fine)\");\n    setIsHoverDevice(mediaQuery.matches);\n\n    const handleChange = (e: MediaQueryListEvent) => {\n      setIsHoverDevice(e.matches);\n    };\n\n    mediaQuery.addEventListener(\"change\", handleChange);\n    return () => mediaQuery.removeEventListener(\"change\", handleChange);\n  }, []);\n\n  const isEffectDisabled = disabled || shouldReduceMotion || !isHoverDevice;\n\n  const handleMouseMove = useCallback(\n    (event: React.MouseEvent<HTMLDivElement>) => {\n      if (isEffectDisabled || !buttonRef.current) {\n        return;\n      }\n\n      const rect = buttonRef.current.getBoundingClientRect();\n      const centerX = rect.left + rect.width / 2;\n      const centerY = rect.top + rect.height / 2;\n\n      const distanceX = event.clientX - centerX;\n      const distanceY = event.clientY - centerY;\n      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);\n\n      if (distance < radius) {\n        const factor = 1 - distance / radius;\n        const moveX = distanceX * strength * factor;\n        const moveY = distanceY * strength * factor;\n        x.set(moveX);\n        y.set(moveY);\n      } else {\n        x.set(0);\n        y.set(0);\n      }\n    },\n    [isEffectDisabled, radius, strength, x, y]\n  );\n\n  const handleMouseLeave = useCallback(() => {\n    x.set(0);\n    y.set(0);\n  }, [x, y]);\n\n  const Comp = asChild ? Slot : \"button\";\n\n  return (\n    <div\n      className=\"inline-block\"\n      onMouseLeave={handleMouseLeave}\n      onMouseMove={handleMouseMove}\n      ref={wrapperRef}\n      role=\"presentation\"\n      style={{\n        margin: `-${radius / 2}px`,\n        padding: `${radius / 2}px`,\n      }}\n    >\n      <motion.div style={{ x, y }}>\n        <Comp\n          className={cn(magneticButtonVariants({ className, size, variant }))}\n          disabled={disabled}\n          ref={buttonRef}\n          type=\"button\"\n          {...props}\n        >\n          {children}\n        </Comp>\n      </motion.div>\n    </div>\n  );\n};\n\nexport default MagneticButton;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/magnetic-button"
+  }
+}

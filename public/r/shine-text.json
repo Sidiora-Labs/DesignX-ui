@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "shine-text",
+  "type": "registry:component",
+  "title": "Shine Text",
+  "description": "A specular light sweep across a headline.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/shine-text.tsx",
+      "type": "registry:component",
+      "target": "components/text/shine-text.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\n\nexport interface ShineTextProps {\n  /** Base text color (any CSS color). */\n  baseColor?: string;\n  children: string;\n  className?: string;\n  /** Duration of one sweep, in seconds. */\n  duration?: number;\n  /** Pause between sweeps, in seconds. */\n  repeatDelay?: number;\n  /** Color of the sweeping highlight band. */\n  shineColor?: string;\n}\n\n/**\n * ShineText — a literal light sweep that glides across the text on a loop,\n * using a clipped moving gradient (metallic \"shine\" / shimmer). For the\n * catalog's fade+slide reveal see `shimmer-sweep`.\n */\nexport default function ShineText({\n  children,\n  className = \"\",\n  duration = 2.5,\n  repeatDelay = 0.6,\n  baseColor = \"var(--color-muted-foreground)\",\n  shineColor = \"var(--color-foreground)\",\n}: ShineTextProps) {\n  const shouldReduceMotion = useReducedMotion();\n\n  if (shouldReduceMotion) {\n    return (\n      <span className={className} style={{ color: baseColor }}>\n        {children}\n      </span>\n    );\n  }\n\n  return (\n    <motion.span\n      animate={{ backgroundPositionX: [\"150%\", \"-150%\"] }}\n      className={className}\n      style={{\n        backgroundClip: \"text\",\n        backgroundImage: `linear-gradient(110deg, ${baseColor} 40%, ${shineColor} 50%, ${baseColor} 60%)`,\n        backgroundSize: \"250% 100%\",\n        color: \"transparent\",\n        WebkitBackgroundClip: \"text\",\n        WebkitTextFillColor: \"transparent\",\n      }}\n      transition={{\n        duration,\n        ease: \"linear\",\n        repeat: Number.POSITIVE_INFINITY,\n        repeatDelay,\n      }}\n    >\n      {children}\n    </motion.span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/shine-text"
+  }
+}

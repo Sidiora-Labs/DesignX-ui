@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "footer-4",
+  "type": "registry:block",
+  "title": "Footer — minimal",
+  "description": "Single-row footer with links and social icons.",
+  "dependencies": [
+    "motion@^14.0.0",
+    "react-icons@^5.6.0"
+  ],
+  "files": [
+    {
+      "path": "blocks/footer-4/index.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/footer-4/index.tsx",
+      "content": "import { FaGithub, FaLinkedin, FaXTwitter } from \"react-icons/fa6\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport type { ReactNode } from \"react\";\n\nconst ANIMATION_DURATION = 0.25;\nconst HOVER_SCALE = 1.08;\nconst TAP_SCALE = 0.95;\n\nexport interface FooterMinimalProps {\n  copyright?: string;\n  links?: Array<{ label: string; href: string }>;\n  logo?: ReactNode;\n  socialLinks?: Array<{\n    icon: ReactNode;\n    href: string;\n    label: string;\n  }>;\n}\n\nconst defaultLinks = [\n  { href: \"#privacy\", label: \"Privacy\" },\n  { href: \"#terms\", label: \"Terms\" },\n  { href: \"#contact\", label: \"Contact\" },\n];\n\nconst defaultSocialLinks = [\n  {\n    href: \"https://x.com/designx\",\n    icon: <FaXTwitter className=\"h-5 w-5\" />,\n    label: \"X\",\n  },\n  {\n    href: \"https://github.com/designx/ui\",\n    icon: <FaGithub className=\"h-5 w-5\" />,\n    label: \"GitHub\",\n  },\n  {\n    href: \"https://www.linkedin.com/company/designx\",\n    icon: <FaLinkedin className=\"h-5 w-5\" />,\n    label: \"LinkedIn\",\n  },\n];\n\nexport const FooterMinimal = ({\n  logo = <span className=\"font-bold text-foreground text-xl\">DX UI</span>,\n  links = defaultLinks,\n  socialLinks = defaultSocialLinks,\n  copyright = \"© DesignX\",\n}: FooterMinimalProps) => {\n  const shouldReduceMotion = useReducedMotion();\n\n  const getAnimationProps = () => {\n    if (shouldReduceMotion) {\n      return {\n        animate: { opacity: 1 },\n        initial: { opacity: 1 },\n        transition: { duration: 0 },\n      };\n    }\n\n    return {\n      initial: { opacity: 0, y: 10 },\n      transition: {\n        bounce: 0.1,\n        duration: ANIMATION_DURATION,\n        type: \"spring\" as const,\n      },\n      viewport: { once: true },\n      whileInView: { opacity: 1, y: 0 },\n    };\n  };\n\n  const getHoverProps = () => {\n    if (shouldReduceMotion) {\n      return {};\n    }\n\n    return {\n      whileHover: { scale: HOVER_SCALE },\n      whileTap: { scale: TAP_SCALE },\n    };\n  };\n\n  return (\n    <footer className=\"border-border border-t bg-background\">\n      <div className=\"mx-auto max-w-7xl px-6 py-6\">\n        <motion.div\n          {...getAnimationProps()}\n          className=\"flex flex-col items-center justify-between gap-6 md:flex-row\"\n        >\n          {/* Logo and Copyright */}\n          <div className=\"flex items-center gap-3\">\n            <div>{logo}</div>\n            <span className=\"text-foreground/50\">|</span>\n            <span className=\"text-foreground/60 text-sm\">{copyright}</span>\n          </div>\n\n          {/* Navigation Links */}\n          <nav className=\"flex items-center gap-6\">\n            {links.map((link) => (\n              <a\n                className=\"relative text-foreground/70 text-sm transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-0 after:bg-foreground after:transition-all after:duration-200 hover:text-foreground hover:after:w-full\"\n                href={link.href}\n                key={link.label}\n              >\n                {link.label}\n              </a>\n            ))}\n          </nav>\n\n          {/* Social Links */}\n          <div className=\"flex items-center gap-4\">\n            {socialLinks.map((social) => (\n              <motion.a\n                aria-label={social.label}\n                className=\"text-foreground/60 transition-colors hover:text-brand\"\n                href={social.href}\n                key={social.label}\n                rel=\"noopener noreferrer\"\n                target=\"_blank\"\n                {...getHoverProps()}\n              >\n                {social.icon}\n                <span className=\"sr-only\">{social.label}</span>\n              </motion.a>\n            ))}\n          </div>\n        </motion.div>\n      </div>\n    </footer>\n  );\n};\n\nexport default FooterMinimal;\n"
+    }
+  ],
+  "categories": [
+    "footer"
+  ],
+  "meta": {
+    "iframeHeight": "280px",
+    "preview": "https://dxuireact.com/blocks#footer-4"
+  }
+}

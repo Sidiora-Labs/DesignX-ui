@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "team-1",
+  "type": "registry:block",
+  "title": "Team — grid",
+  "description": "Team members with roles, staggered into view.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-demo-data"
+  ],
+  "files": [
+    {
+      "path": "blocks/team-1/index.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/team-1/index.tsx",
+      "content": "import { getAllPeople, getAvatarUrl, type Person } from \"@/lib/demo-data\";\nimport { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nconst DEFAULT_MEMBER_COUNT = 4;\nconst AVATAR_SIZE = 400;\nconst STAGGER_DELAY = 0.1;\n\ninterface TeamGridProps {\n  description?: string;\n  members?: Person[];\n  title?: string;\n}\n\nexport function TeamGrid({\n  title = \"Our team\",\n  description = \"We're a dynamic group of individuals who are passionate about what we do and dedicated to delivering the best results for our clients.\",\n  members = getAllPeople().slice(0, DEFAULT_MEMBER_COUNT),\n}: TeamGridProps) {\n  const shouldReduceMotion = useReducedMotion();\n  const ref = useRef(null);\n  const isInView = useInView(ref, { once: true });\n\n  return (\n    <section className=\"bg-primary py-24 sm:py-32\">\n      <div className=\"mx-auto max-w-7xl px-6 lg:px-8\">\n        <motion.div\n          className=\"mx-auto max-w-2xl lg:mx-0\"\n          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}\n          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}\n          viewport={{ once: true }}\n          whileInView={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }\n          }\n        >\n          <h2 className=\"text-pretty font-semibold text-4xl text-foreground tracking-tight sm:text-5xl\">\n            {title}\n          </h2>\n          <p className=\"mt-6 text-foreground/70 text-lg/8\">{description}</p>\n        </motion.div>\n        <motion.ul\n          className=\"mx-auto mt-20 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3 xl:grid-cols-4\"\n          ref={ref}\n        >\n          {members.map((member, index) => (\n            <motion.li\n              animate={(() => {\n                if (shouldReduceMotion) {\n                  return { opacity: 1 };\n                }\n                return isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 };\n              })()}\n              initial={\n                shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }\n              }\n              key={member.name}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { delay: index * STAGGER_DELAY, duration: 0.6 }\n              }\n            >\n              <motion.div\n                className=\"group\"\n                transition={\n                  shouldReduceMotion\n                    ? { duration: 0 }\n                    : { damping: 20, stiffness: 300, type: \"spring\" as const }\n                }\n                whileHover={shouldReduceMotion ? {} : { scale: 1.02 }}\n              >\n                {/* Avatar */}\n                <motion.div\n                  className=\"relative overflow-hidden rounded-2xl\"\n                  transition={\n                    shouldReduceMotion\n                      ? { duration: 0 }\n                      : { damping: 20, stiffness: 300, type: \"spring\" as const }\n                  }\n                  whileHover={shouldReduceMotion ? {} : { scale: 1.05 }}\n                >\n                  <img\n                    alt={`Photo of ${member.name}`}\n                    className=\"aspect-14/13 w-full rounded-2xl object-cover outline-1 outline-black/5 -outline-offset-1 transition-all duration-300 group-hover:outline-black/10 dark:outline-white/10 dark:group-hover:outline-white/20\"\n                    draggable={false}\n                    height={AVATAR_SIZE}\n                    src={getAvatarUrl(member.avatar, AVATAR_SIZE)}\n                    width={AVATAR_SIZE}\n                  />\n                  <motion.div\n                    className=\"absolute inset-0 bg-gradient-to-br from-black/5 to-transparent opacity-0 group-hover:opacity-100\"\n                    initial={{ opacity: 0 }}\n                    transition={\n                      shouldReduceMotion ? { duration: 0 } : { duration: 0.3 }\n                    }\n                    whileHover={shouldReduceMotion ? {} : { opacity: 1 }}\n                  />\n                </motion.div>\n                {/* Name */}\n                <h3 className=\"mt-6 font-semibold text-foreground text-lg/8 tracking-tight\">\n                  {member.name}\n                </h3>\n                {/* Role */}\n                <p className=\"text-base/7 text-foreground/70\">{member.role}</p>\n                {/* Location */}\n                {member.location ? (\n                  <p className=\"text-foreground/70 text-sm/6\">\n                    {member.location}\n                  </p>\n                ) : null}\n                {/* Bio */}\n                {member.bio ? (\n                  <p className=\"mt-2 text-foreground/70 text-sm\">\n                    {member.bio}\n                  </p>\n                ) : null}\n              </motion.div>\n            </motion.li>\n          ))}\n        </motion.ul>\n      </div>\n    </section>\n  );\n}\n\nexport default TeamGrid;\n"
+    }
+  ],
+  "categories": [
+    "team"
+  ],
+  "meta": {
+    "iframeHeight": "900px",
+    "preview": "https://dxuireact.com/blocks#team-1"
+  }
+}

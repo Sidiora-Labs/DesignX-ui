@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "sdf-circle-transition",
+  "type": "registry:component",
+  "title": "SDF Circle",
+  "description": "A clean signed-distance circle reveal.",
+  "registryDependencies": [
+    "@dx/sdf-blob-transition"
+  ],
+  "files": [
+    {
+      "path": "components/transitions/sdf-circle-transition.tsx",
+      "type": "registry:component",
+      "target": "components/transitions/sdf-circle-transition.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport SdfBlobTransition from \"@/components/transitions/sdf-blob-transition\";\n\nexport interface SdfCircleTransitionProps {\n  children: ReactNode;\n  className?: string;\n  duration?: number;\n  onRest?: () => void;\n  transitionKey: string | number;\n}\n\nconst SdfCircleTransition = ({\n  children,\n  className,\n  duration = 1120,\n  onRest,\n  transitionKey,\n}: SdfCircleTransitionProps) => (\n  <SdfBlobTransition\n    className={className}\n    duration={duration}\n    onRest={onRest}\n    transitionKey={transitionKey}\n    variant=\"circle\"\n  >\n    {children}\n  </SdfBlobTransition>\n);\n\nexport default SdfCircleTransition;\n"
+    }
+  ],
+  "categories": [
+    "transitions"
+  ],
+  "meta": {
+    "group": "transitions",
+    "docs": "https://dxuireact.com/docs/components/sdf-circle-transition"
+  }
+}

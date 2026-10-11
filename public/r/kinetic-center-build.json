@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "kinetic-center-build",
+  "type": "registry:component",
+  "title": "Kinetic Center Build",
+  "description": "Phrases that build outward from the centre, letter by letter.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/kinetic-center-build.tsx",
+      "type": "registry:component",
+      "target": "components/text/kinetic-center-build.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport interface KineticCenterBuildProps {\n  className?: string;\n  /** Interval between phrase completions in milliseconds. */\n  interval?: number;\n  phrases: string[];\n}\n\nconst BUILD_EASE = [0.2, 0.8, 0.2, 1] as const;\nconst EXIT_EASE = [0.4, 0, 0.2, 1] as const;\n\n/**\n * KineticCenterBuild — Keynote-style word-by-word build.\n * Each new word enters from the right and pushes the line until the full phrase locks centered.\n *\n */\nexport default function KineticCenterBuild({\n  phrases,\n  className = \"\",\n  interval = 2500,\n}: KineticCenterBuildProps) {\n  const [phraseIndex, setPhraseIndex] = useState(0);\n  const [wordCount, setWordCount] = useState(1);\n  const [exiting, setExiting] = useState(false);\n  const shouldReduceMotion = useReducedMotion();\n\n  const currentPhrase = phrases[phraseIndex] ?? \"\";\n  const words = currentPhrase.split(\" \");\n\n  useEffect(() => {\n    if (shouldReduceMotion) {\n      const holdId = setTimeout(() => {\n        setPhraseIndex((prev) => (prev + 1) % phrases.length);\n      }, interval);\n      return () => clearTimeout(holdId);\n    }\n\n    setWordCount(1);\n    setExiting(false);\n\n    const buildTimers: ReturnType<typeof setTimeout>[] = [];\n\n    for (let i = 1; i < words.length; i++) {\n      buildTimers.push(\n        setTimeout(() => {\n          setWordCount(i + 1);\n        }, i * 430)\n      );\n    }\n\n    const totalBuild = (words.length - 1) * 430 + 340;\n    const holdId = setTimeout(() => {\n      setExiting(true);\n      setTimeout(() => {\n        setPhraseIndex((prev) => (prev + 1) % phrases.length);\n        setWordCount(1);\n        setExiting(false);\n      }, 260 + 220);\n    }, totalBuild + interval);\n\n    buildTimers.push(holdId);\n    return () => {\n      for (const t of buildTimers) {\n        clearTimeout(t);\n      }\n    };\n  }, [phraseIndex, phrases.length, interval, shouldReduceMotion, words.length]);\n\n  const visibleWords = shouldReduceMotion ? words : words.slice(0, wordCount);\n  const restingAnimate = shouldReduceMotion\n    ? { opacity: 1 }\n    : { filter: \"blur(0px)\", opacity: 1, scale: 1, x: 0, y: 0 };\n  const exitAnimate = {\n    filter: \"blur(2.5px)\",\n    opacity: 0,\n    transition: { duration: 0.26, ease: EXIT_EASE },\n    y: -6,\n  };\n\n  return (\n    <span\n      aria-live=\"polite\"\n      className={`flex flex-wrap items-center justify-center ${className}`}\n      style={{ gap: 10 }}\n    >\n      <AnimatePresence mode=\"popLayout\">\n        {visibleWords.map((word, i) => (\n          <motion.span\n            animate={exiting ? exitAnimate : restingAnimate}\n            initial={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : {\n                    filter: \"blur(3.5px)\",\n                    opacity: 0,\n                    scale: 0.992,\n                    x: 88,\n                    y: 6,\n                  }\n            }\n            key={`${phraseIndex}-${i}`}\n            layout\n            style={{ display: \"inline-block\" }}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : {\n                    duration: i === 0 ? 0.34 : 0.43,\n                    ease: BUILD_EASE,\n                    layout: { duration: 0.43, ease: BUILD_EASE },\n                  }\n            }\n          >\n            {word}\n          </motion.span>\n        ))}\n      </AnimatePresence>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/kinetic-center-build"
+  }
+}

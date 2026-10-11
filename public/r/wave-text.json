@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "wave-text",
+  "type": "registry:component",
+  "title": "Wave Text",
+  "description": "Letters that ripple in a continuous wave.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/wave-text.tsx",
+      "type": "registry:component",
+      "target": "components/text/wave-text.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\nimport type React from \"react\";\n\nexport interface WaveTextProps {\n  amplitude?: number;\n  children: string;\n  className?: string;\n  duration?: number;\n  staggerDelay?: number;\n}\n\nconst WaveText: React.FC<WaveTextProps> = ({\n  children,\n  amplitude = 8,\n  duration = 1.2,\n  staggerDelay = 0.05,\n  className = \"\",\n}) => {\n  const shouldReduceMotion = useReducedMotion();\n\n  return (\n    <span className={className} style={{ display: \"inline-block\" }}>\n      {children.split(\"\").map((char, i) => (\n        <motion.span\n          animate={\n            shouldReduceMotion\n              ? { y: 0 }\n              : { y: [0, -amplitude, 0, amplitude * 0.5, 0] }\n          }\n          key={`${i}-${char}`}\n          style={{\n            display: \"inline-block\",\n            willChange: shouldReduceMotion ? undefined : \"transform\",\n          }}\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : {\n                  delay: i * staggerDelay,\n                  duration,\n                  ease: [0.37, 0, 0.63, 1],\n                  repeat: Number.POSITIVE_INFINITY,\n                  times: [0, 0.25, 0.5, 0.75, 1],\n                }\n          }\n        >\n          {char === \" \" ? \"\\u00A0\" : String(char)}\n        </motion.span>\n      ))}\n    </span>\n  );\n};\n\nexport default WaveText;\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/wave-text"
+  }
+}

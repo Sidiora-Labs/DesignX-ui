@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scramble-hover",
+  "type": "registry:component",
+  "title": "Scramble Hover",
+  "description": "Text that scrambles through random glyphs on hover.",
+  "files": [
+    {
+      "path": "components/text/scramble-hover.tsx",
+      "type": "registry:component",
+      "target": "components/text/scramble-hover.tsx",
+      "content": "import type React from \"react\";\nimport { useEffect, useRef, useState } from \"react\";\n\nexport interface ScrambleHoverProps {\n  children: string;\n  className?: string;\n  duration?: number; // total animation duration in ms\n  speed?: number; // interval between scrambles in ms\n}\n\nconst CHARACTERS =\n  \"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=<>?\".split(\n    \"\"\n  );\n\nfunction scrambleText(original: string) {\n  return original\n    .split(\"\")\n    .map((char) =>\n      char === \" \"\n        ? \" \"\n        : CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)]\n    )\n    .join(\"\");\n}\n\nconst ScrambleHover: React.FC<ScrambleHoverProps> = ({\n  children,\n  duration = 600,\n  speed = 30,\n  className = \"\",\n}) => {\n  const [display, setDisplay] = useState(children);\n  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);\n  const [isHoverDevice, setIsHoverDevice] = useState(false);\n  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);\n  const intervalRef = useRef<ReturnType<typeof setTimeout> | null>(null);\n\n  useEffect(() => {\n    const motionQuery = window.matchMedia(\"(prefers-reduced-motion: reduce)\");\n    const hoverQuery = window.matchMedia(\"(hover: hover) and (pointer: fine)\");\n\n    setShouldReduceMotion(motionQuery.matches);\n    setIsHoverDevice(hoverQuery.matches);\n\n    const handleMotionChange = (e: MediaQueryListEvent) => {\n      setShouldReduceMotion(e.matches);\n    };\n    const handleHoverChange = (e: MediaQueryListEvent) => {\n      setIsHoverDevice(e.matches);\n    };\n\n    motionQuery.addEventListener(\"change\", handleMotionChange);\n    hoverQuery.addEventListener(\"change\", handleHoverChange);\n\n    return () => {\n      motionQuery.removeEventListener(\"change\", handleMotionChange);\n      hoverQuery.removeEventListener(\"change\", handleHoverChange);\n    };\n  }, []);\n\n  const handleMouseEnter = () => {\n    if (shouldReduceMotion || !isHoverDevice) {\n      return;\n    }\n    if (intervalRef.current) {\n      clearInterval(intervalRef.current);\n    }\n    if (timeoutRef.current) {\n      clearTimeout(timeoutRef.current);\n    }\n    intervalRef.current = setInterval(() => {\n      setDisplay(() => scrambleText(children));\n    }, speed);\n    timeoutRef.current = setTimeout(() => {\n      if (intervalRef.current) {\n        clearInterval(intervalRef.current);\n      }\n      setDisplay(children);\n    }, duration);\n  };\n\n  const handleMouseLeave = () => {\n    if (intervalRef.current) {\n      clearInterval(intervalRef.current);\n    }\n    if (timeoutRef.current) {\n      clearTimeout(timeoutRef.current);\n    }\n    setDisplay(children);\n  };\n\n  return (\n    <button\n      className={className}\n      onBlur={handleMouseLeave}\n      onFocus={isHoverDevice ? handleMouseEnter : undefined}\n      onMouseEnter={isHoverDevice ? handleMouseEnter : undefined}\n      onMouseLeave={handleMouseLeave}\n      style={{\n        background: \"none\",\n        border: \"none\",\n        color: \"inherit\",\n        cursor: \"pointer\",\n        display: \"inline-block\",\n        font: \"inherit\",\n        padding: 0,\n        textAlign: \"inherit\",\n      }}\n      type=\"button\"\n    >\n      {display}\n    </button>\n  );\n};\n\nexport default ScrambleHover;\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/scramble-hover"
+  }
+}

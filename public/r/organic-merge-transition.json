@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "organic-merge-transition",
+  "type": "registry:component",
+  "title": "Organic Merge",
+  "description": "Two organic SDF shapes that merge to reveal new content.",
+  "registryDependencies": [
+    "@dx/sdf-blob-transition"
+  ],
+  "files": [
+    {
+      "path": "components/transitions/organic-merge-transition.tsx",
+      "type": "registry:component",
+      "target": "components/transitions/organic-merge-transition.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport SdfBlobTransition from \"@/components/transitions/sdf-blob-transition\";\n\nexport interface OrganicMergeTransitionProps {\n  children: ReactNode;\n  className?: string;\n  duration?: number;\n  onRest?: () => void;\n  transitionKey: string | number;\n}\n\nconst OrganicMergeTransition = ({\n  children,\n  className,\n  duration = 1120,\n  onRest,\n  transitionKey,\n}: OrganicMergeTransitionProps) => (\n  <SdfBlobTransition\n    className={className}\n    duration={duration}\n    onRest={onRest}\n    transitionKey={transitionKey}\n    variant=\"merge\"\n  >\n    {children}\n  </SdfBlobTransition>\n);\n\nexport default OrganicMergeTransition;\n"
+    }
+  ],
+  "categories": [
+    "transitions"
+  ],
+  "meta": {
+    "group": "transitions",
+    "docs": "https://dxuireact.com/docs/components/organic-merge-transition"
+  }
+}

@@ -11,8 +11,6 @@
   ],
   "registryDependencies": [
     "@dx/lib-ease",
-    "@dx/use-hover-capable",
-    "@dx/use-media-query",
     "@dx/utils"
   ],
   "files": [
@@ -58,6 +56,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/motion-button"
+    "docs": "https://dxuireact.com/docs/components/motion-button"
   }
 }

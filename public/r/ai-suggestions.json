@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "ai-suggestions",
+  "type": "registry:component",
+  "title": "AI Suggestions",
+  "description": "Prompt chips that radiate in from the centre of the row.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/agents/ai-suggestions.tsx",
+      "type": "registry:component",
+      "target": "components/agents/ai-suggestions.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useMemo } from \"react\";\n\nconst SPRING_DEFAULT = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\nconst STAGGER_SECONDS = 0.045;\n\nexport type AISuggestion = {\n  id: string;\n  label: string;\n};\n\nexport type AISuggestionsProps = {\n  className?: string;\n  /** Optional heading, e.g. \"Follow-ups\". */\n  label?: string;\n  onSelect?: (suggestion: AISuggestion) => void;\n  suggestions: AISuggestion[];\n};\n\n/**\n * Distance from the middle of the row, so the stagger radiates outwards from the\n * centre instead of sweeping left to right.\n *\n * A left-to-right sweep implies reading order and priority — that the first chip\n * matters most. These are alternatives of equal weight, and radiating from the\n * centre says so.\n */\nconst centreOutOrder = (count: number): number[] => {\n  const middle = (count - 1) / 2;\n  return Array.from({ length: count }, (_, index) => Math.abs(index - middle));\n};\n\n/**\n * Prompt suggestion chips.\n *\n * Chips are the empty state of a chat and the follow-up row after an answer, so\n * they need to arrive without feeling like a notification.\n */\nconst AISuggestions = ({\n  className,\n  label,\n  onSelect,\n  suggestions,\n}: AISuggestionsProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const delays = useMemo(\n    () => centreOutOrder(suggestions.length),\n    [suggestions.length]\n  );\n\n  return (\n    <div className={cn(\"flex w-full flex-col gap-2\", className)}>\n      {label ? (\n        <p className=\"text-muted-foreground text-xs uppercase tracking-wide\">\n          {label}\n        </p>\n      ) : null}\n\n      <ul className=\"flex list-none flex-wrap gap-2\">\n        <AnimatePresence initial>\n          {suggestions.map((suggestion, index) => (\n            <motion.li\n              animate={{ opacity: 1, scale: 1, y: 0 }}\n              exit={\n                shouldReduceMotion\n                  ? { opacity: 0, transition: { duration: 0 } }\n                  : { opacity: 0, scale: 0.94 }\n              }\n              initial={\n                shouldReduceMotion\n                  ? { opacity: 1, scale: 1, y: 0 }\n                  : { opacity: 0, scale: 0.94, y: 6 }\n              }\n              key={suggestion.id}\n              layout={!shouldReduceMotion}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : {\n                      ...SPRING_DEFAULT,\n                      delay: (delays[index] ?? 0) * STAGGER_SECONDS,\n                    }\n              }\n            >\n              <motion.button\n                className=\"cursor-pointer rounded-full border border-border bg-background px-3 py-1.5 text-left text-foreground text-sm transition-colors hover:border-foreground/30 hover:bg-muted\"\n                onClick={() => onSelect?.(suggestion)}\n                transition={\n                  shouldReduceMotion ? { duration: 0 } : SPRING_DEFAULT\n                }\n                type=\"button\"\n                whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }}\n              >\n                {suggestion.label}\n              </motion.button>\n            </motion.li>\n          ))}\n        </AnimatePresence>\n      </ul>\n    </div>\n  );\n};\n\nexport default AISuggestions;\n"
+    }
+  ],
+  "categories": [
+    "agents"
+  ],
+  "meta": {
+    "group": "agents",
+    "docs": "https://dxuireact.com/docs/components/ai-suggestions"
+  }
+}

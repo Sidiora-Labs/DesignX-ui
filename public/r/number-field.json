@@ -25,6 +25,6 @@
   "meta": {
     "group": "ui",
     "base": "number-field",
-    "docs": "https://ui.designx.dev/docs/components/number-field"
+    "docs": "https://dxuireact.com/docs/components/number-field"
   }
 }

@@ -19,7 +19,7 @@ export function InstallBlock({ item }: { item: CatalogItem }) {
         if (live && g) setLoaded({ files: [...g.files, ...g.libs], requires: g.deps.filter((d) => catalogBySlug[d]) });
       });
     } else {
-      void loadComponentSource(group as "ui" | "dx", slug).then((code) => {
+      void loadComponentSource(group).then((code) => {
         if (live) setLoaded({ files: [{ path: `components/${group}/${slug}.tsx`, content: code }], requires: [] });
       });
     }

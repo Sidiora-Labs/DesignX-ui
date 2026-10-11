@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "features-3",
+  "type": "registry:block",
+  "title": "Features — alternating",
+  "description": "Image and copy rows that alternate sides.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-demo-data",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "blocks/features-3/index.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/features-3/index.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { imageUrl } from \"@/lib/demo-data\";\nimport { motion, useReducedMotion } from \"motion/react\";\n\nconst SPRING = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n\nconst features = [\n  {\n    description:\n      \"Every component is designed with usability in mind. Clean interfaces that your users will love from the first interaction.\",\n    image: imageUrl(\"/images/dx/photos/ph7.webp\", {\n      format: \"auto\",\n      quality: 85,\n      width: 800,\n    }),\n    imageAlt: \"Generated portrait of Maya Solis\",\n    title: \"Intuitive Design\",\n  },\n  {\n    description:\n      \"Optimized animations that only use transform and opacity. Hardware-accelerated rendering for butter-smooth 60fps experiences.\",\n    image: imageUrl(\"/images/dx/hero-app.webp\", {\n      format: \"auto\",\n      quality: 85,\n      width: 800,\n    }),\n    imageAlt: \"DX UI component showcase\",\n    title: \"Blazing Performance\",\n  },\n  {\n    description:\n      \"Full TypeScript support, comprehensive documentation, and one-command installation via the shadcn registry.\",\n    image: imageUrl(\"/images/dx/hero-settings.webp\", {\n      format: \"auto\",\n      quality: 85,\n      width: 800,\n    }),\n    imageAlt: \"Code example with TypeScript support\",\n    title: \"Developer Experience\",\n  },\n];\n\nexport function FeaturesAlternating() {\n  const shouldReduceMotion = useReducedMotion();\n\n  return (\n    <section aria-labelledby=\"features-alternating-heading\">\n      <div className=\"py-24 md:py-32\">\n        <div className=\"mx-auto max-w-6xl px-6\">\n          <div className=\"mx-auto mb-16 max-w-2xl text-center\">\n            <h2\n              className=\"text-balance font-bold text-3xl tracking-tight md:text-4xl\"\n              id=\"features-alternating-heading\"\n            >\n              Why developers choose us\n            </h2>\n            <p className=\"mt-4 text-foreground/70 text-lg\">\n              Designed for developer productivity and user delight.\n            </p>\n          </div>\n          <div className=\"space-y-24\">\n            {features.map((feature, index) => {\n              const isReversed = index % 2 === 1;\n              const slideDirection = isReversed ? 24 : -24;\n\n              return (\n                <div\n                  className={cn(\n                    \"grid items-center gap-12 md:grid-cols-2\",\n                    isReversed && \"md:[direction:rtl]\"\n                  )}\n                  key={feature.title}\n                >\n                  <motion.div\n                    className=\"md:[direction:ltr]\"\n                    initial={\n                      shouldReduceMotion\n                        ? { opacity: 1 }\n                        : { opacity: 0, x: slideDirection }\n                    }\n                    transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n                    viewport={{ margin: \"-100px\", once: true }}\n                    whileInView={\n                      shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }\n                    }\n                  >\n                    <h3 className=\"mb-4 font-bold text-2xl\">{feature.title}</h3>\n                    <p className=\"text-foreground/70 text-lg leading-relaxed\">\n                      {feature.description}\n                    </p>\n                  </motion.div>\n\n                  <motion.div\n                    className=\"md:[direction:ltr]\"\n                    initial={\n                      shouldReduceMotion\n                        ? { opacity: 1 }\n                        : { opacity: 0, x: -slideDirection }\n                    }\n                    transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n                    viewport={{ margin: \"-100px\", once: true }}\n                    whileInView={\n                      shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }\n                    }\n                  >\n                    <div className=\"overflow-hidden rounded-xl border shadow-md\">\n                      <img\n                        alt={feature.imageAlt}\n                        className=\"aspect-video h-auto w-full object-cover\"\n                        draggable={false}\n                        src={feature.image}\n                      />\n                    </div>\n                  </motion.div>\n                </div>\n              );\n            })}\n          </div>\n        </div>\n      </div>\n    </section>\n  );\n}\n\nexport default FeaturesAlternating;\n"
+    }
+  ],
+  "categories": [
+    "features"
+  ],
+  "meta": {
+    "iframeHeight": "1400px",
+    "preview": "https://dxuireact.com/blocks#features-3"
+  }
+}

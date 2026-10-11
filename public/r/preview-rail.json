@@ -10,9 +10,6 @@
   ],
   "registryDependencies": [
     "@dx/lib-ease",
-    "@dx/use-dismiss",
-    "@dx/use-hover-gesture",
-    "@dx/use-tap-gesture",
     "@dx/utils"
   ],
   "files": [
@@ -28,6 +25,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/preview-rail"
+    "docs": "https://dxuireact.com/docs/components/preview-rail"
   }
 }

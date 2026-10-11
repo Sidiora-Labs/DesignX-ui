@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "short-slide-right",
+  "type": "registry:component",
+  "title": "Short Slide Right",
+  "description": "Phrases that slide in from the left.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/short-slide-right.tsx",
+      "type": "registry:component",
+      "target": "components/text/short-slide-right.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport interface ShortSlideRightProps {\n  className?: string;\n  /** Interval between phrase swaps in milliseconds. */\n  interval?: number;\n  phrases: string[];\n}\n\nconst ENTER_EASE = [0.2, 0.8, 0.2, 1] as const;\nconst EXIT_EASE = [0.4, 0, 0.2, 1] as const;\n\n/**\n * ShortSlideRight — the whole phrase glides in from the left as one compact unit\n * while words reveal in sequence through opacity stagger.\n * Keynote-style editorial restraint.\n */\nexport default function ShortSlideRight({\n  phrases,\n  className = \"\",\n  interval = 2500,\n}: ShortSlideRightProps) {\n  const [index, setIndex] = useState(0);\n  const shouldReduceMotion = useReducedMotion();\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setIndex((prev) => (prev + 1) % phrases.length);\n    }, interval);\n    return () => clearInterval(id);\n  }, [interval, phrases.length]);\n\n  const words = phrases[index]?.split(\" \") ?? [];\n\n  return (\n    <span\n      aria-live=\"polite\"\n      className={`relative inline-block overflow-hidden ${className}`}\n    >\n      <AnimatePresence mode=\"wait\">\n        <motion.span\n          animate={\n            shouldReduceMotion ? { opacity: 1 } : { filter: \"blur(0px)\", x: 0 }\n          }\n          exit={\n            shouldReduceMotion\n              ? { opacity: 0, transition: { duration: 0 } }\n              : {\n                  filter: \"blur(1px)\",\n                  opacity: 0,\n                  transition: { duration: 0.32, ease: EXIT_EASE },\n                  x: 12,\n                }\n          }\n          initial={\n            shouldReduceMotion\n              ? { opacity: 1 }\n              : { filter: \"blur(1.2px)\", x: -24 }\n          }\n          key={index}\n          style={{ display: \"inline-flex\", flexWrap: \"nowrap\", gap: \"0.25em\" }}\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : { duration: 0.52, ease: ENTER_EASE }\n          }\n        >\n          {words.map((word, i) => (\n            <motion.span\n              animate={{ opacity: 1 }}\n              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}\n              key={i}\n              style={{ display: \"inline-block\" }}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { delay: i * 0.092, duration: 0.21, ease: ENTER_EASE }\n              }\n            >\n              {word}\n            </motion.span>\n          ))}\n        </motion.span>\n      </AnimatePresence>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/short-slide-right"
+  }
+}

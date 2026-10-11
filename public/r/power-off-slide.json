@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "power-off-slide",
+  "type": "registry:component",
+  "title": "Power Off Slide",
+  "description": "A slide-to-power-off control with a shimmering label.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/elements/power-off-slide.tsx",
+      "type": "registry:component",
+      "target": "components/elements/power-off-slide.tsx",
+      "content": "import { Power } from \"lucide-react\";\nimport {\n  motion,\n  useAnimation,\n  useAnimationFrame,\n  useMotionValue,\n  useReducedMotion,\n} from \"motion/react\";\nimport { type RefObject, useRef, useState } from \"react\";\n\nconst SLIDE_THRESHOLD = 160;\nconst SLIDE_MAX_DISTANCE = 168;\nconst PERCENTAGE_MULTIPLIER = 100;\n\nexport interface PowerOffSlideProps {\n  className?: string;\n  disabled?: boolean;\n  duration?: number;\n  label?: string;\n  onPowerOff?: () => void;\n}\n\nexport default function PowerOffSlide({\n  onPowerOff,\n  label = \"Slide to power off\",\n  className = \"\",\n  duration = 2000,\n  disabled = false,\n}: PowerOffSlideProps) {\n  const [isPoweringOff, setIsPoweringOff] = useState(false);\n  const x = useMotionValue(0);\n  const controls = useAnimation();\n  const constraintsRef = useRef(null);\n  const textRef: RefObject<HTMLDivElement | null> = useRef(null);\n  const shouldReduceMotion = useReducedMotion();\n\n  useAnimationFrame((t) => {\n    if (shouldReduceMotion) {\n      return;\n    }\n    const animDuration = duration;\n    const progress = (t % animDuration) / animDuration;\n    if (textRef.current) {\n      textRef.current.style.setProperty(\n        \"--x\",\n        `${(1 - progress) * PERCENTAGE_MULTIPLIER}%`\n      );\n    }\n  });\n\n  const handleDragEnd = async () => {\n    if (disabled) {\n      return;\n    }\n    const dragDistance = x.get();\n    if (dragDistance > SLIDE_THRESHOLD) {\n      await controls.start({ x: SLIDE_MAX_DISTANCE });\n      setIsPoweringOff(true);\n      if (onPowerOff) {\n        onPowerOff();\n      }\n      setTimeout(() => {\n        setIsPoweringOff(false);\n        controls.start({ x: 0 });\n        x.set(0);\n      }, duration);\n    } else {\n      controls.start({ x: 0 });\n    }\n  };\n\n  return (\n    <div className={`flex h-auto items-center justify-center ${className}`}>\n      <div className=\"w-56\">\n        {isPoweringOff ? (\n          <div className=\"text-center text-foreground\">\n            <p className=\"mb-2 font-light text-xl\">Shutting down...</p>\n          </div>\n        ) : (\n          <div\n            className=\"relative h-14 overflow-hidden rounded-full border bg-secondary\"\n            ref={constraintsRef}\n          >\n            <div className=\"absolute inset-0 left-8 z-0 flex items-center justify-center overflow-hidden\">\n              <div className=\"loading-shimmer relative w-full select-none text-center font-normal text-foreground text-md\">\n                {label}\n              </div>\n            </div>\n            <motion.div\n              animate={controls}\n              aria-disabled={disabled}\n              className={`absolute top-1 left-1 z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background shadow-md ${disabled ? \"cursor-not-allowed opacity-50\" : \"cursor-grab active:cursor-grabbing\"}`}\n              drag={disabled || shouldReduceMotion ? false : \"x\"}\n              dragConstraints={{ left: 0, right: SLIDE_MAX_DISTANCE }}\n              dragElastic={0}\n              dragMomentum={false}\n              onDragEnd={handleDragEnd}\n              style={{ x }}\n              tabIndex={disabled ? -1 : 0}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { duration: 0.25, type: \"spring\" as const }\n              }\n            >\n              <Power className=\"text-red-600\" size={32} />\n            </motion.div>\n          </div>\n        )}\n      </div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/power-off-slide"
+  }
+}

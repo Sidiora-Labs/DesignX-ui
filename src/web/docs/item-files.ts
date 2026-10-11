@@ -39,11 +39,11 @@ export function resolveKey(base: string, has: (key: string) => boolean) {
 /** Every module specifier imported or re-exported by a source file. */
 export function importSpecs(source: string) {
   const specs = new Set<string>();
-  for (const m of source.matchAll(/(?:from|import)\s+"([^"]+)"/g)) specs.add(m[1]);
+  for (const m of source.matchAll(/(?:from|import)\s+["']([^"']+)["']/g)) specs.add(m[1]);
   return [...specs];
 }
 
-const KIT = /^components\/(agents|charts|motion)\//;
+const KIT = /^components\/(agents|charts|motion|text|transitions|effects|elements)\//;
 
 export async function collectItemFiles(
   src: string,
@@ -78,7 +78,7 @@ export async function collectItemFiles(
     if (seen.has(key)) continue;
     seen.add(key);
     const content = await read(key);
-    (key.startsWith("lib/") ? libs : files).push({ path: key, content });
+    (/^(lib\/|hooks\/)/.test(key) ? libs : files).push({ path: key, content });
 
     for (const spec of importSpecs(content)) {
       let target: string | null = null;
@@ -89,6 +89,10 @@ export async function collectItemFiles(
           deps.add("utils");
           continue;
         }
+        if (local === "lib/demo-data") {
+          deps.add("lib-demo-data");
+          continue;
+        }
         if (local === "components/theme-provider") {
           deps.add("theme-provider");
           continue;
@@ -96,6 +100,11 @@ export async function collectItemFiles(
         const ud = local.match(/^components\/(ui|dx)\/([\w-]+)$/);
         if (ud) {
           deps.add(ud[2]);
+          continue;
+        }
+        const item = items.find((it) => local === `components/${it.src}` || local === `components/${it.src}/index`);
+        if (item && item !== self) {
+          deps.add(item.slug);
           continue;
         }
         target = resolveKey(local, has);
@@ -119,5 +128,6 @@ export async function collectItemFiles(
 export function libItemName(key: string) {
   const bare = key.replace(/\.(tsx|ts)$/, "");
   if (bare.startsWith("lib/hooks/")) return bare.slice("lib/hooks/".length);
+  if (bare.startsWith("hooks/")) return bare.slice("hooks/".length);
   return `lib-${bare.slice("lib/".length)}`;
 }

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-avatar-group",
+  "type": "registry:component",
+  "title": "Animated Avatar Group",
+  "description": "Overlapping avatars that fan out on hover.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-avatar-group.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-avatar-group.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport type AvatarData = {\n  src: string;\n  alt: string;\n  href?: string;\n};\n\nexport type AnimatedAvatarGroupProps = {\n  avatars: AvatarData[];\n  maxVisible?: number;\n  size?: number;\n  overlap?: number;\n  className?: string;\n  expandOnHover?: boolean;\n};\n\nconst AnimatedAvatarGroup = ({\n  avatars,\n  maxVisible = 4,\n  size = 40,\n  overlap = 0.3,\n  className,\n  expandOnHover = true,\n}: AnimatedAvatarGroupProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const [isHovered, setIsHovered] = useState(false);\n  const [isHoverDevice, setIsHoverDevice] = useState(false);\n\n  useEffect(() => {\n    const mediaQuery = window.matchMedia(\"(hover: hover) and (pointer: fine)\");\n    setIsHoverDevice(mediaQuery.matches);\n\n    const handleChange = (event: MediaQueryListEvent) => {\n      setIsHoverDevice(event.matches);\n    };\n\n    mediaQuery.addEventListener(\"change\", handleChange);\n    return () => {\n      mediaQuery.removeEventListener(\"change\", handleChange);\n    };\n  }, []);\n\n  const visibleAvatars = avatars.slice(0, maxVisible);\n  const hiddenCount = avatars.length - maxVisible;\n  const hasHiddenAvatars = hiddenCount > 0;\n\n  const overlapPx = size * overlap;\n  const expanded = expandOnHover && isHoverDevice && isHovered;\n\n  const springTransition = shouldReduceMotion\n    ? { duration: 0 }\n    : { bounce: 0.1, duration: 0.25, type: \"spring\" as const };\n\n  return (\n    <motion.div\n      aria-label=\"Avatar group\"\n      className={cn(\"flex items-center\", className)}\n      onMouseEnter={() => setIsHovered(true)}\n      onMouseLeave={() => setIsHovered(false)}\n      // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n      role=\"group\"\n    >\n      {visibleAvatars.map((avatar, index) => {\n        const marginLeft = index === 0 ? 0 : expanded ? 4 : -overlapPx;\n\n        const content = (\n          <motion.img\n            alt={avatar.alt}\n            animate={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : {\n                    opacity: 1,\n                    scale: expanded ? 1.05 : 1,\n                  }\n            }\n            className=\"rounded-full object-cover\"\n            draggable={false}\n            height={size}\n            initial={\n              shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }\n            }\n            src={avatar.src}\n            style={{\n              height: size,\n              width: size,\n            }}\n            transition={{\n              ...springTransition,\n              delay: shouldReduceMotion ? 0 : index * 0.03,\n            }}\n            width={size}\n          />\n        );\n\n        return (\n          <motion.div\n            animate={\n              shouldReduceMotion\n                ? { marginLeft, opacity: 1 }\n                : { marginLeft, opacity: 1 }\n            }\n            className=\"relative\"\n            key={avatar.src}\n            style={{\n              height: size,\n              width: size,\n              zIndex: visibleAvatars.length - index,\n            }}\n            transition={{\n              ...springTransition,\n              delay: shouldReduceMotion ? 0 : index * 0.03,\n            }}\n          >\n            <div\n              className=\"rounded-full border-2 border-background\"\n              style={{\n                height: size,\n                width: size,\n              }}\n            >\n              {avatar.href ? (\n                <a aria-label={avatar.alt} href={avatar.href} rel=\"noopener\">\n                  {content}\n                </a>\n              ) : (\n                content\n              )}\n            </div>\n          </motion.div>\n        );\n      })}\n\n      {hasHiddenAvatars ? (\n        <motion.div\n          animate={\n            shouldReduceMotion\n              ? {\n                  marginLeft: expanded ? 4 : -overlapPx,\n                  opacity: 1,\n                }\n              : {\n                  marginLeft: expanded ? 4 : -overlapPx,\n                  opacity: 1,\n                }\n          }\n          className=\"relative flex items-center justify-center rounded-full border-2 border-background bg-muted\"\n          style={{\n            height: size,\n            width: size,\n            zIndex: 0,\n          }}\n          transition={{\n            ...springTransition,\n            delay: shouldReduceMotion ? 0 : visibleAvatars.length * 0.03,\n          }}\n        >\n          <span\n            className=\"font-medium text-muted-foreground\"\n            style={{ fontSize: size * 0.3 }}\n          >\n            {`+${hiddenCount}`}\n          </span>\n        </motion.div>\n      ) : null}\n    </motion.div>\n  );\n};\n\nexport default AnimatedAvatarGroup;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-avatar-group"
+  }
+}

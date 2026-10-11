@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-toggle",
+  "type": "registry:component",
+  "title": "Animated Toggle",
+  "description": "A toggle switch with morph and icon variants.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-toggle.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-toggle.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport {\n  type KeyboardEvent,\n  type ReactNode,\n  useCallback,\n  useState,\n} from \"react\";\n\nexport interface AnimatedToggleProps {\n  /** Controlled checked state */\n  checked?: boolean;\n  /** Additional CSS classes */\n  className?: string;\n  /** Default checked state for uncontrolled mode */\n  defaultChecked?: boolean;\n  /** Whether the toggle is disabled */\n  disabled?: boolean;\n  /** Icons for on/off states (only used with icon variant) */\n  icons?: { on: ReactNode; off: ReactNode };\n  /** Accessible label for the toggle */\n  label?: string;\n  /** Callback when checked state changes */\n  onChange?: (checked: boolean) => void;\n  /** Size of the toggle */\n  size?: \"sm\" | \"md\" | \"lg\";\n  /** Visual variant of the toggle */\n  variant?: \"default\" | \"morph\" | \"icon\";\n}\n\nconst SPRING = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n\nconst SIZES = {\n  lg: {\n    icon: \"size-3.5\",\n    thumb: \"size-6\",\n    thumbTranslate: 24,\n    track: \"w-[52px] h-7\",\n  },\n  md: {\n    icon: \"size-3\",\n    thumb: \"size-5\",\n    thumbTranslate: 20,\n    track: \"w-11 h-6\",\n  },\n  sm: {\n    icon: \"size-2.5\",\n    thumb: \"size-4\",\n    thumbTranslate: 16,\n    track: \"w-9 h-5\",\n  },\n};\n\nconst AnimatedToggle = ({\n  checked: controlledChecked,\n  defaultChecked = false,\n  onChange,\n  variant = \"default\",\n  icons,\n  size = \"md\",\n  disabled = false,\n  label,\n  className,\n}: AnimatedToggleProps) => {\n  const shouldReduceMotion = useReducedMotion();\n\n  const [internalChecked, setInternalChecked] = useState(defaultChecked);\n\n  const isControlled = controlledChecked !== undefined;\n  const checked = isControlled ? controlledChecked : internalChecked;\n\n  const handleToggle = useCallback(() => {\n    if (disabled) {\n      return;\n    }\n\n    const newValue = !checked;\n    if (!isControlled) {\n      setInternalChecked(newValue);\n    }\n    onChange?.(newValue);\n  }, [checked, disabled, isControlled, onChange]);\n\n  const handleKeyDown = useCallback(\n    (event: KeyboardEvent<HTMLButtonElement>) => {\n      if (event.key === \" \" || event.key === \"Enter\") {\n        event.preventDefault();\n        handleToggle();\n      }\n    },\n    [handleToggle]\n  );\n\n  const sizeConfig = SIZES[size];\n\n  const getThumbBorderRadius = () => {\n    if (variant !== \"morph\" || shouldReduceMotion) {\n      return 9999;\n    }\n    return checked ? 9999 : 6;\n  };\n\n  const getThumbTransform = () => {\n    const translateX = checked ? sizeConfig.thumbTranslate : 0;\n    return translateX;\n  };\n\n  return (\n    <button\n      aria-checked={checked}\n      aria-label={label}\n      className={cn(\n        \"relative inline-flex shrink-0 cursor-pointer items-center rounded-full p-0.5 transition-colors\",\n        \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background\",\n        checked ? \"bg-brand\" : \"bg-muted-foreground/30\",\n        disabled && \"cursor-not-allowed opacity-50\",\n        sizeConfig.track,\n        className\n      )}\n      disabled={disabled}\n      onClick={handleToggle}\n      onKeyDown={handleKeyDown}\n      role=\"switch\"\n      type=\"button\"\n    >\n      <motion.span\n        animate={\n          shouldReduceMotion\n            ? {\n                x: getThumbTransform(),\n              }\n            : {\n                borderRadius: getThumbBorderRadius(),\n                x: getThumbTransform(),\n              }\n        }\n        className={cn(\n          \"pointer-events-none flex items-center justify-center rounded-full border border-border bg-background shadow-sm\",\n          sizeConfig.thumb\n        )}\n        initial={false}\n        style={{\n          borderRadius: getThumbBorderRadius(),\n        }}\n        transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n      >\n        {variant === \"icon\" && icons && (\n          <AnimatePresence initial={false} mode=\"wait\">\n            <motion.span\n              animate={\n                shouldReduceMotion\n                  ? { opacity: 1 }\n                  : { opacity: 1, rotate: 0, scale: 1 }\n              }\n              className={cn(\n                \"flex items-center justify-center text-muted-foreground\",\n                sizeConfig.icon\n              )}\n              exit={\n                shouldReduceMotion\n                  ? { opacity: 0, transition: { duration: 0 } }\n                  : { opacity: 0, rotate: -90, scale: 0.5 }\n              }\n              initial={\n                shouldReduceMotion\n                  ? { opacity: 0 }\n                  : { opacity: 0, rotate: 90, scale: 0.5 }\n              }\n              key={checked ? \"on\" : \"off\"}\n              transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n            >\n              {checked ? icons.on : icons.off}\n            </motion.span>\n          </AnimatePresence>\n        )}\n      </motion.span>\n    </button>\n  );\n};\n\nexport default AnimatedToggle;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-toggle"
+  }
+}

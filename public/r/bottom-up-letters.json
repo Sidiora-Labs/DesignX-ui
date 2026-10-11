@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "bottom-up-letters",
+  "type": "registry:component",
+  "title": "Bottom Up Letters",
+  "description": "Letters that rise into place one by one.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/bottom-up-letters.tsx",
+      "type": "registry:component",
+      "target": "components/text/bottom-up-letters.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nexport interface BottomUpLettersProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Per-character stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.4;\nconst MS = 1000;\n// Pronounced ease-out for a tall, staged lift from below.\nconst EASE = [0.18, 1, 0.32, 1] as const;\n\n/**\n * BottomUpLetters — letters rise from below in a pronounced staircase,\n * one symbol at a time, with zero blur. Best for short single words or\n * compact headlines at 40px+.\n */\nexport default function BottomUpLetters({\n  children,\n  className = \"\",\n  delay = 0,\n  stagger = 88,\n  triggerOnView = false,\n}: BottomUpLettersProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n  const characters = Array.from(children);\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      {characters.map((char, index) => (\n        <motion.span\n          animate={play ? { opacity: 1, y: 0 } : undefined}\n          aria-hidden=\"true\"\n          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 46 }}\n          key={index}\n          style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : {\n                  delay: delay / MS + (index * stagger) / MS,\n                  duration: DURATION_S,\n                  ease: EASE,\n                }\n          }\n        >\n          {char === \" \" ? \" \" : String(char)}\n        </motion.span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/bottom-up-letters"
+  }
+}

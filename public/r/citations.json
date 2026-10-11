@@ -11,7 +11,6 @@
   ],
   "registryDependencies": [
     "@dx/lib-ease",
-    "@dx/use-favicon",
     "@dx/utils"
   ],
   "files": [
@@ -33,6 +32,6 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://ui.designx.dev/docs/components/citations"
+    "docs": "https://dxuireact.com/docs/components/citations"
   }
 }

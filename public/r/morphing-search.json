@@ -11,8 +11,6 @@
   ],
   "registryDependencies": [
     "@dx/lib-ease",
-    "@dx/use-on-open",
-    "@dx/use-row-cursor",
     "@dx/utils"
   ],
   "files": [
@@ -28,6 +26,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/morphing-search"
+    "docs": "https://dxuireact.com/docs/components/morphing-search"
   }
 }

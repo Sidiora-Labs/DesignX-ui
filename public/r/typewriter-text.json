@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "typewriter-text",
+  "type": "registry:component",
+  "title": "Typewriter Text",
+  "description": "Text typed out with a blinking caret.",
+  "files": [
+    {
+      "path": "components/text/typewriter-text.tsx",
+      "type": "registry:component",
+      "target": "components/text/typewriter-text.tsx",
+      "content": "import type React from \"react\";\nimport { useEffect, useRef, useState } from \"react\";\n\nfunction useReducedMotion() {\n  const [shouldReduceMotion, setShouldReduceMotion] = useState(false);\n\n  useEffect(() => {\n    const mediaQuery = window.matchMedia(\"(prefers-reduced-motion: reduce)\");\n    setShouldReduceMotion(mediaQuery.matches);\n\n    const handleChange = (e: MediaQueryListEvent) => {\n      setShouldReduceMotion(e.matches);\n    };\n\n    mediaQuery.addEventListener(\"change\", handleChange);\n    return () => mediaQuery.removeEventListener(\"change\", handleChange);\n  }, []);\n\n  return shouldReduceMotion;\n}\n\nexport interface TypewriterTextProps {\n  children: string;\n  className?: string;\n  loop?: boolean;\n  speed?: number;\n}\n\nconst LOOP_RESTART_DELAY_MS = 1000;\n\nconst TypewriterText: React.FC<TypewriterTextProps> = ({\n  children,\n  speed = 50,\n  loop = false,\n  className = \"\",\n}) => {\n  const [displayed, setDisplayed] = useState(\"\");\n  const index = useRef(0);\n  const timeout = useRef<ReturnType<typeof setTimeout> | null>(null);\n  const shouldReduceMotion = useReducedMotion();\n\n  useEffect(() => {\n    if (shouldReduceMotion) {\n      // Show full text immediately when reduced motion is enabled\n      setDisplayed(children);\n      return;\n    }\n\n    setDisplayed(\"\");\n    index.current = 0;\n    function type() {\n      setDisplayed(children.slice(0, index.current + 1));\n      if (index.current < children.length - 1) {\n        index.current++;\n        timeout.current = setTimeout(type, speed);\n      } else if (loop) {\n        timeout.current = setTimeout(() => {\n          setDisplayed(\"\");\n          index.current = 0;\n          type();\n        }, LOOP_RESTART_DELAY_MS);\n      }\n    }\n    type();\n    return () => {\n      if (timeout.current) {\n        clearTimeout(timeout.current);\n      }\n    };\n  }, [children, speed, loop, shouldReduceMotion]);\n\n  return <span className={className}>{displayed}</span>;\n};\n\nexport default TypewriterText;\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/typewriter-text"
+  }
+}

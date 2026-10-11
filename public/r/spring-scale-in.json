@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "spring-scale-in",
+  "type": "registry:component",
+  "title": "Spring Scale In",
+  "description": "Text that pops in on a spring.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/spring-scale-in.tsx",
+      "type": "registry:component",
+      "target": "components/text/spring-scale-in.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\n/**\n * SpringScaleIn — per-word scale-in with a soft overshoot, iOS app icon-style pop.\n *\n */\nexport interface SpringScaleInProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Per-word stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.36;\nconst MS = 1000;\nconst EASE = [0.34, 1.56, 0.64, 1] as const;\n\nexport default function SpringScaleIn({\n  children,\n  className = \"\",\n  delay = 0,\n  stagger = 95,\n  triggerOnView = false,\n}: SpringScaleInProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n  const words = children.split(\" \");\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      {words.map((word, index) => (\n        <span key={index}>\n          <motion.span\n            animate={play ? { opacity: 1, scale: 1 } : undefined}\n            aria-hidden=\"true\"\n            initial={\n              shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.7 }\n            }\n            style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : {\n                    delay: delay / MS + (index * stagger) / MS,\n                    duration: DURATION_S,\n                    ease: EASE,\n                  }\n            }\n          >\n            {word}\n          </motion.span>\n          {index < words.length - 1 && (\n            <span\n              aria-hidden=\"true\"\n              style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            >\n              {\" \"}\n            </span>\n          )}\n        </span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/spring-scale-in"
+  }
+}

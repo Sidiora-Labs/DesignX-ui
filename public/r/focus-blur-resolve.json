@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "focus-blur-resolve",
+  "type": "registry:component",
+  "title": "Focus Blur Resolve",
+  "description": "Text that resolves from a soft focus blur.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/focus-blur-resolve.tsx",
+      "type": "registry:component",
+      "target": "components/text/focus-blur-resolve.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nexport interface FocusBlurResolveProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.76;\nconst MS = 1000;\n// Smooth deceleration — premium focus-pull ease-out.\nconst EASE = [0.22, 1, 0.36, 1] as const;\n\n/**\n * FocusBlurResolve — whole-text entrance that pulls from heavy blur to crisp,\n * with a subtle upward drift and scale settle. Ideal for hero headlines and\n * section titles where the moment of resolution feels intentional.\n *\n */\nexport default function FocusBlurResolve({\n  children,\n  className = \"\",\n  delay = 0,\n  triggerOnView = false,\n}: FocusBlurResolveProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      <motion.span\n        animate={\n          play ? { filter: \"blur(0px)\", opacity: 1, scale: 1, y: 0 } : undefined\n        }\n        aria-hidden=\"true\"\n        initial={\n          shouldReduceMotion\n            ? { filter: \"blur(0px)\", opacity: 1, scale: 1, y: 0 }\n            : { filter: \"blur(14px)\", opacity: 0, scale: 1.01, y: 14 }\n        }\n        style={{ display: \"inline-block\" }}\n        transition={\n          shouldReduceMotion\n            ? { duration: 0 }\n            : {\n                delay: delay / MS,\n                duration: DURATION_S,\n                ease: EASE,\n              }\n        }\n      >\n        {children}\n      </motion.span>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/focus-blur-resolve"
+  }
+}

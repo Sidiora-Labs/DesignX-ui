@@ -12,8 +12,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/popover-morph",
-    "@dx/use-media-query",
-    "@dx/use-touch-capable",
     "@dx/utils"
   ],
   "files": [
@@ -29,6 +27,6 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://ui.designx.dev/docs/components/ai-sidebar"
+    "docs": "https://dxuireact.com/docs/components/ai-sidebar"
   }
 }

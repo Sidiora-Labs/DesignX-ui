@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "cta-2",
+  "type": "registry:block",
+  "title": "CTA — split",
+  "description": "Copy and buttons beside a product screenshot.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/lib-demo-data",
+    "@dx/press-button"
+  ],
+  "files": [
+    {
+      "path": "blocks/cta-2/index.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/cta-2/index.tsx",
+      "content": "import PressButton from \"@/components/elements/press-button\";\nimport { imageUrl } from \"@/lib/demo-data\";\nimport { motion, useReducedMotion } from \"motion/react\";\n\nconst SPRING = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n\nexport function CtaSplit() {\n  const shouldReduceMotion = useReducedMotion();\n\n  return (\n    <section aria-labelledby=\"cta-split-heading\">\n      <div className=\"py-24 md:py-32\">\n        <div className=\"mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2\">\n          <motion.div\n            initial={\n              shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -24 }\n            }\n            transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n            viewport={{ once: true }}\n            whileInView={\n              shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }\n            }\n          >\n            <h2\n              className=\"text-balance font-bold text-3xl tracking-tight md:text-4xl\"\n              id=\"cta-split-heading\"\n            >\n              Ship faster with animated components\n            </h2>\n            <p className=\"mt-4 text-foreground/70 text-lg leading-relaxed\">\n              Stop building UI from scratch. Use production-ready, beautifully\n              animated components that work with your existing design system.\n            </p>\n            <div className=\"mt-8 flex flex-wrap gap-4\">\n              <PressButton size=\"lg\" variant=\"candy\">\n                Browse Components\n              </PressButton>\n              <PressButton size=\"lg\" variant=\"outline\">\n                View source\n              </PressButton>\n            </div>\n          </motion.div>\n\n          <motion.div\n            className=\"relative\"\n            initial={\n              shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: 24 }\n            }\n            transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n            viewport={{ once: true }}\n            whileInView={\n              shouldReduceMotion ? { opacity: 1 } : { opacity: 1, x: 0 }\n            }\n          >\n            <div className=\"overflow-hidden rounded-2xl border shadow-lg\">\n              <img\n                alt=\"Product preview showing animated UI components\"\n                className=\"h-auto w-full object-cover\"\n                draggable={false}\n                src={imageUrl(\"/images/dx/hero-app.webp\", {\n                  format: \"auto\",\n                  quality: 85,\n                  width: 800,\n                })}\n              />\n            </div>\n          </motion.div>\n        </div>\n      </div>\n    </section>\n  );\n}\n\nexport default CtaSplit;\n"
+    }
+  ],
+  "categories": [
+    "cta"
+  ],
+  "meta": {
+    "iframeHeight": "620px",
+    "preview": "https://dxuireact.com/blocks#cta-2"
+  }
+}

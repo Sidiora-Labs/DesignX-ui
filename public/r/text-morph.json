@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "text-morph",
+  "type": "registry:component",
+  "title": "Text Morph",
+  "description": "Text that morphs character by character, reusing shared letters.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/text/text-morph.tsx",
+      "type": "registry:component",
+      "target": "components/text/text-morph.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport type { ElementType } from \"react\";\nimport { useMemo } from \"react\";\n\nexport type TextMorphMode = \"characters\" | \"words\";\nexport type TextMorphAlign = \"start\" | \"center\" | \"end\";\nexport type TextMorphTag = \"span\" | \"div\" | \"p\" | \"h1\" | \"h2\" | \"h3\" | \"h4\";\n\nexport interface TextMorphProps {\n  /** Justifies the token row when the wrapper is wider than the text. */\n  align?: TextMorphAlign;\n  /** Element rendered for the wrapper. */\n  as?: TextMorphTag;\n  className?: string;\n  /** Spring duration for each token, in milliseconds. */\n  duration?: number;\n  /** Splits the diff on graphemes or whole words. */\n  mode?: TextMorphMode;\n  /** Per-token stagger, in milliseconds. Capped so long strings stay snappy. */\n  stagger?: number;\n  /** The current string. Changing it triggers the morph. */\n  text: string;\n}\n\ninterface TextMorphToken {\n  key: string;\n  value: string;\n}\n\nconst DEFAULT_DURATION = 250;\nconst DEFAULT_STAGGER = 16;\nconst MS = 1000;\nconst POP_SCALE = 0.72;\nconst POP_OFFSET = 6;\nconst MAX_STAGGER_MS = 260;\nconst EXIT_DURATION_S = 0.15;\nconst EASE_OUT = [0.23, 1, 0.32, 1] as const;\n\nconst ALIGN_CLASS: Record<TextMorphAlign, string> = {\n  center: \"justify-center\",\n  end: \"justify-end\",\n  start: \"justify-start\",\n};\n\nconst segmentGraphemes = (value: string): string[] => {\n  if (typeof Intl !== \"undefined\" && \"Segmenter\" in Intl) {\n    const segmenter = new Intl.Segmenter(undefined, {\n      granularity: \"grapheme\",\n    });\n    return Array.from(segmenter.segment(value), (entry) => entry.segment);\n  }\n  return [...value];\n};\n\nconst tokenizeText = (text: string, mode: TextMorphMode): string[] =>\n  mode === \"words\"\n    ? text.split(/(\\s+)/).filter((token) => token.length > 0)\n    : segmentGraphemes(text);\n\nconst buildTokens = (text: string, mode: TextMorphMode): TextMorphToken[] => {\n  const occurrences = new Map<string, number>();\n  return tokenizeText(text, mode).map((value) => {\n    const count = occurrences.get(value) ?? 0;\n    occurrences.set(value, count + 1);\n    return {\n      key: `${value}-${count}`,\n      value,\n    };\n  });\n};\n\n/**\n * TextMorph — morphs one string into another by diffing tokens: shared\n * tokens keep their key and slide to their new position via layout\n * animation, removed tokens shrink out, added tokens pop in.\n *\n * The token row is `position: relative` on purpose: `AnimatePresence`\n * in `popLayout` mode pulls exiting tokens out of the flow with\n * `position: absolute`, so without a positioned parent they would resolve\n * against the page and fly off into a corner of the viewport.\n */\nexport default function TextMorph({\n  text,\n  align = \"start\",\n  as = \"span\",\n  className,\n  duration = DEFAULT_DURATION,\n  mode = \"characters\",\n  stagger = DEFAULT_STAGGER,\n}: TextMorphProps) {\n  const shouldReduceMotion = useReducedMotion();\n  const tokens = useMemo(() => buildTokens(text, mode), [text, mode]);\n  const Tag = as as ElementType;\n\n  if (shouldReduceMotion) {\n    return <Tag className={className}>{text}</Tag>;\n  }\n\n  return (\n    <Tag className={className}>\n      {/*\n       * The intact string is exposed as visually hidden text rather than an\n       * `aria-label` on the wrapper: `aria-label` is prohibited on the generic\n       * roles the default `as=\"span\"` (and `as=\"div\"`) produce, so screen\n       * readers dropped it — and with every token marked `aria-hidden`, the\n       * component announced nothing at all.\n       */}\n      <span className=\"sr-only\">{text}</span>\n      <motion.span\n        className={cn(\"relative inline-flex flex-wrap\", ALIGN_CLASS[align])}\n        layout\n        transition={{ bounce: 0.1, duration: duration / MS, type: \"spring\" }}\n      >\n        <AnimatePresence initial={false} mode=\"popLayout\">\n          {tokens.map((token, index) => (\n            <motion.span\n              animate={{ opacity: 1, scale: 1, y: 0 }}\n              aria-hidden=\"true\"\n              exit={{\n                opacity: 0,\n                scale: POP_SCALE,\n                transition: { duration: EXIT_DURATION_S, ease: EASE_OUT },\n                y: -POP_OFFSET,\n              }}\n              initial={{ opacity: 0, scale: POP_SCALE, y: POP_OFFSET }}\n              key={token.key}\n              layout\n              style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n              transition={{\n                bounce: 0.1,\n                delay: Math.min(index * stagger, MAX_STAGGER_MS) / MS,\n                duration: duration / MS,\n                type: \"spring\",\n              }}\n            >\n              {token.value}\n            </motion.span>\n          ))}\n        </AnimatePresence>\n      </motion.span>\n    </Tag>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/text-morph"
+  }
+}

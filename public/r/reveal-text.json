@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "reveal-text",
+  "type": "registry:component",
+  "title": "Reveal Text",
+  "description": "Letters that reveal with a stagger — and an image peeking through on hover.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/reveal-text.tsx",
+      "type": "registry:component",
+      "target": "components/text/reveal-text.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport React from \"react\";\n\nexport interface RevealTextProps {\n  children: string;\n  className?: string;\n  delay?: number;\n  direction?: \"up\" | \"down\" | \"left\" | \"right\";\n  triggerOnView?: boolean;\n}\n\nconst REVEAL_ANIMATION_DURATION_S = 0.25;\nconst MILLISECONDS_TO_SECONDS = 1000;\n\nconst directionVariants = {\n  down: { opacity: 0, y: -24 },\n  left: { opacity: 0, x: 24 },\n  right: { opacity: 0, x: -24 },\n  up: { opacity: 0, y: 24 },\n};\n\nconst RevealText: React.FC<RevealTextProps> = ({\n  children,\n  direction = \"up\",\n  delay = 0,\n  triggerOnView = false,\n  className = \"\",\n}) => {\n  const ref = React.useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const animate = (!triggerOnView || inView) && !shouldReduceMotion;\n\n  return (\n    <motion.span\n      animate={\n        shouldReduceMotion || !animate\n          ? { opacity: 1 }\n          : { opacity: 1, x: 0, y: 0 }\n      }\n      className={className}\n      initial={\n        shouldReduceMotion ? { opacity: 1 } : directionVariants[direction]\n      }\n      ref={ref}\n      style={{ display: \"inline-block\" }}\n      transition={\n        shouldReduceMotion\n          ? { duration: 0 }\n          : {\n              delay: delay / MILLISECONDS_TO_SECONDS,\n              duration: REVEAL_ANIMATION_DURATION_S,\n            }\n      }\n    >\n      {children}\n    </motion.span>\n  );\n};\n\nexport default RevealText;\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/reveal-text"
+  }
+}

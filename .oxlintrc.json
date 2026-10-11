@@ -6,6 +6,13 @@
     "suspicious": "warn"
   },
   "rules": {
+    "react/globals": "warn",
+    "react/void-use-memo": "warn",
+    "react/purity": "warn",
+    "jsx-a11y/prefer-tag-over-role": "warn",
+    "jsx-a11y/anchor-is-valid": "warn",
+    "jsx-a11y/control-has-associated-label": "warn",
+    "jsx-a11y/img-redundant-alt": "warn",
     "react/react-in-jsx-scope": "off",
     "react/refs": "warn",
     "react/set-state-in-effect": "warn",

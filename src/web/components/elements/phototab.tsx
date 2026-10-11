@@ -1,0 +1,164 @@
+import { Tabs } from "@base-ui/react/tabs";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { useLayoutEffect, useRef, useState } from "react";
+
+/**
+ * Tab definition for Phototab
+ */
+export interface PhototabTab {
+  /** Tab icon (ReactNode) */
+  icon: React.ReactNode;
+  /** Tab image (string: URL or import) */
+  image: string;
+  /** Tab label */
+  name: string;
+}
+
+export interface PhototabProps {
+  /** Class name for root */
+  className?: string;
+  /** Default selected tab name */
+  defaultTab?: string;
+  /** Height of the component in pixels */
+  height?: number;
+  /** Class name for image */
+  imageClassName?: string;
+  /** Class name for tab list */
+  tabListClassName?: string;
+  /** Array of tabs to display */
+  tabs: PhototabTab[];
+  /** Class name for tab trigger */
+  tabTriggerClassName?: string;
+}
+
+const WHITESPACE = /\s+/g;
+
+/** Tab values are slugged so generated ids never contain whitespace. */
+const toTabValue = (name: string) => name.replace(WHITESPACE, "-");
+
+export default function Phototab({
+  tabs,
+  defaultTab,
+  height = 400,
+  className = "",
+  tabListClassName = "",
+  tabTriggerClassName = "",
+  imageClassName = "",
+}: PhototabProps) {
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [bgStyle, setBgStyle] = useState<{
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+  } | null>(null);
+  const triggersRef = useRef<(HTMLButtonElement | null)[]>([]);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const shouldReduceMotion = useReducedMotion();
+
+  useLayoutEffect(() => {
+    if (
+      hoveredIndex !== null &&
+      triggersRef.current[hoveredIndex] &&
+      listRef.current
+    ) {
+      const trigger = triggersRef.current[hoveredIndex];
+      if (!trigger) {
+        return;
+      }
+      const listRect = listRef.current.getBoundingClientRect();
+      const triggerRect = trigger.getBoundingClientRect();
+      setBgStyle({
+        height: triggerRect.height,
+        left: triggerRect.left - listRect.left,
+        top: triggerRect.top - listRect.top,
+        width: triggerRect.width,
+      });
+    } else {
+      setBgStyle(null);
+    }
+  }, [hoveredIndex]);
+
+  return (
+    <Tabs.Root
+      className={`group relative aspect-square w-auto overflow-hidden ${className}`}
+      defaultValue={toTabValue(defaultTab || (tabs[0]?.name ?? ""))}
+      style={{ height: `${height}px` }}
+    >
+      <Tabs.List
+        aria-label="Phototab Tabs"
+        className={`absolute right-0 bottom-2 left-0 mx-auto flex w-40 -translate-y-10 flex-row items-center justify-between rounded-full bg-background/60 px-3 py-2 font-medium text-sm ring ring-border/70 backdrop-blur-sm transition hover:text-foreground md:translate-y-20 md:group-hover:translate-y-0 ${tabListClassName}`}
+        ref={listRef}
+        style={{ pointerEvents: "auto" }}
+      >
+        <AnimatePresence>
+          {bgStyle ? (
+            <motion.span
+              animate={{
+                height: bgStyle.height,
+                left: bgStyle.left,
+                opacity: 1,
+                top: bgStyle.top,
+                width: bgStyle.width,
+              }}
+              className="absolute z-0 rounded-full bg-background shadow-sm transition-colors"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              layoutId="hoverBackground"
+              style={{ position: "absolute" }}
+              transition={
+                shouldReduceMotion
+                  ? { duration: 0 }
+                  : {
+                      damping: 40,
+                      duration: 0.25,
+                      stiffness: 400,
+                      type: "spring" as const,
+                    }
+              }
+            />
+          ) : null}
+        </AnimatePresence>
+        {tabs.map((tab, index) => (
+          <Tabs.Tab
+            aria-label={tab.name}
+            className={`relative z-10 cursor-pointer rounded-full p-2 data-active:bg-background ${tabTriggerClassName}`}
+            key={tab.name}
+            onMouseEnter={() => {
+              setHoveredIndex(index);
+            }}
+            onMouseLeave={() => {
+              setHoveredIndex(null);
+            }}
+            ref={(el: HTMLButtonElement | null) => {
+              triggersRef.current[index] = el;
+            }}
+            value={toTabValue(tab.name)}
+          >
+            <span className="relative z-10 rounded-full focus:outline-none">
+              {tab.icon}
+              <span className="sr-only">{tab.name}</span>
+            </span>
+          </Tabs.Tab>
+        ))}
+      </Tabs.List>
+      {tabs.map((tab) => (
+        <Tabs.Panel
+          className="h-full w-full"
+          key={tab.name}
+          value={toTabValue(tab.name)}
+        >
+          <img
+            alt={tab.name}
+            className={`h-full w-full rounded-2xl bg-muted object-cover ${imageClassName}`}
+            draggable={false}
+            height={height}
+            loading="lazy"
+            src={tab.image}
+            width={400}
+          />
+        </Tabs.Panel>
+      ))}
+    </Tabs.Root>
+  );
+}

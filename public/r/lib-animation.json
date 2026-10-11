@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-animation",
+  "type": "registry:lib",
+  "title": "lib-animation",
+  "files": [
+    {
+      "path": "lib/animation.ts",
+      "type": "registry:lib",
+      "target": "lib/animation.ts",
+      "content": "/**\n * Shared animation constants for DX UI components.\n *\n * Spring configs follow project guidelines:\n * - Duration 0.2–0.25s for UI elements\n * - Bounce ≤ 0.1 for standard UI (higher only for playful/drag interactions)\n *\n * Easing curves use cubic-bezier arrays compatible with Motion's `ease` property.\n */\n\n/** Default spring for most UI animations */\nexport const SPRING_DEFAULT = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n\n/** Snappy spring for quick, no-overshoot transitions */\nexport const SPRING_SNAPPY = {\n  bounce: 0,\n  duration: 0.2,\n  type: \"spring\" as const,\n};\n\n/** Ease-out curve for entering elements — cubic-bezier(.23, 1, .32, 1) */\nexport const EASE_OUT = [0.23, 1, 0.32, 1] as const;\n\n/** Ease-in-out curve for moving elements — cubic-bezier(0.645, 0.045, 0.355, 1) */\nexport const EASE_IN_OUT = [0.645, 0.045, 0.355, 1] as const;\n\n/** Instant transition for reduced-motion contexts */\nexport const DURATION_INSTANT = { duration: 0 };\n\n/** Standard animation durations (seconds) */\nexport const DURATION = {\n  complex: 0.4,\n  default: 0.25,\n  fast: 0.15,\n  slow: 0.3,\n} as const;\n\nexport type SpringConfig = typeof SPRING_DEFAULT;\nexport type EasingCurve = readonly [number, number, number, number];\n"
+    }
+  ]
+}

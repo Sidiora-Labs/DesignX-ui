@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-tags",
+  "type": "registry:component",
+  "title": "Animated Tags",
+  "description": "Pick tags from a pool — chips animate between lists.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-tags.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-tags.tsx",
+      "content": "import { CircleX, Plus } from \"lucide-react\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useState } from \"react\";\n\nexport interface AnimatedTagsProps {\n  className?: string;\n  initialTags?: string[];\n  onChange?: (selected: string[]) => void;\n  selectedTags?: string[];\n}\n\nexport default function AnimatedTags({\n  initialTags = [\"react\", \"tailwindcss\", \"javascript\"],\n  selectedTags: controlledSelectedTags,\n  onChange,\n  className = \"\",\n}: AnimatedTagsProps) {\n  const [internalSelected, setInternalSelected] = useState<string[]>([]);\n  const shouldReduceMotion = useReducedMotion();\n\n  const selectedTag = controlledSelectedTags ?? internalSelected;\n  const tags = initialTags.filter((tag) => !selectedTag.includes(tag));\n\n  const handleTagClick = (tag: string) => {\n    const newSelected = [...selectedTag, tag];\n    if (onChange) {\n      onChange(newSelected);\n    } else {\n      setInternalSelected(newSelected);\n    }\n  };\n  const handleDeleteTag = (tag: string) => {\n    const newSelectedTag = selectedTag.filter((selected) => selected !== tag);\n    if (onChange) {\n      onChange(newSelectedTag);\n    } else {\n      setInternalSelected(newSelectedTag);\n    }\n  };\n  return (\n    <div className={`flex w-[300px] flex-col gap-4 p-4 ${className}`}>\n      <div className=\"flex flex-col items-start justify-center gap-1\">\n        <p>Selected Tags</p>\n        <AnimatePresence>\n          <div className=\"flex min-h-12 w-full flex-wrap items-center gap-1 rounded-xl border bg-background p-2\">\n            {selectedTag?.map((tag) => (\n              <motion.div\n                animate={\n                  shouldReduceMotion\n                    ? { opacity: 1 }\n                    : {\n                        filter: \"blur(0px)\",\n                        opacity: 1,\n                        y: 0,\n                      }\n                }\n                className=\"group flex cursor-pointer flex-row items-center justify-center gap-2 rounded-md border bg-muted px-2 py-1 text-foreground\"\n                exit={\n                  shouldReduceMotion\n                    ? { opacity: 0, transition: { duration: 0 } }\n                    : { filter: \"blur(4px)\", opacity: 0, y: 20 }\n                }\n                initial={\n                  shouldReduceMotion\n                    ? { opacity: 1 }\n                    : { filter: \"blur(4px)\", opacity: 0, y: 20 }\n                }\n                key={tag}\n                layout\n                onClick={() => handleDeleteTag(tag)}\n                transition={\n                  shouldReduceMotion\n                    ? { duration: 0 }\n                    : { bounce: 0, duration: 0.25, type: \"spring\" as const }\n                }\n              >\n                {tag}{\" \"}\n                <CircleX\n                  className=\"ease flex items-center justify-center rounded-full transition-all duration-200\"\n                  size={16}\n                />\n              </motion.div>\n            ))}\n          </div>\n        </AnimatePresence>\n      </div>\n      <AnimatePresence>\n        <div className=\"flex flex-wrap items-center gap-1\">\n          {tags.map((tag) => (\n            <motion.div\n              animate={\n                shouldReduceMotion\n                  ? { opacity: 1 }\n                  : {\n                      filter: \"blur(0px)\",\n                      opacity: 1,\n                      y: 0,\n                    }\n              }\n              className=\"group flex cursor-pointer flex-row items-center justify-center gap-2 rounded-md border bg-background px-2 py-1 text-foreground hover:bg-muted\"\n              exit={\n                shouldReduceMotion\n                  ? { opacity: 0, transition: { duration: 0 } }\n                  : { filter: \"blur(4px)\", opacity: 0, y: -20 }\n              }\n              initial={\n                shouldReduceMotion\n                  ? { opacity: 1 }\n                  : { filter: \"blur(4px)\", opacity: 0, y: -20 }\n              }\n              key={tag}\n              layout\n              onClick={() => handleTagClick(tag)}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { bounce: 0, duration: 0.25, type: \"spring\" as const }\n              }\n            >\n              {tag}{\" \"}\n              <Plus\n                className=\"flex items-center justify-center rounded-full text-muted-foreground transition-colors duration-200 group-hover:text-foreground\"\n                size={16}\n              />\n            </motion.div>\n          ))}\n        </div>\n      </AnimatePresence>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-tags"
+  }
+}

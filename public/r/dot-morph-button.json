@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "dot-morph-button",
+  "type": "registry:component",
+  "title": "Dot Morph Button",
+  "description": "A button whose dot morphs into an arrow on hover.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/press-button"
+  ],
+  "files": [
+    {
+      "path": "components/elements/dot-morph-button.tsx",
+      "type": "registry:component",
+      "target": "components/elements/dot-morph-button.tsx",
+      "content": "import PressButton from \"@/components/elements/press-button\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport interface DotMorphButtonProps {\n  className?: string;\n  label: string;\n  onClick?: () => void;\n}\n\nexport function DotMorphButton({\n  label,\n  className = \"\",\n  onClick,\n}: DotMorphButtonProps) {\n  const [isHovered, setIsHovered] = useState(false);\n  const shouldReduceMotion = useReducedMotion();\n  const [isHoverDevice, setIsHoverDevice] = useState(false);\n\n  useEffect(() => {\n    const mediaQuery = window.matchMedia(\"(hover: hover) and (pointer: fine)\");\n    setIsHoverDevice(mediaQuery.matches);\n\n    const handleChange = (e: MediaQueryListEvent) => {\n      setIsHoverDevice(e.matches);\n    };\n\n    mediaQuery.addEventListener(\"change\", handleChange);\n    return () => mediaQuery.removeEventListener(\"change\", handleChange);\n  }, []);\n\n  return (\n    <PressButton\n      className={`flex items-center gap-3 rounded-full border bg-background ${className}`}\n      onClick={onClick}\n      onMouseEnter={() => {\n        if (isHoverDevice) {\n          setIsHovered(true);\n        }\n      }}\n      onMouseLeave={() => setIsHovered(false)}\n      type=\"button\"\n    >\n      <motion.span\n        animate={\n          shouldReduceMotion || !isHoverDevice || !isHovered\n            ? {\n                borderRadius: 999,\n                height: 16,\n                width: 16,\n              }\n            : {\n                borderRadius: 999,\n                height: 28,\n                width: 12,\n              }\n        }\n        className=\"flex items-center justify-center\"\n        initial={false}\n        style={{\n          background: \"var(--color-brand)\",\n          display: \"inline-block\",\n        }}\n        transition={\n          shouldReduceMotion\n            ? { duration: 0 }\n            : {\n                damping: 22,\n                duration: 0.25,\n                stiffness: 600,\n                type: \"spring\" as const,\n              }\n        }\n      />\n      <span className=\"select-none font-medium text-2xl text-foreground\">\n        {label}\n      </span>\n    </PressButton>\n  );\n}\n\nexport default DotMorphButton;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/dot-morph-button"
+  }
+}

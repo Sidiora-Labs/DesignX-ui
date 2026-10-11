@@ -11,7 +11,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/lib-touch",
-    "@dx/use-slider",
     "@dx/utils"
   ],
   "files": [
@@ -27,6 +26,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/range-slider"
+    "docs": "https://dxuireact.com/docs/components/range-slider"
   }
 }

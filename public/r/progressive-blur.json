@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "progressive-blur",
+  "type": "registry:component",
+  "title": "Progressive Blur",
+  "description": "A stacked backdrop blur that fades content toward an edge.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/effects/progressive-blur.tsx",
+      "type": "registry:component",
+      "target": "components/effects/progressive-blur.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { useReducedMotion } from \"motion/react\";\nimport { type CSSProperties, type ReactNode, useEffect, useState } from \"react\";\n\n/** Where the blur ramps *towards*. `radial` ramps outward from the centre. */\nexport type ProgressiveBlurDirection =\n  | \"top\"\n  | \"bottom\"\n  | \"left\"\n  | \"right\"\n  | \"radial\";\n\nexport interface ProgressiveBlurProps {\n  /** Peak blur radius in pixels, reached by the last layer. */\n  blur?: number;\n  /**\n   * Optional content rendered above the blur stack. Unlike the stack itself it\n   * stays interactive and visible to assistive technologies.\n   */\n  children?: ReactNode;\n  className?: string;\n  direction?: ProgressiveBlurDirection;\n  /** Fade the stack in on mount. Ignored when reduced motion is preferred. */\n  fadeIn?: boolean;\n  /** Opacity applied to every layer, `0` to `1`. Lower means a softer veil. */\n  intensity?: number;\n  /** Number of stacked layers. More layers means a smoother ramp. */\n  layers?: number;\n}\n\nconst DEFAULT_LAYERS = 6;\nconst DEFAULT_BLUR = 24;\nconst DEFAULT_INTENSITY = 1;\nconst MIN_LAYERS = 2;\nconst MAX_LAYERS = 12;\nconst FULL_PERCENT = 100;\nconst STOPS_PER_LAYER = 3;\nconst FADE_MS = 250;\nconst ENTER_EASING = \"cubic-bezier(.23, 1, .32, 1)\";\nconst TRANSPARENT = \"rgba(0, 0, 0, 0)\";\nconst OPAQUE = \"rgb(0, 0, 0)\";\n\nconst clamp01 = (value: number) => Math.max(0, Math.min(1, value));\n\nconst buildMask = (\n  direction: ProgressiveBlurDirection,\n  index: number,\n  layers: number\n) => {\n  const step = FULL_PERCENT / layers;\n  const start = index * step;\n  const rampIn = (index + 1) * step;\n  const rampOut = (index + STOPS_PER_LAYER - 1) * step;\n  const end = (index + STOPS_PER_LAYER) * step;\n  const stops = `${TRANSPARENT} ${start}%, ${OPAQUE} ${rampIn}%, ${OPAQUE} ${rampOut}%, ${TRANSPARENT} ${end}%`;\n\n  if (direction === \"radial\") {\n    return `radial-gradient(circle at center, ${stops})`;\n  }\n  return `linear-gradient(to ${direction}, ${stops})`;\n};\n\nconst ProgressiveBlur = ({\n  blur = DEFAULT_BLUR,\n  children,\n  className,\n  direction = \"bottom\",\n  fadeIn = true,\n  intensity = DEFAULT_INTENSITY,\n  layers = DEFAULT_LAYERS,\n}: ProgressiveBlurProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const [hasMounted, setHasMounted] = useState(false);\n\n  useEffect(() => {\n    setHasMounted(true);\n  }, []);\n\n  const layerCount = Math.max(\n    MIN_LAYERS,\n    Math.min(MAX_LAYERS, Math.round(layers))\n  );\n  const opacity = clamp01(intensity);\n  const shouldFade = fadeIn && !shouldReduceMotion;\n  const isVisible = hasMounted || !shouldFade;\n\n  const layerIds = Array.from(\n    { length: layerCount },\n    (_, index) => `layer-${index.toString()}`\n  );\n\n  return (\n    <div className={cn(\"pointer-events-none absolute inset-0\", className)}>\n      <div\n        aria-hidden=\"true\"\n        className=\"pointer-events-none absolute inset-0\"\n        style={{\n          opacity: isVisible ? 1 : 0,\n          transition: shouldFade\n            ? `opacity ${FADE_MS}ms ${ENTER_EASING}`\n            : undefined,\n        }}\n      >\n        {layerIds.map((layerId, index) => {\n          const layerBlur = blur / 2 ** (layerCount - 1 - index);\n          const mask = buildMask(direction, index, layerCount);\n          const style: CSSProperties = {\n            backdropFilter: `blur(${layerBlur}px)`,\n            inset: 0,\n            maskImage: mask,\n            opacity,\n            position: \"absolute\",\n            WebkitBackdropFilter: `blur(${layerBlur}px)`,\n            WebkitMaskImage: mask,\n            zIndex: index,\n          };\n          return <div key={layerId} style={style} />;\n        })}\n      </div>\n\n      {children ? (\n        <div className=\"pointer-events-auto relative z-10 h-full w-full\">\n          {children}\n        </div>\n      ) : null}\n    </div>\n  );\n};\n\nexport default ProgressiveBlur;\n"
+    }
+  ],
+  "categories": [
+    "effects"
+  ],
+  "meta": {
+    "group": "effects",
+    "docs": "https://dxuireact.com/docs/components/progressive-blur"
+  }
+}

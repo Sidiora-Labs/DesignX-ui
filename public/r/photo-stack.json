@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "photo-stack",
+  "type": "registry:component",
+  "title": "Photo Stack",
+  "description": "A loose stack of photos that fan out on hover.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/photo-stack.tsx",
+      "type": "registry:component",
+      "target": "components/elements/photo-stack.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport { useRef, useState } from \"react\";\n\nexport interface PhotoStackPhoto {\n  alt: string;\n  id: string;\n  /** Optional caption shown over the front card. */\n  name?: string;\n  role?: string;\n  src: string;\n}\n\nexport interface PhotoStackProps {\n  className?: string;\n  /** Fired after the top card is sent to the back, with the new id order. */\n  onCycle?: (order: string[]) => void;\n  /** Cards to stack. The first item starts on top. */\n  photos: PhotoStackPhoto[];\n}\n\n// Resting offset/scale per stack position (0 = front).\nconst POSITIONS = [\n  { scale: 1, x: 0, y: 0 },\n  { scale: 0.95, x: 16, y: 12 },\n  { scale: 0.9, x: 32, y: 24 },\n];\n\n/**\n * PhotoStack — a draggable deck of photo cards. Drag the top card (Tinder-style)\n * in either direction, or tap it, to send it to the back and reveal the next.\n * Inspired by Josh Puckett's dialkit Photo Stack.\n */\nexport default function PhotoStack({\n  className,\n  photos,\n  onCycle,\n}: PhotoStackProps) {\n  const reduceMotion = useReducedMotion();\n  const [order, setOrder] = useState<number[]>(() => photos.map((_, i) => i));\n  // A real drag fires both onDragEnd and a trailing onClick. Without this guard\n  // a short drag would cycle twice and land the card in 2nd place, not last.\n  const justDragged = useRef(false);\n\n  const cycle = () => {\n    setOrder((prev) => {\n      const next = [...prev.slice(1), prev[0]];\n      onCycle?.(next.map((i) => photos[i].id));\n      return next;\n    });\n  };\n\n  return (\n    <div className={cn(\"relative h-72 w-56 select-none\", className)}>\n      {order.map((photoIndex, pos) => {\n        const photo = photos[photoIndex];\n        const rest = POSITIONS[Math.min(pos, POSITIONS.length - 1)];\n        const isFront = pos === 0;\n\n        return (\n          <motion.div\n            animate={{ rotate: 0, scale: rest.scale, x: rest.x, y: rest.y }}\n            aria-label={\n              isFront ? `${photo.name ?? photo.alt} — next` : undefined\n            }\n            className=\"absolute inset-0 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_14px_32px_rgba(0,0,0,0.14)] focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2\"\n            drag={isFront && !reduceMotion ? \"x\" : false}\n            dragSnapToOrigin\n            key={photo.id}\n            onClick={() => {\n              if (!isFront) {\n                return;\n              }\n              // Swallow the click that trails a drag so it doesn't double-cycle.\n              if (justDragged.current) {\n                justDragged.current = false;\n                return;\n              }\n              cycle();\n            }}\n            onDragEnd={() => {\n              // Any drag release sends the dragged (front) card to the back.\n              justDragged.current = true;\n              cycle();\n            }}\n            onKeyDown={(e: React.KeyboardEvent) => {\n              if (isFront && (e.key === \"Enter\" || e.key === \" \")) {\n                e.preventDefault();\n                cycle();\n              }\n            }}\n            role={isFront ? \"button\" : undefined}\n            style={{\n              cursor: isFront ? \"grab\" : \"default\",\n              zIndex: photos.length - pos,\n            }}\n            tabIndex={isFront ? 0 : -1}\n            transition={\n              reduceMotion\n                ? { duration: 0 }\n                : { damping: 30, stiffness: 320, type: \"spring\" }\n            }\n            whileDrag={{ cursor: \"grabbing\" }}\n          >\n            <img\n              alt={photo.alt}\n              className=\"h-full w-full object-cover object-top\"\n              draggable={false}\n              src={photo.src}\n            />\n            {photo.name || photo.role ? (\n              <figcaption\n                className={cn(\n                  \"absolute inset-x-0 bottom-0 flex flex-col gap-px bg-gradient-to-t from-black/60 to-transparent p-3.5 text-white transition-opacity\",\n                  !isFront && \"opacity-0\"\n                )}\n              >\n                {photo.name ? (\n                  <span className=\"font-semibold text-sm\">{photo.name}</span>\n                ) : null}\n                {photo.role ? (\n                  <span className=\"text-xs opacity-85\">{photo.role}</span>\n                ) : null}\n              </figcaption>\n            ) : null}\n            {pos > 0 && (\n              <span\n                aria-hidden\n                className=\"pointer-events-none absolute inset-0 bg-white\"\n                style={{ opacity: pos === 1 ? 0.2 : 0.36 }}\n              />\n            )}\n          </motion.div>\n        );\n      })}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/photo-stack"
+  }
+}

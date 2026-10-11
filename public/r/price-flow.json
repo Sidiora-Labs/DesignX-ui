@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "price-flow",
+  "type": "registry:component",
+  "title": "Price Flow",
+  "description": "A price that rolls digit by digit as it changes.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/price-flow.tsx",
+      "type": "registry:component",
+      "target": "components/elements/price-flow.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { useEffect, useRef, useState } from \"react\";\n\nconst STAGGER_DELAY = 50;\n\nexport interface PriceFlowProps {\n  className?: string;\n  value: number;\n}\n\nconst animateDigit = (\n  prevElement: HTMLElement | null,\n  nextElement: HTMLElement | null,\n  isIncreasing: boolean\n) => {\n  if (prevElement === null || nextElement === null) {\n    return;\n  }\n\n  if (isIncreasing) {\n    prevElement.classList.add(\"slide-out-up\");\n    nextElement.classList.add(\"slide-in-up\");\n  } else {\n    prevElement.classList.add(\"slide-out-down\");\n    nextElement.classList.add(\"slide-in-down\");\n  }\n\n  const handleAnimationEnd = () => {\n    prevElement.classList.remove(\"slide-out-up\", \"slide-out-down\");\n    nextElement.classList.remove(\"slide-in-up\", \"slide-in-down\");\n    prevElement.removeEventListener(\"animationend\", handleAnimationEnd);\n  };\n\n  prevElement.addEventListener(\"animationend\", handleAnimationEnd);\n};\n\nexport default function PriceFlow({ value, className = \"\" }: PriceFlowProps) {\n  const [prevValue, setPrevValue] = useState(value);\n\n  // Create refs for each digit position (tens and ones)\n  const prevTensRef = useRef<HTMLElement>(null);\n  const nextTensRef = useRef<HTMLElement>(null);\n  const prevOnesRef = useRef<HTMLElement>(null);\n  const nextOnesRef = useRef<HTMLElement>(null);\n\n  useEffect(() => {\n    if (value === prevValue) {\n      return;\n    }\n\n    const prevTens = prevTensRef.current;\n    const nextTens = nextTensRef.current;\n    const prevOnes = prevOnesRef.current;\n    const nextOnes = nextOnesRef.current;\n\n    const prevTensValue = Math.floor(prevValue / 10);\n    const currentTensValue = Math.floor(value / 10);\n    const tensChanged = currentTensValue !== prevTensValue;\n\n    if (tensChanged && prevTens && nextTens) {\n      const isTensIncreasing = currentTensValue > prevTensValue;\n      animateDigit(prevTens, nextTens, isTensIncreasing);\n    }\n\n    const prevOnesValue = prevValue % 10;\n    const currentOnesValue = value % 10;\n    const onesChanged = currentOnesValue !== prevOnesValue;\n\n    if (onesChanged && prevOnes && nextOnes) {\n      const isOnesIncreasing = currentOnesValue > prevOnesValue;\n      setTimeout(() => {\n        animateDigit(prevOnes, nextOnes, isOnesIncreasing);\n      }, STAGGER_DELAY);\n    }\n\n    setPrevValue(value);\n  }, [value, prevValue]);\n\n  const formatValue = (val: number) => val.toString().padStart(2, \"0\");\n\n  const prevFormatted = formatValue(prevValue);\n  const currentFormatted = formatValue(value);\n\n  return (\n    <span className={cn(\"relative inline-flex items-center\", className)}>\n      <span className=\"relative inline-block overflow-hidden\">\n        {/* Tens digit */}\n        <span\n          className=\"absolute inset-0 flex items-center justify-center\"\n          ref={prevTensRef}\n          style={{ transform: \"translateY(-100%)\" }}\n        >\n          {prevFormatted[0]}\n        </span>\n        <span\n          className=\"flex items-center justify-center\"\n          ref={nextTensRef}\n          style={{ transform: \"translateY(0%)\" }}\n        >\n          {currentFormatted[0]}\n        </span>\n      </span>\n\n      <span className=\"relative inline-block overflow-hidden\">\n        {/* Ones digit */}\n        <span\n          className=\"absolute inset-0 flex items-center justify-center\"\n          ref={prevOnesRef}\n          style={{ transform: \"translateY(-100%)\" }}\n        >\n          {prevFormatted[1]}\n        </span>\n        <span\n          className=\"flex items-center justify-center\"\n          ref={nextOnesRef}\n          style={{ transform: \"translateY(0%)\" }}\n        >\n          {currentFormatted[1]}\n        </span>\n      </span>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/price-flow"
+  }
+}

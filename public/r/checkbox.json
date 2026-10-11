@@ -25,6 +25,6 @@
   "meta": {
     "group": "ui",
     "base": "checkbox",
-    "docs": "https://ui.designx.dev/docs/components/checkbox"
+    "docs": "https://dxuireact.com/docs/components/checkbox"
   }
 }

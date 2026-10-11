@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "notification-badge",
+  "type": "registry:component",
+  "title": "Notification Badge",
+  "description": "A badge with animated counts and status dots.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/notification-badge.tsx",
+      "type": "registry:component",
+      "target": "components/elements/notification-badge.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport type { ReactNode } from \"react\";\nimport { useEffect, useRef, useState } from \"react\";\n\nexport interface NotificationBadgeProps {\n  children?: ReactNode;\n  className?: string;\n  count?: number;\n  max?: number;\n  ping?: boolean;\n  position?: \"top-right\" | \"top-left\" | \"bottom-right\" | \"bottom-left\";\n  showZero?: boolean;\n  status?: \"online\" | \"offline\" | \"busy\" | \"away\";\n  variant?: \"dot\" | \"count\" | \"status\";\n}\n\nconst statusColors = {\n  away: \"bg-amber-500\",\n  busy: \"bg-red-500\",\n  offline: \"bg-gray-400\",\n  online: \"bg-emerald-500\",\n};\n\nconst positionClasses = {\n  \"bottom-left\": \"-bottom-1 -left-1\",\n  \"bottom-right\": \"-bottom-1 -right-1\",\n  \"top-left\": \"-top-1 -left-1\",\n  \"top-right\": \"-top-1 -right-1\",\n};\n\nconst AnimatedCount = ({\n  value,\n  max,\n  shouldReduceMotion,\n}: {\n  value: number;\n  max: number;\n  shouldReduceMotion: boolean | null;\n}) => {\n  const displayValue = value > max ? `${max}+` : value.toString();\n  const prevValueRef = useRef(value);\n  const direction = value > prevValueRef.current ? 1 : -1;\n\n  useEffect(() => {\n    prevValueRef.current = value;\n  }, [value]);\n\n  if (shouldReduceMotion) {\n    return <span className=\"font-medium leading-none\">{displayValue}</span>;\n  }\n\n  return (\n    <span className=\"relative overflow-hidden font-medium leading-none\">\n      <AnimatePresence initial={false} mode=\"popLayout\">\n        <motion.span\n          animate={{ opacity: 1, y: 0 }}\n          className=\"inline-block\"\n          exit={{ opacity: 0, y: direction * -12 }}\n          initial={{ opacity: 0, y: direction * 12 }}\n          key={value}\n          transition={{ bounce: 0.1, duration: 0.3, type: \"spring\" as const }}\n        >\n          {displayValue}\n        </motion.span>\n      </AnimatePresence>\n    </span>\n  );\n};\n\nconst NotificationBadge = ({\n  variant = \"dot\",\n  count = 0,\n  max = 99,\n  status = \"online\",\n  showZero = false,\n  ping = false,\n  position = \"top-right\",\n  children,\n  className,\n}: NotificationBadgeProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const [isVisible, setIsVisible] = useState(false);\n\n  useEffect(() => {\n    const shouldShow =\n      variant === \"dot\" ||\n      variant === \"status\" ||\n      (variant === \"count\" && (count > 0 || showZero));\n    setIsVisible(shouldShow);\n  }, [variant, count, showZero]);\n\n  const getBadgeClasses = () => {\n    if (variant === \"dot\") {\n      return \"h-2.5 w-2.5\";\n    }\n    if (variant === \"status\") {\n      return \"h-3 w-3\";\n    }\n    const displayValue = count > max ? `${max}+` : count.toString();\n    if (displayValue.length === 1) {\n      return \"h-5 w-5 text-xs\";\n    }\n    if (displayValue.length === 2) {\n      return \"h-5 min-w-5 px-1 text-xs\";\n    }\n    return \"h-5 min-w-6 px-1 text-xs\";\n  };\n\n  const getBackgroundColor = () => {\n    if (variant === \"status\") {\n      return statusColors[status];\n    }\n    return \"bg-brand\";\n  };\n\n  const badgeElement = (\n    <AnimatePresence mode=\"wait\">\n      {isVisible ? (\n        <motion.span\n          animate={{ opacity: 1, scale: 1 }}\n          className={cn(\n            \"absolute flex items-center justify-center rounded-full text-white\",\n            getBackgroundColor(),\n            getBadgeClasses(),\n            positionClasses[position],\n            variant === \"status\" && \"ring-2 ring-white dark:ring-gray-900\",\n            className\n          )}\n          exit={\n            shouldReduceMotion\n              ? { opacity: 0, transition: { duration: 0 } }\n              : { opacity: 0, scale: 0, transition: { duration: 0.15 } }\n          }\n          initial={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0 }\n          }\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : { bounce: 0.2, duration: 0.25, type: \"spring\" as const }\n          }\n        >\n          {variant === \"count\" && (\n            <AnimatedCount\n              max={max}\n              shouldReduceMotion={shouldReduceMotion}\n              value={count}\n            />\n          )}\n\n          {ping && !shouldReduceMotion && (\n            <span\n              aria-hidden=\"true\"\n              className={cn(\n                \"absolute inset-0 animate-ping rounded-full opacity-75\",\n                getBackgroundColor()\n              )}\n            />\n          )}\n        </motion.span>\n      ) : null}\n    </AnimatePresence>\n  );\n\n  if (!children) {\n    return (\n      <span className=\"relative inline-flex\">\n        <span className=\"h-4 w-4\" />\n        {badgeElement}\n      </span>\n    );\n  }\n\n  return (\n    <span className=\"relative inline-flex\">\n      {children}\n      {badgeElement}\n    </span>\n  );\n};\n\nexport default NotificationBadge;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/notification-badge"
+  }
+}

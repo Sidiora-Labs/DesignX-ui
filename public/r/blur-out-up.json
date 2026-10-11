@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "blur-out-up",
+  "type": "registry:component",
+  "title": "Blur Out Up",
+  "description": "Text that blurs and lifts away as the next phrase arrives.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/blur-out-up.tsx",
+      "type": "registry:component",
+      "target": "components/text/blur-out-up.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\n/**\n * BlurOutUp — words arrive clean from a gentle blur and upward drift,\n * Airy entrance.\n */\nexport interface BlurOutUpProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Per-word stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.56;\nconst MS = 1000;\nconst EASE = [0.22, 1, 0.36, 1] as const;\n\nexport default function BlurOutUp({\n  children,\n  className = \"\",\n  delay = 0,\n  stagger = 28,\n  triggerOnView = false,\n}: BlurOutUpProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n  const words = children.split(\" \");\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      {words.map((word, index) => (\n        <span key={index}>\n          <motion.span\n            animate={\n              play ? { filter: \"blur(0px)\", opacity: 1, y: 0 } : undefined\n            }\n            aria-hidden=\"true\"\n            initial={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : { filter: \"blur(6px)\", opacity: 0, y: 10 }\n            }\n            style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : {\n                    delay: delay / MS + (index * stagger) / MS,\n                    duration: DURATION_S,\n                    ease: EASE,\n                  }\n            }\n          >\n            {word}\n          </motion.span>\n          {index < words.length - 1 && (\n            <span\n              aria-hidden=\"true\"\n              style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            >\n              {\" \"}\n            </span>\n          )}\n        </span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/blur-out-up"
+  }
+}

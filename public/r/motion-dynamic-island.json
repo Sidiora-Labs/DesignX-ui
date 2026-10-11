@@ -4,7 +4,7 @@
   "name": "motion-dynamic-island",
   "type": "registry:component",
   "title": "Live Activity Island",
-  "description": "A pill that morphs between live activities.",
+  "description": "A pill that morphs between live states.",
   "dependencies": [
     "motion@^14.0.0"
   ],
@@ -25,6 +25,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/motion-dynamic-island"
+    "docs": "https://dxuireact.com/docs/components/motion-dynamic-island"
   }
 }

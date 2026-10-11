@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "soft-blur-in",
+  "type": "registry:component",
+  "title": "Soft Blur In",
+  "description": "Text that softly blurs into focus.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/soft-blur-in.tsx",
+      "type": "registry:component",
+      "target": "components/text/soft-blur-in.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nexport interface SoftBlurInProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Per-character stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.9;\nconst MS = 1000;\n// DX signature ease-out.\nconst EASE = [0.22, 1, 0.36, 1] as const;\n\n/**\n * SoftBlurIn — per-character fade-in with a gentle blur and upward motion,\n * Hero-title reveal. Best on hero titles 48px+ over solid backgrounds.\n */\nexport default function SoftBlurIn({\n  children,\n  className = \"\",\n  delay = 0,\n  stagger = 25,\n  triggerOnView = false,\n}: SoftBlurInProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n  const characters = Array.from(children);\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      {characters.map((char, index) => (\n        <motion.span\n          animate={play ? { filter: \"blur(0px)\", opacity: 1, y: 0 } : undefined}\n          aria-hidden=\"true\"\n          initial={\n            shouldReduceMotion\n              ? { opacity: 1 }\n              : { filter: \"blur(12px)\", opacity: 0, y: 16 }\n          }\n          key={index}\n          style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : {\n                  delay: delay / MS + (index * stagger) / MS,\n                  duration: DURATION_S,\n                  ease: EASE,\n                }\n          }\n        >\n          {char === \" \" ? \" \" : String(char)}\n        </motion.span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/soft-blur-in"
+  }
+}

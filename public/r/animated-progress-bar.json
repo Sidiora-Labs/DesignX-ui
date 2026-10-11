@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-progress-bar",
+  "type": "registry:component",
+  "title": "Animated Progress Bar",
+  "description": "A progress bar with spring fill and optional label.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-progress-bar.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-progress-bar.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\n\nexport interface AnimatedProgressBarProps {\n  barClassName?: string;\n  className?: string;\n  color?: string;\n  label?: string;\n  labelClassName?: string;\n  value: number; // 0-100\n  /**\n   * To replay the animation, change the React 'key' prop on this component from the parent.\n   */\n}\n\nconst MIN_PROGRESS_VALUE = 0;\nconst MAX_PROGRESS_VALUE = 100;\n\nconst SPRING = {\n  damping: 10,\n  duration: 0.25,\n  mass: 0.75,\n  stiffness: 100,\n  type: \"spring\" as const,\n};\n\nexport default function AnimatedProgressBar({\n  value,\n  label,\n  color = \"#6366f1\",\n  className = \"\",\n  barClassName = \"\",\n  labelClassName = \"\",\n}: AnimatedProgressBarProps) {\n  const shouldReduceMotion = useReducedMotion();\n\n  return (\n    <div className={`w-full ${className}`}>\n      {label ? (\n        <div className={`mb-1 font-medium text-sm ${labelClassName}`}>\n          {label}\n        </div>\n      ) : null}\n      <div className=\"relative h-3 w-full overflow-hidden rounded border bg-background\">\n        <motion.div\n          animate={{\n            width: `${Math.max(MIN_PROGRESS_VALUE, Math.min(MAX_PROGRESS_VALUE, value))}%`,\n          }}\n          className={`h-full rounded bg-background ${barClassName}`}\n          initial={{ width: MIN_PROGRESS_VALUE }}\n          style={{ backgroundColor: color }}\n          transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n        />\n      </div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-progress-bar"
+  }
+}

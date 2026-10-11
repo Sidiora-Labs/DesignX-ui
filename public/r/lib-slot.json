@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "lib-slot",
+  "type": "registry:lib",
+  "title": "lib-slot",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "lib/slot.tsx",
+      "type": "registry:lib",
+      "target": "lib/slot.tsx",
+      "content": "import {\n  cloneElement,\n  isValidElement,\n  type HTMLAttributes,\n  type ReactElement,\n  type ReactNode,\n  type Ref,\n} from \"react\";\nimport { cn } from \"@/lib/utils\";\n\ntype AnyProps = Record<string, unknown>;\n\nfunction mergeRefs<T>(...refs: (Ref<T> | undefined)[]) {\n  return (node: T | null) => {\n    for (const ref of refs) {\n      if (typeof ref === \"function\") ref(node);\n      else if (ref) (ref as { current: T | null }).current = node;\n    }\n  };\n}\n\n/**\n * Slot — merges its props onto its single child element (the `asChild` pattern).\n * className is joined, event handlers are chained, refs are merged.\n */\nexport function Slot({\n  children,\n  ref,\n  ...props\n}: HTMLAttributes<HTMLElement> & { children?: ReactNode; ref?: Ref<HTMLElement> }) {\n  if (!isValidElement(children)) return null;\n  const child = children as ReactElement<AnyProps>;\n  const childProps = child.props;\n  const merged: AnyProps = { ...props, ...childProps };\n  for (const key of Object.keys(props)) {\n    const ours = (props as AnyProps)[key];\n    const theirs = childProps[key];\n    if (/^on[A-Z]/.test(key) && typeof ours === \"function\" && typeof theirs === \"function\") {\n      merged[key] = (...args: unknown[]) => {\n        (theirs as (...a: unknown[]) => void)(...args);\n        (ours as (...a: unknown[]) => void)(...args);\n      };\n    } else if (key === \"style\") {\n      merged.style = { ...(ours as object), ...(theirs as object) };\n    }\n  }\n  merged.className = cn(props.className, childProps.className as string | undefined);\n  merged.ref = mergeRefs(ref, childProps.ref as Ref<HTMLElement> | undefined);\n  return cloneElement(child, merged);\n}\n"
+    }
+  ]
+}

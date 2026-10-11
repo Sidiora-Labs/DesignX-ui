@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "per-word-crossfade",
+  "type": "registry:component",
+  "title": "Per Word Crossfade",
+  "description": "Words crossfade individually between phrases.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/per-word-crossfade.tsx",
+      "type": "registry:component",
+      "target": "components/text/per-word-crossfade.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nexport interface PerWordCrossfadeProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Per-word stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.7;\nconst MS = 1000;\n// Calm keynote ease-out.\nconst EASE = [0.16, 1, 0.3, 1] as const;\n\n/**\n * PerWordCrossfade — per-word fade-in with a subtle upward drift,\n * calm keynote rhythm.\n */\nexport default function PerWordCrossfade({\n  children,\n  className = \"\",\n  delay = 0,\n  stagger = 70,\n  triggerOnView = false,\n}: PerWordCrossfadeProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n  const words = children.split(\" \");\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      {words.map((word, index) => (\n        <span key={index} style={{ display: \"inline-block\" }}>\n          <motion.span\n            animate={play ? { opacity: 1, y: 0 } : undefined}\n            aria-hidden=\"true\"\n            initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 8 }}\n            style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : {\n                    delay: delay / MS + (index * stagger) / MS,\n                    duration: DURATION_S,\n                    ease: EASE,\n                  }\n            }\n          >\n            {word}\n          </motion.span>\n          {index < words.length - 1 && (\n            <span\n              aria-hidden=\"true\"\n              style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            >\n              {\" \"}\n            </span>\n          )}\n        </span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/per-word-crossfade"
+  }
+}

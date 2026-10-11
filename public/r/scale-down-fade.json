@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scale-down-fade",
+  "type": "registry:component",
+  "title": "Scale Down Fade",
+  "description": "Phrases that shrink and fade into the next.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/scale-down-fade.tsx",
+      "type": "registry:component",
+      "target": "components/text/scale-down-fade.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nexport interface ScaleDownFadeProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.52;\nconst MS = 1000;\nconst EASE = [0.22, 1, 0.36, 1] as const;\n\n/**\n * ScaleDownFade — subtle premium settle-in where the text enters slightly\n * scaled up and drifts down to its natural size. The whole text animates as\n * a single element.\n * Safe default for product UIs where copy should feel polished but not animated.\n */\nexport default function ScaleDownFade({\n  children,\n  className = \"\",\n  delay = 0,\n  triggerOnView = false,\n}: ScaleDownFadeProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n\n  return (\n    <motion.span\n      animate={play ? { opacity: 1, scale: 1, y: 0 } : undefined}\n      aria-label={children}\n      className={className}\n      initial={\n        shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 1.04, y: 8 }\n      }\n      ref={ref}\n      style={{ display: \"inline-block\" }}\n      transition={\n        shouldReduceMotion\n          ? { duration: 0 }\n          : {\n              delay: delay / MS,\n              duration: DURATION_S,\n              ease: EASE,\n            }\n      }\n    >\n      {children}\n    </motion.span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/scale-down-fade"
+  }
+}

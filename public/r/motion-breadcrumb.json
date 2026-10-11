@@ -12,8 +12,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/popover-morph",
-    "@dx/use-hover-capable",
-    "@dx/use-media-query",
     "@dx/utils"
   ],
   "files": [
@@ -29,6 +27,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/motion-breadcrumb"
+    "docs": "https://dxuireact.com/docs/components/motion-breadcrumb"
   }
 }

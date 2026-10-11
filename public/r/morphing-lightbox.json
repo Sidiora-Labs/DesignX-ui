@@ -12,7 +12,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/lib-presence-gate",
-    "@dx/use-modal-scope",
     "@dx/utils"
   ],
   "files": [
@@ -28,6 +27,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/morphing-lightbox"
+    "docs": "https://dxuireact.com/docs/components/morphing-lightbox"
   }
 }

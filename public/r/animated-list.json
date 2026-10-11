@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-list",
+  "type": "registry:component",
+  "title": "Animated List",
+  "description": "A list that animates additions, removals and reordering, with an optional auto-feed.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-list.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-list.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport type { ReactNode } from \"react\";\nimport { useEffect, useState } from \"react\";\n\nconst DEFAULT_MAX_VISIBLE = 5;\nconst DEFAULT_STAGGER = 0.05;\nconst DEFAULT_FEED_INTERVAL = 2000;\nconst MAX_STAGGER_DELAY = 0.3;\nconst RECEDE_OPACITY_STEP = 0.18;\nconst RECEDE_SCALE_STEP = 0.05;\nconst MIN_RECEDE_OPACITY = 0.35;\nconst MIN_RECEDE_SCALE = 0.85;\nconst ENTER_OFFSET = 14;\nconst SPRING_TRANSITION = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n\nexport type AnimatedListItem = {\n  content: ReactNode;\n  id: string;\n};\n\nexport type AnimatedListDirection = \"up\" | \"down\";\n\nexport type AnimatedListProps = {\n  className?: string;\n  direction?: AnimatedListDirection;\n  feed?: boolean;\n  feedInterval?: number;\n  items: AnimatedListItem[];\n  maxVisible?: number;\n  onItemClick?: (id: string) => void;\n  pauseOnHover?: boolean;\n  stagger?: number;\n};\n\nconst AnimatedList = ({\n  items,\n  direction = \"down\",\n  maxVisible = DEFAULT_MAX_VISIBLE,\n  stagger = DEFAULT_STAGGER,\n  feed = false,\n  feedInterval = DEFAULT_FEED_INTERVAL,\n  pauseOnHover = true,\n  onItemClick,\n  className,\n}: AnimatedListProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const [feedCount, setFeedCount] = useState(feed ? 0 : items.length);\n  const [isPaused, setIsPaused] = useState(false);\n\n  useEffect(() => {\n    setFeedCount(feed ? 0 : items.length);\n  }, [feed, items]);\n\n  useEffect(() => {\n    if (!feed || isPaused || feedCount >= items.length) {\n      return;\n    }\n\n    const timer = window.setInterval(() => {\n      setFeedCount((count) => Math.min(count + 1, items.length));\n    }, feedInterval);\n\n    return () => window.clearInterval(timer);\n  }, [feed, isPaused, feedCount, items.length, feedInterval]);\n\n  const activeItems = feed ? items.slice(0, feedCount) : items;\n  const visibleItems = activeItems.slice(\n    Math.max(0, activeItems.length - maxVisible)\n  );\n  const orderedItems =\n    direction === \"down\" ? [...visibleItems].reverse() : visibleItems;\n\n  const handleMouseEnter = () => {\n    if (pauseOnHover) {\n      setIsPaused(true);\n    }\n  };\n\n  const handleMouseLeave = () => {\n    if (pauseOnHover) {\n      setIsPaused(false);\n    }\n  };\n\n  return (\n    <ul\n      aria-live=\"polite\"\n      className={cn(\"flex flex-col gap-2\", className)}\n      onMouseEnter={handleMouseEnter}\n      onMouseLeave={handleMouseLeave}\n    >\n      <AnimatePresence mode=\"popLayout\">\n        {orderedItems.map((item, index) => {\n          const recedeOpacity = Math.max(\n            MIN_RECEDE_OPACITY,\n            1 - index * RECEDE_OPACITY_STEP\n          );\n          const recedeScale = Math.max(\n            MIN_RECEDE_SCALE,\n            1 - index * RECEDE_SCALE_STEP\n          );\n          const enterY = direction === \"down\" ? -ENTER_OFFSET : ENTER_OFFSET;\n          const delay = shouldReduceMotion\n            ? 0\n            : Math.min(index * stagger, MAX_STAGGER_DELAY);\n\n          return (\n            <motion.li\n              animate={\n                shouldReduceMotion\n                  ? { opacity: 1, scale: 1, y: 0 }\n                  : { opacity: recedeOpacity, scale: recedeScale, y: 0 }\n              }\n              className=\"list-none\"\n              exit={\n                shouldReduceMotion\n                  ? { opacity: 0, transition: { duration: 0 } }\n                  : { opacity: 0, scale: 0.9, y: 0 }\n              }\n              initial={\n                shouldReduceMotion\n                  ? { opacity: 1 }\n                  : { opacity: 0, scale: 0.95, y: enterY }\n              }\n              key={item.id}\n              layout\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { ...SPRING_TRANSITION, delay }\n              }\n            >\n              {onItemClick ? (\n                <button\n                  className=\"w-full rounded-lg text-left\"\n                  onClick={() => onItemClick(item.id)}\n                  type=\"button\"\n                >\n                  {item.content}\n                </button>\n              ) : (\n                item.content\n              )}\n            </motion.li>\n          );\n        })}\n      </AnimatePresence>\n    </ul>\n  );\n};\n\nexport default AnimatedList;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-list"
+  }
+}

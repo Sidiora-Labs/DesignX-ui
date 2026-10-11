@@ -13,8 +13,6 @@
     "@dx/action-swap",
     "@dx/lib-ease",
     "@dx/motion-tooltip",
-    "@dx/use-hover-capable",
-    "@dx/use-media-query",
     "@dx/utils"
   ],
   "files": [
@@ -30,6 +28,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/prediction-market-card"
+    "docs": "https://dxuireact.com/docs/components/prediction-market-card"
   }
 }

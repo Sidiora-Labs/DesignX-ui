@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "shared-axis-y",
+  "type": "registry:component",
+  "title": "Shared Axis Y",
+  "description": "A vertical shared-axis transition between phrases.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/shared-axis-y.tsx",
+      "type": "registry:component",
+      "target": "components/text/shared-axis-y.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport interface SharedAxisYProps {\n  className?: string;\n  /** Interval between phrase swaps in milliseconds. */\n  interval?: number;\n  phrases: string[];\n}\n\nconst STAGGER_S = 0.078;\n\n/**\n * SharedAxisY — per-word hard-cut staircase transition.\n * Each word flips in/out with stepped timing, creating a sharp editorial cascade.\n *\n */\nexport default function SharedAxisY({\n  phrases,\n  className = \"\",\n  interval = 2500,\n}: SharedAxisYProps) {\n  const [index, setIndex] = useState(0);\n  const shouldReduceMotion = useReducedMotion();\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setIndex((prev) => (prev + 1) % phrases.length);\n    }, interval);\n    return () => clearInterval(id);\n  }, [interval, phrases.length]);\n\n  const words = (phrases[index] ?? \"\").split(\" \");\n\n  return (\n    <span\n      aria-live=\"polite\"\n      className={`inline-flex flex-wrap gap-x-[0.25em] ${className}`}\n    >\n      <AnimatePresence mode=\"wait\">\n        <motion.span\n          className=\"inline-flex flex-wrap gap-x-[0.25em]\"\n          key={index}\n        >\n          {words.map((word, i) => (\n            <motion.span\n              animate={{ opacity: 1 }}\n              exit={\n                shouldReduceMotion\n                  ? { opacity: 0, transition: { duration: 0 } }\n                  : {\n                      opacity: 0,\n                      transition: { delay: i * STAGGER_S, duration: 0 },\n                    }\n              }\n              initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0 }}\n              key={i}\n              style={{ display: \"inline-block\" }}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { delay: i * STAGGER_S, duration: 0 }\n              }\n            >\n              {word}\n            </motion.span>\n          ))}\n        </motion.span>\n      </AnimatePresence>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/shared-axis-y"
+  }
+}

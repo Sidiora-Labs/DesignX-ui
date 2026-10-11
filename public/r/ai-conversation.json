@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "ai-conversation",
+  "type": "registry:component",
+  "title": "AI Conversation",
+  "description": "A thread container that follows the bottom only while you're there, with a jump-to-latest pill.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/agents/ai-conversation.tsx",
+      "type": "registry:component",
+      "target": "components/agents/ai-conversation.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport { ArrowDown } from \"lucide-react\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport {\n  type ReactNode,\n  useCallback,\n  useEffect,\n  useLayoutEffect,\n  useRef,\n  useState,\n} from \"react\";\n\nconst SPRING_DEFAULT = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n/**\n * How close to the bottom still counts as \"at the bottom\".\n *\n * Zero would break on fractional scroll heights, and anything large would keep\n * yanking the view down while someone is reading a few lines up.\n */\nconst BOTTOM_THRESHOLD_PX = 48;\n\nexport type AIConversationProps = {\n  children: ReactNode;\n  className?: string;\n  /**\n   * Changes whenever content grows — message count, or streamed text length.\n   * Used to decide when to follow the bottom.\n   */\n  contentKey?: string | number;\n};\n\n/**\n * Scroll container for a thread.\n *\n * It follows the bottom **only while the reader is already there**. Scrolling up\n * during a stream is an explicit act — the user wants to read something — and\n * dragging them back down is the single most common way chat UIs become\n * unusable. When it stops following, a pill appears to offer the trip back.\n */\nconst AIConversation = ({\n  children,\n  className,\n  contentKey,\n}: AIConversationProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const viewportRef = useRef<HTMLDivElement | null>(null);\n  const [isPinned, setIsPinned] = useState(true);\n\n  const measure = useCallback(() => {\n    const viewport = viewportRef.current;\n    if (!viewport) {\n      return;\n    }\n    const distance =\n      viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight;\n    setIsPinned(distance <= BOTTOM_THRESHOLD_PX);\n  }, []);\n\n  const scrollToBottom = useCallback((behavior: ScrollBehavior) => {\n    const viewport = viewportRef.current;\n    if (!viewport) {\n      return;\n    }\n    // Element.scrollTo is missing in jsdom and in a few older engines, and it is\n    // not worth throwing over — assigning scrollTop lands in the same place,\n    // just without the smoothing.\n    if (typeof viewport.scrollTo === \"function\") {\n      viewport.scrollTo({ behavior, top: viewport.scrollHeight });\n    } else {\n      viewport.scrollTop = viewport.scrollHeight;\n    }\n    setIsPinned(true);\n  }, []);\n\n  // Layout effect, so the jump happens in the same frame the content grew and\n  // the reader never sees a flash of the pre-scroll position.\n  useLayoutEffect(() => {\n    if (isPinned) {\n      scrollToBottom(shouldReduceMotion ? \"auto\" : \"smooth\");\n    }\n  }, [contentKey, isPinned, scrollToBottom, shouldReduceMotion]);\n\n  useEffect(() => {\n    const viewport = viewportRef.current;\n    if (!viewport) {\n      return;\n    }\n    // A resize observer catches content that grows without contentKey changing —\n    // an image finishing loading, a details element opening.\n    const observer = new ResizeObserver(measure);\n    for (const child of Array.from(viewport.children)) {\n      observer.observe(child);\n    }\n    return () => observer.disconnect();\n  }, [measure]);\n\n  return (\n    <div className={cn(\"relative min-h-0 w-full\", className)}>\n      <div\n        className=\"h-full overflow-y-auto overscroll-contain\"\n        onScroll={measure}\n        ref={viewportRef}\n      >\n        {children}\n      </div>\n\n      <AnimatePresence initial={false}>\n        {!isPinned && (\n          <motion.button\n            animate={{ opacity: 1, scale: 1, y: 0 }}\n            aria-label=\"Jump to latest\"\n            className=\"absolute inset-x-0 bottom-3 mx-auto flex w-fit cursor-pointer items-center gap-1.5 rounded-full border border-border bg-background/90 py-1.5 pr-3 pl-2.5 text-foreground text-xs shadow-sm backdrop-blur\"\n            exit={\n              shouldReduceMotion\n                ? { opacity: 0, transition: { duration: 0 } }\n                : { opacity: 0, scale: 0.96, y: 8 }\n            }\n            initial={\n              shouldReduceMotion\n                ? { opacity: 1, scale: 1, y: 0 }\n                : { opacity: 0, scale: 0.96, y: 8 }\n            }\n            onClick={() =>\n              scrollToBottom(shouldReduceMotion ? \"auto\" : \"smooth\")\n            }\n            transition={shouldReduceMotion ? { duration: 0 } : SPRING_DEFAULT}\n            type=\"button\"\n          >\n            <ArrowDown aria-hidden=\"true\" size={13} />\n            Jump to latest\n          </motion.button>\n        )}\n      </AnimatePresence>\n    </div>\n  );\n};\n\nexport default AIConversation;\n"
+    }
+  ],
+  "categories": [
+    "agents"
+  ],
+  "meta": {
+    "group": "agents",
+    "docs": "https://dxuireact.com/docs/components/ai-conversation"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "scroll-reveal-paragraph",
+  "type": "registry:component",
+  "title": "Scroll Reveal Paragraph",
+  "description": "A paragraph whose words light up as you scroll through it.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/scroll-reveal-paragraph.tsx",
+      "type": "registry:component",
+      "target": "components/text/scroll-reveal-paragraph.tsx",
+      "content": "import {\n  type MotionValue,\n  motion,\n  useReducedMotion,\n  useScroll,\n  useTransform,\n} from \"motion/react\";\nimport { useRef } from \"react\";\n\nconst KEY_PREFIX_LENGTH = 3;\n\nexport interface ScrollRevealParagraphProps {\n  className?: string;\n  paragraph: string;\n}\n\nexport default function ScrollRevealParagraph({\n  paragraph,\n  className = \"\",\n}: ScrollRevealParagraphProps) {\n  const container = useRef<HTMLParagraphElement>(null);\n  const { scrollYProgress } = useScroll({\n    offset: [\"start 0.9\", \"start 0.25\"],\n    target: container,\n  });\n\n  const words = paragraph.split(\" \");\n\n  return (\n    <p className={`text-lg leading-relaxed ${className}`} ref={container}>\n      {words.map((word, i) => {\n        const start = i / words.length;\n        const end = start + 1 / words.length;\n        return (\n          <Word\n            key={`word-${i}-${word.slice(0, KEY_PREFIX_LENGTH)}`}\n            progress={scrollYProgress}\n            range={[start, end]}\n          >\n            {word}\n          </Word>\n        );\n      })}\n    </p>\n  );\n}\n\ninterface WordProps {\n  children: string;\n  progress: MotionValue<number>;\n  range: [number, number];\n}\n\nconst Word = ({ children, progress, range }: WordProps) => {\n  const shouldReduceMotion = useReducedMotion();\n  const opacity = useTransform(\n    progress,\n    range,\n    shouldReduceMotion ? [1, 1] : [0, 1]\n  );\n\n  return (\n    <span className=\"relative mr-2 inline-block\">\n      {shouldReduceMotion ? null : (\n        <span className=\"text-foreground/10\">{children}</span>\n      )}\n      <motion.span\n        className=\"absolute inset-0 text-foreground\"\n        style={{ opacity }}\n      >\n        {children}\n      </motion.span>\n    </span>\n  );\n};\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/scroll-reveal-paragraph"
+  }
+}

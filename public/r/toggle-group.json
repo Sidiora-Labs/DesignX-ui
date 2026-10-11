@@ -26,6 +26,6 @@
   "meta": {
     "group": "ui",
     "base": "toggle-group",
-    "docs": "https://ui.designx.dev/docs/components/toggle-group"
+    "docs": "https://dxuireact.com/docs/components/toggle-group"
   }
 }

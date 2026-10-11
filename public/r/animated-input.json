@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-input",
+  "type": "registry:component",
+  "title": "Animated Input",
+  "description": "A text field with a floating label and animated focus ring.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-input.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-input.tsx",
+      "content": "import { motion, useReducedMotion } from \"motion/react\";\nimport { useId, useRef, useState } from \"react\";\n\nconst EASE_IN_OUT_CUBIC_X1 = 0.4;\nconst EASE_IN_OUT_CUBIC_Y1 = 0;\nconst EASE_IN_OUT_CUBIC_X2 = 0.2;\nconst EASE_IN_OUT_CUBIC_Y2 = 1;\n\nconst LABEL_TRANSITION = {\n  duration: 0.28,\n  ease: [\n    EASE_IN_OUT_CUBIC_X1,\n    EASE_IN_OUT_CUBIC_Y1,\n    EASE_IN_OUT_CUBIC_X2,\n    EASE_IN_OUT_CUBIC_Y2,\n  ] as [number, number, number, number], // cubic-bezier tuple\n};\n\nexport interface AnimatedInputProps {\n  className?: string;\n  defaultValue?: string;\n  disabled?: boolean;\n  icon?: React.ReactNode;\n  inputClassName?: string;\n  label: string;\n  labelClassName?: string;\n  onChange?: (value: string) => void;\n  placeholder?: string;\n  value?: string;\n}\n\nexport default function AnimatedInput({\n  value,\n  defaultValue = \"\",\n  onChange,\n  label,\n  placeholder = \"\",\n  disabled = false,\n  className = \"\",\n  inputClassName = \"\",\n  labelClassName = \"\",\n  icon,\n}: AnimatedInputProps) {\n  const [internalValue, setInternalValue] = useState(defaultValue);\n  const isControlled = value !== undefined;\n  const val = isControlled ? value : internalValue;\n  const inputRef = useRef<HTMLInputElement>(null);\n  const [isFocused, setIsFocused] = useState(false);\n  const isFloating = !!val || isFocused;\n  const shouldReduceMotion = useReducedMotion();\n  const reactId = useId();\n  const inputId = `animated-input-${reactId.replace(/:/g, \"\")}`;\n\n  const getLabelAnimation = () => {\n    if (shouldReduceMotion) {\n      return {};\n    }\n    if (isFloating) {\n      return {\n        borderColor: \"var(--color-brand)\",\n        color: \"var(--color-brand)\",\n        scale: 0.85,\n        y: -24,\n      };\n    }\n    return { color: \"#6b7280\", scale: 1, y: 0 };\n  };\n\n  const getLabelStyle = () => {\n    if (!shouldReduceMotion) {\n      return {};\n    }\n    if (isFloating) {\n      return {\n        borderColor: \"var(--color-brand)\",\n        color: \"var(--color-brand)\",\n        transform: \"translateY(-24px) scale(0.85)\",\n      };\n    }\n    return {\n      color: \"#6b7280\",\n      transform: \"translateY(0) scale(1)\",\n    };\n  };\n\n  return (\n    <div className={`relative flex items-center ${className}`}>\n      {icon ? (\n        <span\n          aria-hidden=\"true\"\n          className=\"absolute top-1/2 left-3 -translate-y-1/2\"\n        >\n          {icon}\n        </span>\n      ) : null}\n      <input\n        aria-label={label}\n        className={`peer w-full rounded-sm border bg-background px-3 py-2 text-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${icon ? \"pl-10\" : \"\"} ${inputClassName}`}\n        disabled={disabled}\n        id={inputId}\n        onBlur={() => setIsFocused(false)}\n        onChange={(e) => {\n          if (!isControlled) {\n            setInternalValue(e.target.value);\n          }\n          onChange?.(e.target.value);\n        }}\n        onFocus={() => setIsFocused(true)}\n        placeholder={isFloating ? placeholder : \"\"}\n        ref={inputRef}\n        type=\"text\"\n        value={val}\n      />\n      <motion.label\n        animate={getLabelAnimation()}\n        className={`pointer-events-none absolute top-1/2 left-3 origin-left -translate-y-1/2 rounded-sm border border-transparent bg-background px-1 text-foreground transition-all ${labelClassName}`}\n        htmlFor={inputId}\n        style={{\n          zIndex: 2,\n          ...getLabelStyle(),\n        }}\n        transition={shouldReduceMotion ? { duration: 0 } : LABEL_TRANSITION}\n      >\n        {label}\n      </motion.label>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-input"
+  }
+}

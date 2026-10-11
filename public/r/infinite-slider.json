@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "infinite-slider",
+  "type": "registry:component",
+  "title": "Infinite Slider",
+  "description": "An endless marquee that slows on hover.",
+  "dependencies": [
+    "motion@^14.0.0",
+    "react-use-measure@^2.1.7"
+  ],
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/infinite-slider.tsx",
+      "type": "registry:component",
+      "target": "components/elements/infinite-slider.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport {\n  animate,\n  motion,\n  useMotionValue,\n  useReducedMotion,\n} from \"motion/react\";\nimport { useEffect, useState } from \"react\";\nimport useMeasure from \"react-use-measure\";\n\nexport interface InfiniteSliderProps {\n  children: React.ReactNode;\n  className?: string;\n  direction?: \"horizontal\" | \"vertical\";\n  gap?: number;\n  paused?: boolean;\n  reverse?: boolean;\n  speed?: number;\n  speedOnHover?: number;\n}\n\nexport default function InfiniteSlider({\n  children,\n  gap = 16,\n  speed = 100,\n  paused = false,\n  speedOnHover,\n  direction = \"horizontal\",\n  reverse = false,\n  className,\n}: InfiniteSliderProps) {\n  const [currentSpeed, setCurrentSpeed] = useState(speed);\n  const [ref, { width, height }] = useMeasure();\n  const translation = useMotionValue(0);\n  const [isTransitioning, setIsTransitioning] = useState(false);\n  const [_key, setKey] = useState(0);\n  const shouldReduceMotion = useReducedMotion();\n\n  useEffect(() => {\n    if (shouldReduceMotion) {\n      translation.set(0);\n      return;\n    }\n\n    if (paused || currentSpeed <= 0) {\n      setIsTransitioning(true);\n      return;\n    }\n\n    let controls:\n      | {\n          stop: () => void;\n        }\n      | undefined;\n    const size = direction === \"horizontal\" ? width : height;\n    const contentSize = size + gap;\n    const from = reverse ? -contentSize / 2 : 0;\n    const to = reverse ? 0 : -contentSize / 2;\n\n    const distanceToTravel = Math.abs(to - from);\n    const duration = distanceToTravel / currentSpeed;\n\n    if (isTransitioning) {\n      const remainingDistance = Math.abs(translation.get() - to);\n      const transitionDuration = remainingDistance / currentSpeed;\n\n      controls = animate(translation, [translation.get(), to], {\n        duration: transitionDuration,\n        ease: \"linear\",\n        onComplete: () => {\n          setIsTransitioning(false);\n          setKey((prevKey) => prevKey + 1);\n        },\n      });\n    } else {\n      controls = animate(translation, [from, to], {\n        duration,\n        ease: \"linear\",\n        onRepeat: () => {\n          translation.set(from);\n        },\n        repeat: Number.POSITIVE_INFINITY,\n        repeatDelay: 0,\n        repeatType: \"loop\",\n      });\n    }\n\n    return controls?.stop;\n  }, [\n    paused,\n    translation,\n    currentSpeed,\n    width,\n    height,\n    gap,\n    isTransitioning,\n    direction,\n    reverse,\n    shouldReduceMotion,\n  ]);\n\n  const hoverProps =\n    speedOnHover === undefined\n      ? {}\n      : {\n          onHoverEnd: () => {\n            setIsTransitioning(true);\n            setCurrentSpeed(speed);\n          },\n          onHoverStart: () => {\n            setIsTransitioning(true);\n            setCurrentSpeed(speedOnHover);\n          },\n        };\n\n  return (\n    <div className={cn(\"overflow-hidden\", className)}>\n      <motion.div\n        className=\"flex w-max\"\n        ref={ref}\n        style={{\n          ...(direction === \"horizontal\"\n            ? { x: translation }\n            : { y: translation }),\n          flexDirection: direction === \"horizontal\" ? \"row\" : \"column\",\n          gap: `${gap}px`,\n        }}\n        {...hoverProps}\n      >\n        {children}\n        {children}\n      </motion.div>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/infinite-slider"
+  }
+}

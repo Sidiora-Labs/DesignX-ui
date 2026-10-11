@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "cta-3",
+  "type": "registry:block",
+  "title": "CTA — banner",
+  "description": "Full-width brand banner.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/press-button"
+  ],
+  "files": [
+    {
+      "path": "blocks/cta-3/index.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/cta-3/index.tsx",
+      "content": "import PressButton from \"@/components/elements/press-button\";\nimport { motion, useReducedMotion } from \"motion/react\";\n\nconst SPRING = {\n  bounce: 0.1,\n  duration: 0.25,\n  type: \"spring\" as const,\n};\n\nexport function CtaBanner() {\n  const shouldReduceMotion = useReducedMotion();\n\n  return (\n    <section aria-labelledby=\"cta-banner-heading\">\n      <div className=\"px-6 py-12\">\n        <motion.div\n          className=\"mx-auto max-w-4xl overflow-hidden rounded-2xl border bg-gradient-to-r from-primary/5 via-background to-primary/5 p-8 md:p-12\"\n          initial={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 0, scale: 0.97 }\n          }\n          transition={shouldReduceMotion ? { duration: 0 } : SPRING}\n          viewport={{ once: true }}\n          whileInView={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1 }\n          }\n        >\n          <div className=\"flex flex-col items-center justify-between gap-6 md:flex-row\">\n            <div>\n              <h2\n                className=\"font-bold text-xl md:text-2xl\"\n                id=\"cta-banner-heading\"\n              >\n                Start building today\n              </h2>\n              <p className=\"mt-1 text-foreground/70 text-sm md:text-base\">\n                Install any component with a single command.\n              </p>\n            </div>\n            <PressButton variant=\"candy\">Get Started →</PressButton>\n          </div>\n        </motion.div>\n      </div>\n    </section>\n  );\n}\n\nexport default CtaBanner;\n"
+    }
+  ],
+  "categories": [
+    "cta"
+  ],
+  "meta": {
+    "iframeHeight": "360px",
+    "preview": "https://dxuireact.com/blocks#cta-3"
+  }
+}

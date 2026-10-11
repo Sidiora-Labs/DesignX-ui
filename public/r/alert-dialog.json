@@ -25,6 +25,6 @@
   "meta": {
     "group": "ui",
     "base": "alert-dialog",
-    "docs": "https://ui.designx.dev/docs/components/alert-dialog"
+    "docs": "https://dxuireact.com/docs/components/alert-dialog"
   }
 }

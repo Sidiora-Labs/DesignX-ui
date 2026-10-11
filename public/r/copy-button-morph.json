@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "copy-button-morph",
+  "type": "registry:component",
+  "title": "Copy Button Morph",
+  "description": "A copy button that morphs through loading and success.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/elements/copy-button-morph.tsx",
+      "type": "registry:component",
+      "target": "components/elements/copy-button-morph.tsx",
+      "content": "import { Check, Copy, LoaderCircle } from \"lucide-react\";\nimport { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport {\n  type ReactNode,\n  useCallback,\n  useEffect,\n  useRef,\n  useState,\n} from \"react\";\n\nexport interface ButtonCopyProps {\n  className?: string;\n  disabled?: boolean;\n  duration?: number;\n  idleIcon?: ReactNode;\n  loadingDuration?: number;\n  loadingIcon?: ReactNode;\n  onCopy?: () => Promise<void> | void;\n  successIcon?: ReactNode;\n}\n\nconst defaultIcons = {\n  idle: <Copy size={16} />,\n  loading: (\n    <LoaderCircle\n      className=\"animate-spin motion-reduce:animate-none\"\n      size={16}\n    />\n  ),\n  success: <Check size={16} />,\n};\n\nexport default function ButtonCopy({\n  onCopy,\n  idleIcon = defaultIcons.idle,\n  loadingIcon = defaultIcons.loading,\n  successIcon = defaultIcons.success,\n  className = \"\",\n  duration = 2000,\n  loadingDuration = 1000,\n  disabled = false,\n}: ButtonCopyProps) {\n  const [buttonState, setButtonState] = useState<\n    \"idle\" | \"loading\" | \"success\" | \"error\"\n  >(\"idle\");\n  const shouldReduceMotion = useReducedMotion();\n\n  const requestId = useRef(0);\n  const timers = useRef<ReturnType<typeof setTimeout>[]>([]);\n  useEffect(\n    () => () => {\n      requestId.current += 1;\n      for (const timer of timers.current) {\n        clearTimeout(timer);\n      }\n    },\n    []\n  );\n\n  const handleClick = useCallback(async () => {\n    const request = ++requestId.current;\n    setButtonState(\"loading\");\n    try {\n      await onCopy?.();\n    } catch {\n      if (request === requestId.current) {\n        setButtonState(\"error\");\n      }\n      return;\n    }\n    if (request !== requestId.current) {\n      return;\n    }\n    timers.current = [\n      setTimeout(() => setButtonState(\"success\"), loadingDuration),\n      setTimeout(() => setButtonState(\"idle\"), loadingDuration + duration),\n    ];\n  }, [onCopy, loadingDuration, duration]);\n\n  const icons = {\n    error: idleIcon,\n    idle: idleIcon,\n    loading: loadingIcon,\n    success: successIcon,\n  };\n\n  const ariaLabels = {\n    error: \"Copy failed. Try again\",\n    idle: \"Copy\",\n    loading: \"Copying...\",\n    success: \"Copied\",\n  };\n\n  return (\n    <div className=\"flex justify-center\">\n      <button\n        aria-label={ariaLabels[buttonState]}\n        aria-live=\"polite\"\n        className={`relative min-h-[44px] w-auto min-w-[44px] cursor-pointer overflow-hidden rounded-full border bg-background p-3 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 ${className}`}\n        disabled={\n          buttonState === \"loading\" || buttonState === \"success\" || disabled\n        }\n        onClick={handleClick}\n        type=\"button\"\n      >\n        <AnimatePresence initial={false} mode=\"popLayout\">\n          <motion.span\n            animate={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : { filter: \"blur(0px)\", opacity: 1, y: 0 }\n            }\n            className=\"flex w-full items-center justify-center\"\n            exit={\n              shouldReduceMotion\n                ? { opacity: 0, transition: { duration: 0 } }\n                : { filter: \"blur(10px)\", opacity: 0, y: 25 }\n            }\n            initial={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : { filter: \"blur(10px)\", opacity: 0, y: -25 }\n            }\n            key={buttonState}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : { bounce: 0, duration: 0.25, type: \"spring\" as const }\n            }\n          >\n            {icons[buttonState]}\n          </motion.span>\n        </AnimatePresence>\n      </button>\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/copy-button-morph"
+  }
+}

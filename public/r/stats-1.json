@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "stats-1",
+  "type": "registry:block",
+  "title": "Stats — grid",
+  "description": "Big numbers that count up when scrolled into view.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "blocks/stats-1/index.tsx",
+      "type": "registry:block",
+      "target": "components/blocks/stats-1/index.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nconst STAGGER_DELAY = 0.1;\nconst VALUE_DELAY_OFFSET = 0.2;\n\ninterface StatsGridProps {\n  description?: string;\n  stats?: Array<{\n    value: string;\n    label: string;\n    description?: string;\n  }>;\n  title?: string;\n}\n\nexport function StatsGrid({\n  title = \"Our Impact in Numbers\",\n  description = \"See how we're making a difference across the globe\",\n  stats = [\n    {\n      description: \"Growing every day\",\n      label: \"Active Users\",\n      value: \"10M+\",\n    },\n    {\n      description: \"Reliable service\",\n      label: \"Uptime\",\n      value: \"99.9%\",\n    },\n    {\n      description: \"Worldwide reach\",\n      label: \"Countries\",\n      value: \"150+\",\n    },\n    {\n      description: \"Always here to help\",\n      label: \"Support\",\n      value: \"24/7\",\n    },\n  ],\n}: StatsGridProps) {\n  const ref = useRef(null);\n  const isInView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n\n  return (\n    <section className=\"py-20\">\n      <div className=\"mx-auto max-w-7xl px-6\">\n        <motion.div\n          className=\"mb-16 text-center\"\n          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 20 }}\n          transition={shouldReduceMotion ? { duration: 0 } : { duration: 0.6 }}\n          viewport={{ once: true }}\n          whileInView={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }\n          }\n        >\n          <h2 className=\"mb-4 font-bold text-3xl text-foreground lg:text-4xl\">\n            {title}\n          </h2>\n          <p className=\"mx-auto max-w-2xl text-foreground/70 text-lg\">\n            {description}\n          </p>\n        </motion.div>\n        <div\n          className=\"grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4\"\n          ref={ref}\n        >\n          {stats.map((stat, index) => (\n            <motion.div\n              animate={(() => {\n                if (shouldReduceMotion) {\n                  return { opacity: 1 };\n                }\n                return isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 };\n              })()}\n              className=\"group relative overflow-hidden rounded-2xl border border-border bg-background p-8 text-center transition-all hover:border-brand hover:shadow-lg\"\n              initial={\n                shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 30 }\n              }\n              key={stat.label}\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : { delay: index * STAGGER_DELAY, duration: 0.6 }\n              }\n            >\n              <motion.div\n                animate={(() => {\n                  if (shouldReduceMotion) {\n                    return { scale: 1 };\n                  }\n                  return isInView ? { scale: 1 } : { scale: 0.5 };\n                })()}\n                className=\"mb-2 font-bold text-4xl text-brand lg:text-5xl\"\n                initial={shouldReduceMotion ? { scale: 1 } : { scale: 0.5 }}\n                transition={\n                  shouldReduceMotion\n                    ? { duration: 0 }\n                    : {\n                        delay: index * STAGGER_DELAY + VALUE_DELAY_OFFSET,\n                        duration: 0.8,\n                        stiffness: 200,\n                        type: \"spring\" as const,\n                      }\n                }\n              >\n                {stat.value}\n              </motion.div>\n              <h3 className=\"mb-2 font-semibold text-foreground text-lg\">\n                {stat.label}\n              </h3>\n              {stat.description ? (\n                <p className=\"text-foreground/70 text-sm\">{stat.description}</p>\n              ) : null}\n              {/* Hover effect background */}\n              <motion.div\n                className=\"absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 group-hover:opacity-100\"\n                initial={{ opacity: 0 }}\n                transition={{ duration: 0.3 }}\n                whileHover={{ opacity: 1 }}\n              />\n            </motion.div>\n          ))}\n        </div>\n      </div>\n    </section>\n  );\n}\n\nexport default StatsGrid;\n"
+    }
+  ],
+  "categories": [
+    "stats"
+  ],
+  "meta": {
+    "iframeHeight": "520px",
+    "preview": "https://dxuireact.com/blocks#stats-1"
+  }
+}

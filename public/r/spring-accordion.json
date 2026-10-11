@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "spring-accordion",
+  "type": "registry:component",
+  "title": "Spring Accordion",
+  "description": "An accordion that opens on a soft spring.",
+  "dependencies": [
+    "lucide-react@^0.577.0",
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/elements/spring-accordion.tsx",
+      "type": "registry:component",
+      "target": "components/elements/spring-accordion.tsx",
+      "content": "import { ChevronDown } from \"lucide-react\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport { useState } from \"react\";\n\nconst CHEVRON_ROTATION_DEGREES = 180;\nconst CHEVRON_ANIMATION_DURATION = 0.2;\n\nexport interface AccordionItem {\n  content: React.ReactNode;\n  id: string | number;\n  title: string;\n}\n\nexport interface BasicAccordionProps {\n  allowMultiple?: boolean;\n  className?: string;\n  defaultExpandedIds?: Array<string | number>;\n  items: AccordionItem[];\n}\n\nexport default function BasicAccordion({\n  items,\n  allowMultiple = false,\n  className = \"\",\n  defaultExpandedIds = [],\n}: BasicAccordionProps) {\n  const [expandedItems, setExpandedItems] =\n    useState<Array<string | number>>(defaultExpandedIds);\n  const shouldReduceMotion = useReducedMotion();\n\n  const toggleItem = (id: string | number) => {\n    if (expandedItems.includes(id)) {\n      setExpandedItems(expandedItems.filter((item) => item !== id));\n    } else if (allowMultiple) {\n      setExpandedItems([...expandedItems, id]);\n    } else {\n      setExpandedItems([id]);\n    }\n  };\n\n  return (\n    <div\n      className={`flex w-full flex-col divide-y divide-border overflow-hidden rounded-lg border ${className}`}\n    >\n      {items.map((item) => {\n        const isExpanded = expandedItems.includes(item.id);\n\n        return (\n          <div className=\"overflow-hidden\" key={item.id}>\n            <button\n              aria-controls={`accordion-content-${item.id}`}\n              aria-expanded={isExpanded}\n              className=\"flex min-h-[44px] w-full cursor-pointer items-center justify-between gap-2 bg-background px-4 py-3 text-left transition-colors hover:bg-muted focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2\"\n              id={`accordion-header-${item.id}`}\n              onClick={() => toggleItem(item.id)}\n              type=\"button\"\n            >\n              <h3 className=\"font-medium\">{item.title}</h3>\n              <motion.div\n                animate={{ rotate: isExpanded ? CHEVRON_ROTATION_DEGREES : 0 }}\n                className=\"shrink-0\"\n                transition={{\n                  duration: shouldReduceMotion ? 0 : CHEVRON_ANIMATION_DURATION,\n                }}\n              >\n                <ChevronDown className=\"h-5 w-5\" />\n              </motion.div>\n            </button>\n\n            {/* Content stays mounted (height-animated, not unmounted) so the\n                accordion keeps a stable width whether open or closed. `inert`\n                removes collapsed content from tab order and the a11y tree. */}\n            <motion.div\n              animate={{\n                height: isExpanded ? \"auto\" : 0,\n                opacity: isExpanded ? 1 : 0,\n              }}\n              aria-labelledby={`accordion-header-${item.id}`}\n              className=\"overflow-hidden\"\n              id={`accordion-content-${item.id}`}\n              inert={!isExpanded}\n              initial={false}\n              // oxlint-disable-next-line jsx-a11y/prefer-tag-over-role\n              role=\"region\"\n              transition={\n                shouldReduceMotion\n                  ? { duration: 0 }\n                  : {\n                      height: {\n                        damping: 40,\n                        duration: 0.25,\n                        stiffness: 500,\n                        type: \"spring\" as const,\n                      },\n                      opacity: { duration: 0.2 },\n                    }\n              }\n            >\n              <div className=\"border-t bg-background px-4 py-3\">\n                {item.content}\n              </div>\n            </motion.div>\n          </div>\n        );\n      })}\n    </div>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/spring-accordion"
+  }
+}

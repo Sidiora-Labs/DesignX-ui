@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "depth-parallax-words",
+  "type": "registry:component",
+  "title": "Depth Parallax Words",
+  "description": "Words layered in depth that drift apart with the pointer.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/depth-parallax-words.tsx",
+      "type": "registry:component",
+      "target": "components/text/depth-parallax-words.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\n/**\n * DepthParallaxWords — per-word depth motion with scale, vertical drift and blur for layered readability.\n *\n */\nexport interface DepthParallaxWordsProps {\n  children: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Per-word stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.7;\nconst MS = 1000;\nconst EASE = [0.22, 1, 0.36, 1] as const;\n\nexport default function DepthParallaxWords({\n  children,\n  className = \"\",\n  delay = 0,\n  stagger = 70,\n  triggerOnView = false,\n}: DepthParallaxWordsProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n  const words = children.split(\" \");\n\n  return (\n    <span aria-label={children} className={className} ref={ref}>\n      {words.map((word, index) => (\n        <span key={index}>\n          <motion.span\n            animate={\n              play\n                ? { filter: \"blur(0px)\", opacity: 1, scale: 1, y: 0 }\n                : undefined\n            }\n            aria-hidden=\"true\"\n            initial={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : { filter: \"blur(3px)\", opacity: 0, scale: 0.92, y: 18 }\n            }\n            style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : {\n                    delay: delay / MS + (index * stagger) / MS,\n                    duration: DURATION_S,\n                    ease: EASE,\n                  }\n            }\n          >\n            {word}\n          </motion.span>\n          {index < words.length - 1 && (\n            <span\n              aria-hidden=\"true\"\n              style={{ display: \"inline-block\", whiteSpace: \"pre\" }}\n            >\n              {\" \"}\n            </span>\n          )}\n        </span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/depth-parallax-words"
+  }
+}

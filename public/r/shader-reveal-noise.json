@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "shader-reveal-noise",
+  "type": "registry:component",
+  "title": "Shader Reveal Noise",
+  "description": "A 4D-noise threshold reveal with an organic edge.",
+  "registryDependencies": [
+    "@dx/shader-reveal-transition"
+  ],
+  "files": [
+    {
+      "path": "components/transitions/shader-reveal-noise.tsx",
+      "type": "registry:component",
+      "target": "components/transitions/shader-reveal-noise.tsx",
+      "content": "import type { ReactNode } from \"react\";\nimport ShaderRevealTransition from \"@/components/transitions/shader-reveal-transition\";\n\nexport interface ShaderRevealNoiseTransitionProps {\n  children: ReactNode;\n  className?: string;\n  duration?: number;\n  onRest?: () => void;\n  transitionKey: string | number;\n}\n\nconst ShaderRevealNoiseTransition = ({\n  children,\n  className,\n  duration = 1080,\n  onRest,\n  transitionKey,\n}: ShaderRevealNoiseTransitionProps) => (\n  <ShaderRevealTransition\n    className={className}\n    duration={duration}\n    onRest={onRest}\n    transitionKey={transitionKey}\n    variant=\"noise\"\n  >\n    {children}\n  </ShaderRevealTransition>\n);\n\nexport default ShaderRevealNoiseTransition;\n"
+    }
+  ],
+  "categories": [
+    "transitions"
+  ],
+  "meta": {
+    "group": "transitions",
+    "docs": "https://dxuireact.com/docs/components/shader-reveal-noise"
+  }
+}

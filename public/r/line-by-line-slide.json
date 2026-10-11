@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "line-by-line-slide",
+  "type": "registry:component",
+  "title": "Line by Line Slide",
+  "description": "Lines of copy that slide in one after another.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/line-by-line-slide.tsx",
+      "type": "registry:component",
+      "target": "components/text/line-by-line-slide.tsx",
+      "content": "import { motion, useInView, useReducedMotion } from \"motion/react\";\nimport { useRef } from \"react\";\n\nexport interface LineByLineSlideProps {\n  /** Text content. Use \"\\n\" to separate lines, or pass `lines` instead. */\n  children?: string;\n  className?: string;\n  /** Delay before the animation starts, in milliseconds. */\n  delay?: number;\n  /** Explicit line array. Takes precedence over children. */\n  lines?: string[];\n  /** Per-line stagger, in milliseconds. */\n  stagger?: number;\n  /** Animate only once the text scrolls into view. */\n  triggerOnView?: boolean;\n}\n\nconst DURATION_S = 0.9;\nconst MS = 1000;\nconst EASE = [0.22, 1, 0.36, 1] as const;\n\n/**\n * LineByLineSlide — per-line slide-in from the left with a staggered entrance,\n * made for landing-page subheads. Each line enters from the left for a\n * flowing paragraph reveal.\n * Best for 2-line or 3-line headings.\n */\nexport default function LineByLineSlide({\n  children,\n  lines: linesProp,\n  className = \"\",\n  delay = 0,\n  stagger = 120,\n  triggerOnView = false,\n}: LineByLineSlideProps) {\n  const ref = useRef<HTMLSpanElement>(null);\n  const inView = useInView(ref, { once: true });\n  const shouldReduceMotion = useReducedMotion();\n  const play = (!triggerOnView || inView) && !shouldReduceMotion;\n\n  const lines = linesProp ?? (children ? children.split(\"\\n\") : []);\n  const label = lines.join(\" \");\n\n  return (\n    <span\n      aria-label={label}\n      className={className}\n      ref={ref}\n      style={{ display: \"block\" }}\n    >\n      {lines.map((line, index) => (\n        <motion.span\n          animate={play ? { opacity: 1, x: 0 } : undefined}\n          aria-hidden=\"true\"\n          initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, x: -48 }}\n          key={index}\n          style={{ display: \"block\" }}\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : {\n                  delay: delay / MS + (index * stagger) / MS,\n                  duration: DURATION_S,\n                  ease: EASE,\n                }\n          }\n        >\n          {line}\n        </motion.span>\n      ))}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/line-by-line-slide"
+  }
+}

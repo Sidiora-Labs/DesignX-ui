@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "fade-through",
+  "type": "registry:component",
+  "title": "Fade Through",
+  "description": "A Material-style fade-through between phrases.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/fade-through.tsx",
+      "type": "registry:component",
+      "target": "components/text/fade-through.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport interface FadeThroughProps {\n  className?: string;\n  /** Interval between phrase transitions, in milliseconds. */\n  interval?: number;\n  phrases: string[];\n}\n\nconst ENTER_DURATION_S = 0.42;\nconst EXIT_DURATION_S = 0.26;\nconst ENTER_EASE = [0.2, 0, 0, 1] as const;\nconst EXIT_EASE = [0.4, 0, 1, 1] as const;\n\n/**\n * FadeThrough — Material-style phrase cycling: old text fades out,\n * new text fades in with a soft delay. Best for hero copy swaps and rotating taglines.\n */\nexport default function FadeThrough({\n  phrases,\n  className = \"\",\n  interval = 2500,\n}: FadeThroughProps) {\n  const shouldReduceMotion = useReducedMotion();\n  const [index, setIndex] = useState(0);\n\n  useEffect(() => {\n    if (shouldReduceMotion || phrases.length <= 1) {\n      return;\n    }\n    const id = setInterval(() => {\n      setIndex((prev) => (prev + 1) % phrases.length);\n    }, interval);\n    return () => clearInterval(id);\n  }, [shouldReduceMotion, phrases.length, interval]);\n\n  const current = phrases[index] ?? \"\";\n\n  return (\n    <span\n      aria-live=\"polite\"\n      className={className}\n      style={{ display: \"inline-block\", position: \"relative\" }}\n    >\n      <AnimatePresence mode=\"wait\">\n        <motion.span\n          animate={{ filter: \"blur(0px)\", opacity: 1, scale: 1, y: 0 }}\n          exit={{\n            filter: \"blur(0px)\",\n            opacity: 0,\n            scale: 1,\n            transition: { duration: EXIT_DURATION_S, ease: EXIT_EASE },\n            y: -4,\n          }}\n          initial={\n            shouldReduceMotion\n              ? { opacity: 1 }\n              : { filter: \"blur(2px)\", opacity: 0, scale: 0.99, y: 6 }\n          }\n          key={index}\n          style={{ display: \"inline-block\" }}\n          transition={\n            shouldReduceMotion\n              ? { duration: 0 }\n              : { duration: ENTER_DURATION_S, ease: ENTER_EASE }\n          }\n        >\n          {current}\n        </motion.span>\n      </AnimatePresence>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/fade-through"
+  }
+}

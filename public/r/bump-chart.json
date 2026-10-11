@@ -11,8 +11,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/motion-tooltip",
-    "@dx/use-hover-capable",
-    "@dx/use-media-query",
     "@dx/utils"
   ],
   "files": [
@@ -70,6 +68,6 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://ui.designx.dev/docs/components/bump-chart"
+    "docs": "https://dxuireact.com/docs/components/bump-chart"
   }
 }

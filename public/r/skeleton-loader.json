@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "skeleton-loader",
+  "type": "registry:component",
+  "title": "Skeleton Loader",
+  "description": "Shimmering skeleton placeholders for cards, lists and text.",
+  "registryDependencies": [
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/skeleton-loader.tsx",
+      "type": "registry:component",
+      "target": "components/elements/skeleton-loader.tsx",
+      "content": "import { cn } from \"@/lib/utils\";\nimport type { ReactNode } from \"react\";\n\nexport interface SkeletonProps {\n  /** Content to wrap - skeleton will match its dimensions */\n  children?: ReactNode;\n  /** Additional classes */\n  className?: string;\n  /** When true, shows skeleton effect. When false, shows children */\n  loading?: boolean;\n}\n\nconst Skeleton = ({ loading = true, children, className }: SkeletonProps) => {\n  // If not loading and has children, just render children\n  if (!loading && children) {\n    return <>{children}</>;\n  }\n\n  // If loading with children, wrap them and apply skeleton effect\n  if (loading && children) {\n    return (\n      <div\n        aria-busy=\"true\"\n        aria-live=\"polite\"\n        className={cn(\"relative\", className)}\n      >\n        {/* Children are invisible but maintain layout */}\n        <div className=\"invisible\">{children}</div>\n        {/* Skeleton overlay that matches children's dimensions */}\n        <div\n          aria-hidden=\"true\"\n          className=\"absolute inset-0 animate-pulse rounded-[inherit] bg-muted-foreground/20\"\n        />\n      </div>\n    );\n  }\n\n  // Basic skeleton block (no children)\n  return (\n    <div\n      aria-busy=\"true\"\n      className={cn(\n        \"animate-pulse rounded-md bg-muted-foreground/20\",\n        className\n      )}\n    />\n  );\n};\n\nexport default Skeleton;\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/skeleton-loader"
+  }
+}

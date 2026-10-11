@@ -1,6 +1,21 @@
 import * as React from "react";
 import { useLocation } from "wouter";
-import { BookOpenIcon, BotIcon, BoxIcon, ChartColumnIcon, WandSparklesIcon, LayoutTemplateIcon, MoonIcon, PaletteIcon, SparklesIcon, SunIcon } from "lucide-react";
+import {
+  BookOpenIcon,
+  BotIcon,
+  BoxIcon,
+  ChartColumnIcon,
+  WandSparklesIcon,
+  TypeIcon,
+  LayersIcon,
+  ZapIcon,
+  ShapesIcon,
+  LayoutTemplateIcon,
+  MoonIcon,
+  PaletteIcon,
+  SparklesIcon,
+  SunIcon,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
@@ -22,6 +37,10 @@ const GROUP_ICONS: Record<CatalogGroup, React.ComponentType> = {
   agents: BotIcon,
   charts: ChartColumnIcon,
   motion: WandSparklesIcon,
+  text: TypeIcon,
+  transitions: LayersIcon,
+  effects: ZapIcon,
+  elements: ShapesIcon,
 };
 
 const SearchContext = React.createContext<{ open: () => void }>({ open: () => {} });

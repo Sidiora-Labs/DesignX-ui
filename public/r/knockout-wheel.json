@@ -12,11 +12,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/motion-tooltip",
-    "@dx/use-dismiss",
-    "@dx/use-hover-capable",
-    "@dx/use-hover-gesture",
-    "@dx/use-media-query",
-    "@dx/use-tap-gesture",
     "@dx/utils"
   ],
   "files": [
@@ -32,6 +27,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/knockout-wheel"
+    "docs": "https://dxuireact.com/docs/components/knockout-wheel"
   }
 }

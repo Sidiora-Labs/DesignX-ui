@@ -13,7 +13,6 @@
     "@dx/action-swap",
     "@dx/lib-ease",
     "@dx/motion-button",
-    "@dx/use-dismiss",
     "@dx/utils"
   ],
   "files": [
@@ -83,6 +82,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/wallet-card"
+    "docs": "https://dxuireact.com/docs/components/wallet-card"
   }
 }

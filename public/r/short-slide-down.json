@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "short-slide-down",
+  "type": "registry:component",
+  "title": "Short Slide Down",
+  "description": "Phrases that drop in with a short slide.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "files": [
+    {
+      "path": "components/text/short-slide-down.tsx",
+      "type": "registry:component",
+      "target": "components/text/short-slide-down.tsx",
+      "content": "import { AnimatePresence, motion, useReducedMotion } from \"motion/react\";\nimport { useEffect, useState } from \"react\";\n\nexport interface ShortSlideDownProps {\n  className?: string;\n  /** Interval between phrase completions in milliseconds. */\n  interval?: number;\n  phrases: string[];\n}\n\nconst BUILD_EASE = [0.2, 0.8, 0.2, 1] as const;\nconst EXIT_EASE = [0.4, 0, 0.2, 1] as const;\n\n/**\n * ShortSlideDown — each new word drops in from above into its own centered line,\n * pushing the stack downward until a centered multi-line composition locks in place.\n *\n */\nexport default function ShortSlideDown({\n  phrases,\n  className = \"\",\n  interval = 2500,\n}: ShortSlideDownProps) {\n  const [phraseIndex, setPhraseIndex] = useState(0);\n  const [wordCount, setWordCount] = useState(1);\n  const [exiting, setExiting] = useState(false);\n  const shouldReduceMotion = useReducedMotion();\n\n  const currentPhrase = phrases[phraseIndex] ?? \"\";\n  const words = currentPhrase.split(\" \");\n\n  useEffect(() => {\n    if (shouldReduceMotion) {\n      const holdId = setTimeout(() => {\n        setPhraseIndex((prev) => (prev + 1) % phrases.length);\n      }, interval);\n      return () => clearTimeout(holdId);\n    }\n\n    setWordCount(1);\n    setExiting(false);\n\n    const buildTimers: ReturnType<typeof setTimeout>[] = [];\n\n    for (let i = 1; i < words.length; i++) {\n      buildTimers.push(\n        setTimeout(() => {\n          setWordCount(i + 1);\n        }, i * 500)\n      );\n    }\n\n    const totalBuild = (words.length - 1) * 500 + 360;\n    const holdId = setTimeout(() => {\n      setExiting(true);\n      setTimeout(() => {\n        setPhraseIndex((prev) => (prev + 1) % phrases.length);\n        setWordCount(1);\n        setExiting(false);\n      }, 320 + 180);\n    }, totalBuild + interval);\n\n    buildTimers.push(holdId);\n    return () => {\n      for (const t of buildTimers) {\n        clearTimeout(t);\n      }\n    };\n  }, [phraseIndex, phrases.length, interval, shouldReduceMotion, words.length]);\n\n  const visibleWords = shouldReduceMotion ? words : words.slice(0, wordCount);\n  const restingAnimate = shouldReduceMotion\n    ? { opacity: 1 }\n    : { filter: \"blur(0px)\", opacity: 1, scale: 1, y: 0 };\n  const exitAnimate = {\n    filter: \"blur(1.2px)\",\n    opacity: 0,\n    transition: { duration: 0.32, ease: EXIT_EASE },\n    y: 10,\n  };\n\n  return (\n    <span\n      aria-live=\"polite\"\n      className={`flex flex-col items-center ${className}`}\n      style={{ gap: 12 }}\n    >\n      <AnimatePresence mode=\"popLayout\">\n        {visibleWords.map((word, i) => (\n          <motion.span\n            animate={exiting ? exitAnimate : restingAnimate}\n            initial={\n              shouldReduceMotion\n                ? { opacity: 1 }\n                : { filter: \"blur(2.4px)\", opacity: 0, scale: 0.992, y: -28 }\n            }\n            key={`${phraseIndex}-${i}`}\n            layout\n            style={{ display: \"block\" }}\n            transition={\n              shouldReduceMotion\n                ? { duration: 0 }\n                : {\n                    duration: i === 0 ? 0.36 : 0.5,\n                    ease: BUILD_EASE,\n                    layout: { duration: 0.5, ease: BUILD_EASE },\n                  }\n            }\n          >\n            {word}\n          </motion.span>\n        ))}\n      </AnimatePresence>\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "text"
+  ],
+  "meta": {
+    "group": "text",
+    "docs": "https://dxuireact.com/docs/components/short-slide-down"
+  }
+}

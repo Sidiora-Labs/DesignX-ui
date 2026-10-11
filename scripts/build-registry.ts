@@ -60,14 +60,20 @@ function npmDeps(source: string) {
 /** Map local `@/…` imports to registry item names. */
 function localDeps(source: string, self: string) {
   const deps = new Set<string>();
-  for (const m of source.matchAll(/from\s+"@\/([^"]+)"/g)) {
+  for (const m of source.matchAll(/from\s+["']@\/([^"']+)["']/g)) {
     const spec = m[1];
     let name: string | undefined;
     if (spec === "lib/utils") name = "utils";
+    else if (spec === "lib/demo-data") name = "lib-demo-data";
     else if (spec.startsWith("components/ui/")) name = spec.slice("components/ui/".length);
     else if (spec.startsWith("components/dx/")) name = spec.slice("components/dx/".length);
     else if (spec.startsWith("hooks/")) name = spec.slice("hooks/".length);
     else if (spec === "components/theme-provider") name = "theme-provider";
+    else if (spec.startsWith("components/")) {
+      const rel = spec.slice("components/".length);
+      const item = catalog.find((c) => c.src === rel || c.src === `${rel}/index`);
+      if (item) name = item.slug;
+    }
     if (name && name !== self) deps.add(name);
   }
   return [...deps].sort();
@@ -96,8 +102,11 @@ async function read(rel: string) {
 }
 
 const items: RegistryItem[] = [];
+const itemNames = new Set<string>();
 
 function push(item: Omit<RegistryItem, "$schema">) {
+  if (itemNames.has(item.name)) return;
+  itemNames.add(item.name);
   items.push({ $schema: ITEM_SCHEMA, author: "DesignX <ui@designx.dev>", ...item });
 }
 
@@ -187,11 +196,33 @@ async function walk(dir: string): Promise<string[]> {
   return out;
 }
 
-const kitKeys = (await Promise.all(["components/agents", "components/charts", "components/motion", "lib"].map(walk))).flat();
+const kitKeys = (
+  await Promise.all(
+    [
+      "components/agents",
+      "components/charts",
+      "components/motion",
+      "components/text",
+      "components/transitions",
+      "components/effects",
+      "components/elements",
+      "lib",
+    ].map(walk),
+  )
+).flat();
 const kitKeySet = new Set(kitKeys);
 const kitItems = catalog.filter((c) => c.src).map((c) => ({ slug: c.slug, src: c.src! }));
 const neededLibs = new Set<string>();
-const GROUP_CATEGORY = { agents: "agents", charts: "charts", motion: "motion-kit" } as const;
+const neededItemLibs = new Set<string>();
+const GROUP_CATEGORY = {
+  agents: "agents",
+  charts: "charts",
+  motion: "motion-kit",
+  text: "text",
+  transitions: "transitions",
+  effects: "effects",
+  elements: "elements",
+} as const;
 
 for (const c of catalog) {
   if (!c.src) continue;
@@ -200,11 +231,12 @@ for (const c of catalog) {
     console.warn(`! missing source for ${c.slug} (components/${c.src})`);
     continue;
   }
+  graph.libs = graph.libs.filter((l) => !l.path.startsWith("lib/hooks/"));
   const deps = new Set<string>();
   for (const f of graph.files) npmDeps(f.content).forEach((d) => deps.add(d));
   const reg = new Set(graph.deps);
   for (const l of graph.libs) {
-    neededLibs.add(l.path);
+    neededItemLibs.add(l.path);
     reg.add(libItemName(l.path));
   }
   push({
@@ -220,11 +252,13 @@ for (const c of catalog) {
   });
 }
 
-for (const key of [...neededLibs].sort()) {
+const baseLibs = new Set(["lib/utils.ts", ...["use-mobile"].map((hook) => `hooks/${hook}.ts`)]);
+for (const key of [...new Set([...neededItemLibs, ...neededLibs, ...baseLibs])].sort()) {
   const src = await read(key);
   const reg = new Set<string>();
   for (const spec of importSpecs(src)) {
     if (spec === "@/lib/utils") reg.add("utils");
+    else if (spec === "@/lib/demo-data") reg.add("lib-demo-data");
     else if (spec.startsWith("@/lib/")) {
       const k = resolveKey(spec.slice(2), (x) => kitKeySet.has(x));
       if (k) reg.add(libItemName(k));
@@ -233,7 +267,7 @@ for (const key of [...neededLibs].sort()) {
       if (k) reg.add(libItemName(k));
     }
   }
-  const isHook = key.startsWith("lib/hooks/");
+  const isHook = key.startsWith("hooks/") || key.startsWith("lib/hooks/");
   push({
     name: libItemName(key),
     type: isHook ? "registry:hook" : "registry:lib",
@@ -249,9 +283,16 @@ for (const key of [...neededLibs].sort()) {
 for (const b of blocks) {
   const single = path.join(web, `blocks/${b.slug}.tsx`);
   const dir = path.join(web, `blocks/${b.slug}`);
-  const rels = existsSync(single)
+  const rels: string[] = existsSync(single)
     ? [`blocks/${b.slug}.tsx`]
-    : (await readdir(dir)).filter((f) => f.endsWith(".tsx")).map((f) => `blocks/${b.slug}/${f}`);
+    : (await readdir(dir)).filter((f) => /\.(tsx|css)$/.test(f)).map((f) => `blocks/${b.slug}/${f}`);
+  for (let i = 0; i < rels.length; i++) {
+    const code = await read(rels[i]);
+    for (const m of code.matchAll(/from\s+["']\.\.?\/(?:\.\.\/)?shared\/([\w-]+)["']/g)) {
+      const rel = `blocks/shared/${m[1]}.tsx`;
+      if (!rels.includes(rel) && existsSync(path.join(web, rel))) rels.push(rel);
+    }
+  }
   const files: RegistryFile[] = [];
   const deps = new Set<string>();
   const reg = new Set<string>();
@@ -259,6 +300,24 @@ for (const b of blocks) {
     const src = await read(rel);
     npmDeps(src).forEach((d) => deps.add(d));
     localDeps(src, b.slug).forEach((d) => reg.add(d));
+    for (const spec of importSpecs(src)) {
+      if (spec === "@/lib/demo-data") {
+        reg.add("lib-demo-data");
+        neededLibs.add("lib/demo-data.ts");
+      } else if (spec.startsWith("@/lib/") && spec !== "@/lib/utils") {
+        const k = resolveKey(spec.slice(2), (x) => kitKeySet.has(x));
+        if (k) {
+          reg.add(libItemName(k));
+          neededLibs.add(k);
+        }
+      } else if (spec.startsWith("@/components/")) {
+        const rel = spec.slice("@/components/".length);
+        const item = kitItems.find((it) => it.src === rel || it.src === `${rel}/index`);
+        if (item) reg.add(item.slug);
+        else if (rel === "theme-provider") reg.add("theme-provider");
+        else if (!rel.startsWith("ui/") && !rel.startsWith("dx/")) console.warn(`! block ${b.slug}: no registry item for ${spec}`);
+      }
+    }
     files.push({ path: rel, type: "registry:block", target: `components/${rel}`, content: src });
   }
   push({
@@ -271,6 +330,18 @@ for (const b of blocks) {
     files,
     categories: [b.slug.split("-")[0]],
     meta: { iframeHeight: `${b.height}px`, preview: `${homepage}/blocks#${b.slug}` },
+  });
+}
+
+for (const key of [...neededLibs].filter((k) => !neededItemLibs.has(k) && !baseLibs.has(k)).sort()) {
+  const src = await read(key);
+  push({
+    name: libItemName(key),
+    type: "registry:lib",
+    title: libItemName(key),
+    dependencies: npmDeps(src),
+    registryDependencies: ns(["utils"]),
+    files: [{ path: key, type: "registry:lib", target: key, content: src }],
   });
 }
 
@@ -314,5 +385,5 @@ await writeFile(
 const count = (t: string) => items.filter((i) => i.type === t).length;
 const byGroup = (g: string) => items.filter((i) => i.meta?.group === g).length;
 console.log(
-  `✓ registry: ${items.length} items → public/r  (ui ${count("registry:ui")}, dx ${byGroup("dx")}, agents ${byGroup("agents")}, charts ${byGroup("charts")}, motion ${byGroup("motion")}, libs ${count("registry:lib") + count("registry:hook")}, blocks ${count("registry:block")})`,
+  `✓ registry: ${items.length} items → public/r  (ui ${count("registry:ui")}, dx ${byGroup("dx")}, agents ${byGroup("agents")}, charts ${byGroup("charts")}, motion ${byGroup("motion")}, text ${byGroup("text")}, transitions ${byGroup("transitions")}, effects ${byGroup("effects")}, elements ${byGroup("elements")}, libs ${count("registry:lib") + count("registry:hook")}, blocks ${count("registry:block")})`,
 );

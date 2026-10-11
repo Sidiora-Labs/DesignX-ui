@@ -13,10 +13,6 @@
     "@dx/lib-command-search",
     "@dx/lib-ease",
     "@dx/lib-presence-gate",
-    "@dx/use-media-query",
-    "@dx/use-on-open",
-    "@dx/use-row-cursor",
-    "@dx/use-touch-capable",
     "@dx/utils"
   ],
   "files": [
@@ -32,6 +28,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/command-palette"
+    "docs": "https://dxuireact.com/docs/components/command-palette"
   }
 }

@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "animated-dropdown",
+  "type": "registry:component",
+  "title": "Animated Dropdown",
+  "description": "A dropdown menu with nested submenus and keyboard navigation.",
+  "dependencies": [
+    "motion@^14.0.0"
+  ],
+  "registryDependencies": [
+    "@dx/dropdown-menu",
+    "@dx/lib-animation",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/elements/animated-dropdown.tsx",
+      "type": "registry:component",
+      "target": "components/elements/animated-dropdown.tsx",
+      "content": "import {\n  DropdownMenuContent,\n  DropdownMenuGroup,\n  DropdownMenuItem,\n  DropdownMenuLabel,\n  DropdownMenu as DropdownMenuRoot,\n  DropdownMenuSeparator,\n  DropdownMenuShortcut,\n  DropdownMenuSub,\n  DropdownMenuSubContent,\n  DropdownMenuSubTrigger,\n  DropdownMenuTrigger,\n} from \"@/components/ui/dropdown-menu\";\nimport { cn } from \"@/lib/utils\";\nimport { motion, useReducedMotion } from \"motion/react\";\nimport type React from \"react\";\nimport { isValidElement, useState } from \"react\";\nimport { SPRING_DEFAULT } from \"@/lib/animation\";\n\nexport interface DropdownMenuProps {\n  /** Alignment of the dropdown relative to the trigger */\n  align?: \"start\" | \"center\" | \"end\";\n  /** The trigger element that opens the menu */\n  children: React.ReactNode;\n  /** Optional CSS class for the content container */\n  className?: string;\n  /** Menu items to render */\n  items: DropdownMenuItemConfig[];\n  /** Callback when open state changes */\n  onOpenChange?: (open: boolean) => void;\n  /** Controlled open state */\n  open?: boolean;\n  /** Side offset for the dropdown content */\n  sideOffset?: number;\n}\n\nexport interface DropdownMenuItemConfig {\n  /** Nested submenu items */\n  children?: DropdownMenuItemConfig[];\n  /** Whether the item is disabled */\n  disabled?: boolean;\n  /** Renders a group label instead of an item */\n  groupLabel?: string;\n  /** Optional icon to display before the label */\n  icon?: React.ReactNode;\n  /** Unique key for the item */\n  key: string;\n  /** Display label */\n  label: string;\n  /** Callback when item is selected */\n  onSelect?: () => void;\n  /** Renders a separator instead of an item */\n  separator?: boolean;\n  /** Optional keyboard shortcut text to display */\n  shortcut?: string;\n  /** Destructive variant styling */\n  variant?: \"default\" | \"destructive\";\n}\n\nexport default function DropdownMenu({\n  children,\n  items,\n  className,\n  open,\n  onOpenChange,\n  sideOffset = 4,\n  align = \"start\",\n}: DropdownMenuProps) {\n  const shouldReduceMotion = useReducedMotion();\n  const [isOpen, setIsOpen] = useState(false);\n\n  const controlledOpen = open ?? isOpen;\n  const handleOpenChange = (value: boolean) => {\n    setIsOpen(value);\n    onOpenChange?.(value);\n  };\n\n  const renderItem = (item: DropdownMenuItemConfig, index: number) => {\n    if (item.separator) {\n      return <DropdownMenuSeparator key={item.key} />;\n    }\n\n    if (item.groupLabel) {\n      return (\n        <DropdownMenuLabel key={item.key}>{item.groupLabel}</DropdownMenuLabel>\n      );\n    }\n\n    if (item.children && item.children.length > 0) {\n      return (\n        <DropdownMenuSub key={item.key}>\n          <DropdownMenuSubTrigger disabled={item.disabled}>\n            {item.icon ? <span className=\"mr-2\">{item.icon}</span> : null}\n            {item.label}\n          </DropdownMenuSubTrigger>\n          <DropdownMenuSubContent>\n            {item.children.map((child, childIndex) =>\n              renderItem(child, childIndex)\n            )}\n          </DropdownMenuSubContent>\n        </DropdownMenuSub>\n      );\n    }\n\n    return (\n      <motion.div\n        animate={shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 }}\n        initial={shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -4 }}\n        key={item.key}\n        transition={\n          shouldReduceMotion\n            ? { duration: 0 }\n            : { ...SPRING_DEFAULT, delay: index * 0.02 }\n        }\n      >\n        <DropdownMenuItem\n          disabled={item.disabled}\n          onClick={item.onSelect}\n          variant={item.variant}\n        >\n          {item.icon ? <span className=\"mr-2\">{item.icon}</span> : null}\n          {item.label}\n          {item.shortcut ? (\n            <DropdownMenuShortcut>{item.shortcut}</DropdownMenuShortcut>\n          ) : null}\n        </DropdownMenuItem>\n      </motion.div>\n    );\n  };\n\n  return (\n    <DropdownMenuRoot onOpenChange={(value) => handleOpenChange(value)} open={controlledOpen}>\n      <DropdownMenuTrigger\n        render={isValidElement(children) ? (children as React.ReactElement) : <button type=\"button\">{children}</button>}\n      />\n      <DropdownMenuContent\n        align={align}\n        className={cn(\"origin-top\", className)}\n        sideOffset={sideOffset}\n      >\n        <motion.div\n          animate={\n            shouldReduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }\n          }\n          initial={\n            shouldReduceMotion\n              ? { opacity: 1 }\n              : { opacity: 0, scale: 0.95, y: -4 }\n          }\n          transition={shouldReduceMotion ? { duration: 0 } : SPRING_DEFAULT}\n        >\n          <DropdownMenuGroup>\n            {items.map((item, index) => renderItem(item, index))}\n          </DropdownMenuGroup>\n        </motion.div>\n      </DropdownMenuContent>\n    </DropdownMenuRoot>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "elements"
+  ],
+  "meta": {
+    "group": "elements",
+    "docs": "https://dxuireact.com/docs/components/animated-dropdown"
+  }
+}

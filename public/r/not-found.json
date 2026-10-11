@@ -11,8 +11,6 @@
   "registryDependencies": [
     "@dx/lib-ease",
     "@dx/text-reveal",
-    "@dx/use-hover-capable",
-    "@dx/use-media-query",
     "@dx/utils"
   ],
   "files": [
@@ -70,6 +68,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/not-found"
+    "docs": "https://dxuireact.com/docs/components/not-found"
   }
 }

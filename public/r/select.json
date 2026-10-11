@@ -25,6 +25,6 @@
   "meta": {
     "group": "ui",
     "base": "select",
-    "docs": "https://ui.designx.dev/docs/components/select"
+    "docs": "https://dxuireact.com/docs/components/select"
   }
 }

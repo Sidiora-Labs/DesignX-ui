@@ -9,9 +9,6 @@
     "motion@^14.0.0"
   ],
   "registryDependencies": [
-    "@dx/use-dismiss",
-    "@dx/use-hover-gesture",
-    "@dx/use-tap-gesture",
     "@dx/utils"
   ],
   "files": [
@@ -33,6 +30,6 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://ui.designx.dev/docs/components/motion-popover"
+    "docs": "https://dxuireact.com/docs/components/motion-popover"
   }
 }

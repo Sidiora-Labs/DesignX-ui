@@ -8,7 +8,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { blocks, type BlockItem } from "@/docs/catalog";
+import { blocks, type BlockCategory, type BlockItem } from "@/docs/catalog";
 import { CodeBlock, CommandBlock } from "@/docs/code-block";
 import { SiteFooter } from "@/docs/site-footer";
 import { SiteHeader } from "@/docs/site-header";
@@ -163,6 +163,12 @@ function BlockSection({ block }: { block: BlockItem }) {
   );
 }
 
+const SECTIONS: { id: BlockCategory; label: string }[] = [
+  { id: "application", label: "Application" },
+  { id: "marketing", label: "Marketing" },
+];
+const byCategory = (id: BlockCategory) => blocks.filter((b) => (b.category ?? "application") === id);
+
 export default function BlocksPage() {
   React.useEffect(() => {
     document.title = "BlocksDX UI";
@@ -181,18 +187,31 @@ export default function BlocksPage() {
             Dashboards, auth flows and settings screens composed from DX UI. Preview them at any viewport, then add them to your app with one
             command.
           </p>
-          <nav aria-label="Blocks" className="mt-2 flex flex-wrap gap-2">
-            {blocks.map((b) => (
-              // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-              <Button key={b.slug} variant="outline" size="sm" render={<a href={`#${b.slug}`} />}>
-                {b.title}
-              </Button>
-            ))}
-          </nav>
+          {SECTIONS.map((sec) => (
+            <nav key={sec.id} aria-label={`${sec.label} blocks`} className="mt-2 flex flex-col gap-2">
+              <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{sec.label}</span>
+              <div className="flex flex-wrap gap-2">
+                {byCategory(sec.id).map((b) => (
+                  // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
+                  <Button key={b.slug} variant="outline" size="sm" render={<a href={`#${b.slug}`} />}>
+                    {b.title}
+                  </Button>
+                ))}
+              </div>
+            </nav>
+          ))}
         </header>
-        <div className="flex flex-col gap-20">
-          {blocks.map((b) => (
-            <BlockSection key={b.slug} block={b} />
+        <div className="flex flex-col gap-24">
+          {SECTIONS.map((sec) => (
+            <div key={sec.id} id={sec.id} className="flex scroll-mt-20 flex-col gap-20">
+              <div className="flex items-baseline justify-between gap-4 border-b border-outline-variant pb-4">
+                <h2 className="text-2xl font-medium tracking-[-0.02em]">{sec.label}</h2>
+                <span className="text-sm text-muted-foreground">{byCategory(sec.id).length} blocks</span>
+              </div>
+              {byCategory(sec.id).map((b) => (
+                <BlockSection key={b.slug} block={b} />
+              ))}
+            </div>
           ))}
         </div>
       </main>
