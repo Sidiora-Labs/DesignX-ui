@@ -1224,6 +1224,688 @@
     ]
   },
   {
+    "name": "numeral",
+    "type": "registry:component",
+    "title": "Numeral",
+    "description": "Tabular numbers for trading — price, percent, compact and USD rules, sign colouring and balance masking.",
+    "registryDependencies": [
+      "lib-trading",
+      "utils"
+    ]
+  },
+  {
+    "name": "token-icon",
+    "type": "registry:component",
+    "title": "Token Icon",
+    "description": "Token and chain icons with a deterministic lettered fallback, plus a symbol label with badges.",
+    "registryDependencies": [
+      "lib-trading",
+      "utils"
+    ]
+  },
+  {
+    "name": "symbol-info-bar",
+    "type": "registry:component",
+    "title": "Symbol Info Bar",
+    "description": "The instrument header — symbol, last price, 24h change, mark, index, open interest and funding.",
+    "registryDependencies": [
+      "lib-trading",
+      "numeral",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "markets-list",
+    "type": "registry:component",
+    "title": "Markets List",
+    "description": "A searchable, sortable list of markets with favourites, category tabs and 24h change.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "input-group",
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "tabs",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "market-selector",
+    "type": "registry:component",
+    "title": "Market Selector",
+    "description": "A symbol trigger that opens a searchable markets dropdown.",
+    "registryDependencies": [
+      "markets-list",
+      "popover",
+      "sheet",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "markets-ticker",
+    "type": "registry:component",
+    "title": "Markets Ticker",
+    "description": "A horizontal strip of markets with price and change, filtered by type.",
+    "registryDependencies": [
+      "lib-trading",
+      "numeral",
+      "popover",
+      "radio-group",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "markets-overview",
+    "type": "registry:component",
+    "title": "Markets Overview",
+    "description": "Top gainers, losers, new listings and volume leaders as summary cards.",
+    "registryDependencies": [
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "tabs",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "funding-rate",
+    "type": "registry:component",
+    "title": "Funding Rate",
+    "description": "A funding rate readout with interval countdown, annualised rate and a detail popover.",
+    "registryDependencies": [
+      "dialog",
+      "lib-trading",
+      "numeral",
+      "popover",
+      "utils"
+    ]
+  },
+  {
+    "name": "funding-comparison",
+    "type": "registry:component",
+    "title": "Funding Comparison",
+    "description": "Funding rates for each market compared across venues.",
+    "registryDependencies": [
+      "input-group",
+      "lib-trading",
+      "numeral",
+      "select",
+      "tabs",
+      "toggle-group",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "recent-trades",
+    "type": "registry:component",
+    "title": "Recent Trades",
+    "description": "A tape of the latest fills — price, size and time, coloured by aggressor side.",
+    "registryDependencies": [
+      "lib-trading",
+      "tabs",
+      "utils"
+    ]
+  },
+  {
+    "name": "chart-panel",
+    "type": "registry:component",
+    "title": "Chart Panel",
+    "description": "A chart frame with interval, chart-type and indicator toolbars around your charting library.",
+    "registryDependencies": [
+      "dropdown-menu",
+      "lib-trading",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "orderbook-trades",
+    "type": "registry:component",
+    "title": "Order Book & Trades",
+    "description": "A tabbed panel that pairs the Order Book with Recent Trades.",
+    "registryDependencies": [
+      "lib-trading",
+      "order-book",
+      "recent-trades",
+      "tabs",
+      "utils"
+    ]
+  },
+  {
+    "name": "order-entry",
+    "type": "registry:component",
+    "title": "Order Entry",
+    "description": "Buy and sell form — order types, price and size inputs, a percentage slider, TP/SL and options.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "dropdown-menu",
+      "leverage-selector",
+      "lib-ease",
+      "lib-trading",
+      "margin-mode",
+      "numeral",
+      "popover",
+      "select",
+      "slider",
+      "spinner",
+      "switch",
+      "tooltip",
+      "tpsl-editor",
+      "utils"
+    ]
+  },
+  {
+    "name": "leverage-selector",
+    "type": "registry:component",
+    "title": "Leverage Selector",
+    "description": "A leverage slider with marks, stepper input and max position notional.",
+    "registryDependencies": [
+      "button",
+      "dialog",
+      "lib-trading",
+      "numeral",
+      "slider",
+      "spinner",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "margin-mode",
+    "type": "registry:component",
+    "title": "Margin Mode",
+    "description": "Cross and isolated margin switch with an explainer dialog.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "dialog",
+      "scroll-area",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "tpsl-editor",
+    "type": "registry:component",
+    "title": "TP/SL Editor",
+    "description": "Take-profit and stop-loss rows that switch between price, offset and PnL inputs.",
+    "registryDependencies": [
+      "button",
+      "dialog",
+      "dropdown-menu",
+      "lib-trading",
+      "numeral",
+      "slider",
+      "spinner",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "order-confirm",
+    "type": "registry:component",
+    "title": "Order Confirm",
+    "description": "A confirmation dialog that summarises an order before it is sent.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "dialog",
+      "lib-trading",
+      "numeral",
+      "scroll-area",
+      "spinner",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "positions-table",
+    "type": "registry:component",
+    "title": "Positions Table",
+    "description": "Open positions with PnL, margin and liquidation price — a table on desktop, cards on mobile.",
+    "registryDependencies": [
+      "button",
+      "empty",
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "table",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "close-position",
+    "type": "registry:component",
+    "title": "Close Position",
+    "description": "A dialog to close a position at market or limit, in part or in full.",
+    "registryDependencies": [
+      "button",
+      "dialog",
+      "input-group",
+      "label",
+      "lib-trading",
+      "numeral",
+      "radio-group",
+      "slider",
+      "toggle-group",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "adjust-margin",
+    "type": "registry:component",
+    "title": "Adjust Margin",
+    "description": "Add or remove isolated margin with a live liquidation-price preview.",
+    "registryDependencies": [
+      "button",
+      "dialog",
+      "input-group",
+      "lib-ease",
+      "lib-trading",
+      "numeral",
+      "slider",
+      "toggle-group",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "reverse-position",
+    "type": "registry:component",
+    "title": "Reverse Position",
+    "description": "Flip a long into a short — or back — with a side-by-side order summary.",
+    "registryDependencies": [
+      "button",
+      "dialog",
+      "lib-trading",
+      "numeral",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "orders-table",
+    "type": "registry:component",
+    "title": "Orders Table",
+    "description": "Open, TP/SL, filled and cancelled orders with cancel and edit actions.",
+    "registryDependencies": [
+      "badge",
+      "button",
+      "dialog",
+      "empty",
+      "input-group",
+      "lib-trading",
+      "numeral",
+      "progress",
+      "skeleton",
+      "table",
+      "tabs",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "position-history",
+    "type": "registry:component",
+    "title": "Position History",
+    "description": "Closed and liquidated positions with realised PnL and a detail view.",
+    "registryDependencies": [
+      "badge",
+      "collapsible",
+      "empty",
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "table",
+      "tabs",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "funding-fee-history",
+    "type": "registry:component",
+    "title": "Funding Fee History",
+    "description": "Funding payments per position and interval, with totals.",
+    "registryDependencies": [
+      "empty",
+      "lib-trading",
+      "numeral",
+      "select",
+      "skeleton",
+      "table",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "account-summary",
+    "type": "registry:component",
+    "title": "Account Summary",
+    "description": "A header pill that opens total value, collateral and margin usage.",
+    "registryDependencies": [
+      "asset-panel",
+      "button",
+      "lib-trading",
+      "numeral",
+      "popover",
+      "utils"
+    ]
+  },
+  {
+    "name": "asset-panel",
+    "type": "registry:component",
+    "title": "Asset Panel",
+    "description": "Account value, unrealised PnL, free collateral and a margin ratio meter beside the order form.",
+    "registryDependencies": [
+      "button",
+      "lib-ease",
+      "lib-trading",
+      "meter",
+      "numeral",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "portfolio-assets",
+    "type": "registry:component",
+    "title": "Portfolio Assets",
+    "description": "Balances per token with value, collateral weight and transfer actions.",
+    "registryDependencies": [
+      "asset-panel",
+      "button",
+      "numeral",
+      "skeleton",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "portfolio-performance",
+    "type": "registry:component",
+    "title": "Portfolio Performance",
+    "description": "Account value and PnL over time with range tabs and headline stats.",
+    "registryDependencies": [
+      "chart",
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "tabs",
+      "toggle-group",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "deposit-withdraw",
+    "type": "registry:component",
+    "title": "Deposit & Withdraw",
+    "description": "Move funds in and out — token and network selects, amount, fees and what you receive.",
+    "registryDependencies": [
+      "button",
+      "input",
+      "input-group",
+      "lib-trading",
+      "numeral",
+      "select",
+      "spinner",
+      "tabs",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "deposit-status",
+    "type": "registry:component",
+    "title": "Deposit Status",
+    "description": "Pending and completed transfer status with step progress.",
+    "registryDependencies": [
+      "lib-ease",
+      "lib-trading",
+      "numeral",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "transfer-history",
+    "type": "registry:component",
+    "title": "Transfer History",
+    "description": "Deposits and withdrawals with status, network and transaction links.",
+    "registryDependencies": [
+      "badge",
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "tabs",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "fee-tier",
+    "type": "registry:component",
+    "title": "Fee Tier",
+    "description": "Maker and taker fee tiers by 30-day volume, with your current tier highlighted.",
+    "registryDependencies": [
+      "lib-trading",
+      "numeral",
+      "progress",
+      "utils"
+    ]
+  },
+  {
+    "name": "chain-selector",
+    "type": "registry:component",
+    "title": "Chain Selector",
+    "description": "Pick a network from mainnets and testnets, with icons and the current chain.",
+    "registryDependencies": [
+      "dialog",
+      "popover",
+      "spinner",
+      "tabs",
+      "token-icon",
+      "utils"
+    ]
+  },
+  {
+    "name": "api-key-manager",
+    "type": "registry:component",
+    "title": "API Key Manager",
+    "description": "Create, list and revoke API keys with permissions and IP restrictions.",
+    "registryDependencies": [
+      "alert-dialog",
+      "badge",
+      "button",
+      "checkbox",
+      "dialog",
+      "lib-trading",
+      "spinner",
+      "utils"
+    ]
+  },
+  {
+    "name": "leaderboard",
+    "type": "registry:component",
+    "title": "Leaderboard",
+    "description": "Ranked traders by volume or PnL, with podium styling and your own row pinned.",
+    "registryDependencies": [
+      "button",
+      "input-group",
+      "lib-trading",
+      "numeral",
+      "skeleton",
+      "tabs",
+      "utils"
+    ]
+  },
+  {
+    "name": "campaign-card",
+    "type": "registry:component",
+    "title": "Campaign Card",
+    "description": "A trading competition card with countdown, prize pool and join state.",
+    "registryDependencies": [
+      "button",
+      "lib-trading",
+      "numeral",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "epoch-rewards",
+    "type": "registry:component",
+    "title": "Epoch Rewards",
+    "description": "Current epoch progress, estimated rewards, boosts and a claim action.",
+    "registryDependencies": [
+      "button",
+      "lib-trading",
+      "numeral",
+      "progress",
+      "skeleton",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "vault-card",
+    "type": "registry:component",
+    "title": "Vault Card",
+    "description": "A strategy vault with TVL, APY, your deposits and deposit / withdraw actions.",
+    "registryDependencies": [
+      "button",
+      "lib-trading",
+      "numeral",
+      "token-icon",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "vault-form",
+    "type": "registry:component",
+    "title": "Vault Form",
+    "description": "Deposit into or withdraw from a vault, with shares and lock-up details.",
+    "registryDependencies": [
+      "button",
+      "dialog",
+      "input-group",
+      "lib-trading",
+      "numeral",
+      "tabs",
+      "token-icon",
+      "utils",
+      "vault-card"
+    ]
+  },
+  {
+    "name": "referral-card",
+    "type": "registry:component",
+    "title": "Referral Card",
+    "description": "Your referral link and code with copy actions and rebate rates.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "input",
+      "slider",
+      "tooltip",
+      "utils"
+    ]
+  },
+  {
+    "name": "affiliate-summary",
+    "type": "registry:component",
+    "title": "Affiliate Summary",
+    "description": "Commission, referral volume and referees at a glance, with a commission chart.",
+    "registryDependencies": [
+      "button",
+      "chart",
+      "lib-trading",
+      "numeral",
+      "progress",
+      "toggle-group",
+      "utils"
+    ]
+  },
+  {
+    "name": "referees-table",
+    "type": "registry:component",
+    "title": "Referees Table",
+    "description": "Referred traders with volume, fees and commission earned.",
+    "registryDependencies": [
+      "button",
+      "input",
+      "lib-trading",
+      "numeral",
+      "table",
+      "tabs",
+      "utils"
+    ]
+  },
+  {
+    "name": "pnl-share-card",
+    "type": "registry:component",
+    "title": "PnL Share Card",
+    "description": "A shareable position card — symbol, side, leverage, ROI and prices on a branded poster.",
+    "registryDependencies": [
+      "button",
+      "checkbox",
+      "dialog",
+      "input",
+      "label",
+      "lib-trading",
+      "radio-group",
+      "utils"
+    ]
+  },
+  {
+    "name": "trade-notification",
+    "type": "registry:component",
+    "title": "Trade Notification",
+    "description": "Order filled, cancelled and liquidation alerts for your toast stack.",
+    "registryDependencies": [
+      "button",
+      "lib-trading",
+      "numeral",
+      "popover",
+      "scroll-area",
+      "sonner",
+      "tabs",
+      "utils"
+    ]
+  },
+  {
+    "name": "announcement-bar",
+    "type": "registry:component",
+    "title": "Announcement Bar",
+    "description": "Rotating exchange announcements with dismiss and a full list.",
+    "registryDependencies": [
+      "lib-ease",
+      "utils"
+    ]
+  },
+  {
     "name": "motion-button",
     "type": "registry:component",
     "title": "Button",
@@ -3980,6 +4662,12 @@
     "registryDependencies": []
   },
   {
+    "name": "lib-trading",
+    "type": "registry:lib",
+    "title": "lib-trading",
+    "registryDependencies": []
+  },
+  {
     "name": "lib-utils",
     "type": "registry:lib",
     "title": "lib-utils",
@@ -4059,6 +4747,29 @@
       "field",
       "input",
       "spinner"
+    ]
+  },
+  {
+    "name": "trading-01",
+    "type": "registry:block",
+    "title": "Trading terminal",
+    "description": "A perpetuals trading screen — markets, chart, order book, order entry, account and positions.",
+    "registryDependencies": [
+      "account-summary",
+      "asset-panel",
+      "chart-panel",
+      "margin-mode",
+      "market-selector",
+      "markets-list",
+      "markets-ticker",
+      "order-entry",
+      "orderbook-trades",
+      "orders-table",
+      "positions-table",
+      "recent-trades",
+      "sonner",
+      "symbol-info-bar",
+      "tabs"
     ]
   },
   {

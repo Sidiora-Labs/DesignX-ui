@@ -16,7 +16,7 @@ export const docsNav: NavSection[] = [
     title: "DX Motion",
     items: catalog.filter((c) => c.group === "dx").map((c) => ({ title: c.title, href: `/docs/components/${c.slug}`, isNew: true })),
   },
-  ...(["agents", "charts", "motion", "text", "transitions", "effects", "elements"] as const).map((g) => ({
+  ...(["agents", "charts", "trading", "motion", "text", "transitions", "effects", "elements"] as const).map((g) => ({
     title: groupLabels[g],
     items: catalog
       .filter((c) => c.group === g)

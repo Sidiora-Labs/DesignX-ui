@@ -43,7 +43,7 @@ export function importSpecs(source: string) {
   return [...specs];
 }
 
-const KIT = /^components\/(agents|charts|motion|text|transitions|effects|elements)\//;
+const KIT = /^components\/(agents|charts|trading|motion|text|transitions|effects|elements)\//;
 
 export async function collectItemFiles(
   src: string,

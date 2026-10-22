@@ -3,7 +3,7 @@
  * Plain data, no imports — `scripts/build-registry.ts` reads this file directly.
  */
 
-export type CatalogGroup = "ui" | "dx" | "agents" | "charts" | "motion" | "text" | "transitions" | "effects" | "elements";
+export type CatalogGroup = "ui" | "dx" | "agents" | "charts" | "trading" | "motion" | "text" | "transitions" | "effects" | "elements";
 
 export type CatalogItem = {
   slug: string;
@@ -47,6 +47,7 @@ const kit =
   });
 const ag = kit("agents");
 const ch = kit("charts");
+const trd = kit("trading");
 const mo = kit("motion");
 const te = kit("text");
 const tr = kit("transitions");
@@ -184,6 +185,51 @@ export const catalog: CatalogItem[] = [
   ch("heat-calendar", "charts/heat-calendar", "Heat Calendar", "A contribution-style calendar heatmap with tooltips."),
   ch("returns-calendar", "charts/returns-calendar", "Returns Calendar", "Monthly returns as a diverging calendar grid."),
   ch("price-target-fan", "charts/price-target-fan", "Price Target Fan", "Historical price with a fan of low, mean and high forecasts."),
+  trd("numeral", "trading/numeral", "Numeral", "Tabular numbers for trading — price, percent, compact and USD rules, sign colouring and balance masking."),
+  trd("token-icon", "trading/token-icon", "Token Icon", "Token and chain icons with a deterministic lettered fallback, plus a symbol label with badges."),
+  trd("symbol-info-bar", "trading/symbol-info-bar", "Symbol Info Bar", "The instrument header — symbol, last price, 24h change, mark, index, open interest and funding."),
+  trd("markets-list", "trading/markets-list", "Markets List", "A searchable, sortable list of markets with favourites, category tabs and 24h change."),
+  trd("market-selector", "trading/market-selector", "Market Selector", "A symbol trigger that opens a searchable markets dropdown."),
+  trd("markets-ticker", "trading/markets-ticker", "Markets Ticker", "A horizontal strip of markets with price and change, filtered by type."),
+  trd("markets-overview", "trading/markets-overview", "Markets Overview", "Top gainers, losers, new listings and volume leaders as summary cards."),
+  trd("funding-rate", "trading/funding-rate", "Funding Rate", "A funding rate readout with interval countdown, annualised rate and a detail popover."),
+  trd("funding-comparison", "trading/funding-comparison", "Funding Comparison", "Funding rates for each market compared across venues."),
+  trd("recent-trades", "trading/recent-trades", "Recent Trades", "A tape of the latest fills — price, size and time, coloured by aggressor side."),
+  trd("chart-panel", "trading/chart-panel", "Chart Panel", "A chart frame with interval, chart-type and indicator toolbars around your charting library."),
+  trd("orderbook-trades", "trading/orderbook-trades", "Order Book & Trades", "A tabbed panel that pairs the Order Book with Recent Trades."),
+  trd("order-entry", "trading/order-entry", "Order Entry", "Buy and sell form — order types, price and size inputs, a percentage slider, TP/SL and options."),
+  trd("leverage-selector", "trading/leverage-selector", "Leverage Selector", "A leverage slider with marks, stepper input and max position notional."),
+  trd("margin-mode", "trading/margin-mode", "Margin Mode", "Cross and isolated margin switch with an explainer dialog."),
+  trd("tpsl-editor", "trading/tpsl-editor", "TP/SL Editor", "Take-profit and stop-loss rows that switch between price, offset and PnL inputs."),
+  trd("order-confirm", "trading/order-confirm", "Order Confirm", "A confirmation dialog that summarises an order before it is sent."),
+  trd("positions-table", "trading/positions-table", "Positions Table", "Open positions with PnL, margin and liquidation price — a table on desktop, cards on mobile."),
+  trd("close-position", "trading/close-position", "Close Position", "A dialog to close a position at market or limit, in part or in full."),
+  trd("adjust-margin", "trading/adjust-margin", "Adjust Margin", "Add or remove isolated margin with a live liquidation-price preview."),
+  trd("reverse-position", "trading/reverse-position", "Reverse Position", "Flip a long into a short — or back — with a side-by-side order summary."),
+  trd("orders-table", "trading/orders-table", "Orders Table", "Open, TP/SL, filled and cancelled orders with cancel and edit actions."),
+  trd("position-history", "trading/position-history", "Position History", "Closed and liquidated positions with realised PnL and a detail view."),
+  trd("funding-fee-history", "trading/funding-fee-history", "Funding Fee History", "Funding payments per position and interval, with totals."),
+  trd("account-summary", "trading/account-summary", "Account Summary", "A header pill that opens total value, collateral and margin usage."),
+  trd("asset-panel", "trading/asset-panel", "Asset Panel", "Account value, unrealised PnL, free collateral and a margin ratio meter beside the order form."),
+  trd("portfolio-assets", "trading/portfolio-assets", "Portfolio Assets", "Balances per token with value, collateral weight and transfer actions."),
+  trd("portfolio-performance", "trading/portfolio-performance", "Portfolio Performance", "Account value and PnL over time with range tabs and headline stats."),
+  trd("deposit-withdraw", "trading/deposit-withdraw", "Deposit & Withdraw", "Move funds in and out — token and network selects, amount, fees and what you receive."),
+  trd("deposit-status", "trading/deposit-status", "Deposit Status", "Pending and completed transfer status with step progress."),
+  trd("transfer-history", "trading/transfer-history", "Transfer History", "Deposits and withdrawals with status, network and transaction links."),
+  trd("fee-tier", "trading/fee-tier", "Fee Tier", "Maker and taker fee tiers by 30-day volume, with your current tier highlighted."),
+  trd("chain-selector", "trading/chain-selector", "Chain Selector", "Pick a network from mainnets and testnets, with icons and the current chain."),
+  trd("api-key-manager", "trading/api-key-manager", "API Key Manager", "Create, list and revoke API keys with permissions and IP restrictions."),
+  trd("leaderboard", "trading/leaderboard", "Leaderboard", "Ranked traders by volume or PnL, with podium styling and your own row pinned."),
+  trd("campaign-card", "trading/campaign-card", "Campaign Card", "A trading competition card with countdown, prize pool and join state."),
+  trd("epoch-rewards", "trading/epoch-rewards", "Epoch Rewards", "Current epoch progress, estimated rewards, boosts and a claim action."),
+  trd("vault-card", "trading/vault-card", "Vault Card", "A strategy vault with TVL, APY, your deposits and deposit / withdraw actions."),
+  trd("vault-form", "trading/vault-form", "Vault Form", "Deposit into or withdraw from a vault, with shares and lock-up details."),
+  trd("referral-card", "trading/referral-card", "Referral Card", "Your referral link and code with copy actions and rebate rates."),
+  trd("affiliate-summary", "trading/affiliate-summary", "Affiliate Summary", "Commission, referral volume and referees at a glance, with a commission chart."),
+  trd("referees-table", "trading/referees-table", "Referees Table", "Referred traders with volume, fees and commission earned."),
+  trd("pnl-share-card", "trading/pnl-share-card", "PnL Share Card", "A shareable position card — symbol, side, leverage, ROI and prices on a branded poster."),
+  trd("trade-notification", "trading/trade-notification", "Trade Notification", "Order filled, cancelled and liquidation alerts for your toast stack."),
+  trd("announcement-bar", "trading/announcement-bar", "Announcement Bar", "Rotating exchange announcements with dismiss and a full list."),
   mo("motion-button", "motion/button", "Button", "Spring-pressed buttons with stateful, magnetic and metallic variants."),
   mo("motion-input", "motion/input", "Input", "A text field with a floating label and animated validation."),
   mo("motion-select", "motion/select", "Select", "A select whose popup grows out of its trigger."),
@@ -607,6 +653,7 @@ export const groupLabels: Record<CatalogGroup, string> = {
   dx: "DX Motion",
   agents: "Agents",
   charts: "Charts",
+  trading: "Trading",
   motion: "Motion Kit",
   text: "Text",
   transitions: "Transitions",
@@ -638,6 +685,7 @@ export const blocks: BlockItem[] = [
   { slug: "signup-01", title: "Sign up", description: "Account creation with field validation and a password meter.", height: 760 },
   { slug: "otp-01", title: "Verify code", description: "One-time code verification with the animated Digit Input.", height: 640 },
   { slug: "forgot-01", title: "Forgot password", description: "Request a reset link, with a success state.", height: 600 },
+  { slug: "trading-01", title: "Trading terminal", description: "A perpetuals trading screen — markets, chart, order book, order entry, account and positions.", height: 1280 },
   { slug: "settings-01", title: "Settings", description: "Profile, account, notifications, billing and team in one layout.", height: 960 },
   { slug: "header-1", title: "Hero — interactive grid", description: "Animated headline over a pointer-reactive grid that lights up in the brand colors.", height: 820, category: "marketing" },
   { slug: "header-2", title: "Hero — product shot", description: "Staggered headline, two CTAs and a product screenshot that rises into view.", height: 900, category: "marketing" },

@@ -29,6 +29,7 @@ const rawKit = import.meta.glob<string>(
   [
     "../components/agents/**/*.{ts,tsx}",
     "../components/charts/**/*.{ts,tsx}",
+    "../components/trading/**/*.{ts,tsx}",
     "../components/motion/**/*.{ts,tsx}",
     "../components/text/**/*.{ts,tsx}",
     "../components/transitions/**/*.{ts,tsx}",

@@ -1,0 +1,27 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "token-icon",
+  "type": "registry:component",
+  "title": "Token Icon",
+  "description": "Token and chain icons with a deterministic lettered fallback, plus a symbol label with badges.",
+  "registryDependencies": [
+    "@dx/lib-trading",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/trading/token-icon.tsx",
+      "type": "registry:component",
+      "target": "components/trading/token-icon.tsx",
+      "content": "import { useState, type ReactNode } from \"react\";\n\nimport { parseSymbol } from \"@/lib/trading\";\nimport { cn } from \"@/lib/utils\";\n\nconst SIZES = {\n  \"2xs\": \"size-4 text-[7px]\",\n  xs: \"size-5 text-[8px]\",\n  sm: \"size-6 text-[9px]\",\n  md: \"size-8 text-[11px]\",\n  lg: \"size-10 text-xs\",\n  xl: \"size-12 text-sm\",\n} as const;\n\nexport type TokenIconSize = keyof typeof SIZES;\n\n/** A stable hue from a string, so each token keeps its colour across renders. */\nfunction hueOf(text: string) {\n  let h = 0;\n  for (let i = 0; i < text.length; i++) h = (h * 31 + text.charCodeAt(i)) % 360;\n  return h;\n}\n\nexport interface TokenIconProps {\n  /** Token ticker (`BTC`) or a full symbol (`PERP_BTC_USDC`) — the base asset is used. */\n  symbol: string;\n  /** Image URL. Falls back to a lettered disc if omitted or it fails to load. */\n  src?: string;\n  size?: TokenIconSize;\n  /** Square with rounded corners instead of a circle — used for chains. */\n  shape?: \"circle\" | \"square\";\n  className?: string;\n}\n\n/** A token logo with a deterministic, lettered fallback. */\nexport function TokenIcon({ symbol, src, size = \"sm\", shape = \"circle\", className }: TokenIconProps) {\n  const token = symbol.includes(\"_\") || symbol.includes(\"-\") || symbol.includes(\"/\") ? parseSymbol(symbol).base : symbol.toUpperCase();\n  const [failed, setFailed] = useState(false);\n  const hue = hueOf(token);\n  return (\n    <span\n      data-slot=\"token-icon\"\n      className={cn(\n        \"relative inline-flex shrink-0 items-center justify-center overflow-hidden font-semibold select-none\",\n        shape === \"circle\" ? \"rounded-full\" : \"rounded-[30%]\",\n        SIZES[size],\n        className,\n      )}\n      style={src && !failed ? undefined : { background: `oklch(0.62 0.14 ${hue})`, color: \"white\" }}\n    >\n      {src && !failed ? (\n        <img src={src} alt=\"\" className=\"size-full object-cover\" onError={() => setFailed(true)} />\n      ) : (\n        <span aria-hidden=\"true\">{token.slice(0, token.length > 3 ? 2 : 3)}</span>\n      )}\n      <span className=\"sr-only\">{token}</span>\n    </span>\n  );\n}\n\nexport interface ChainIconProps extends Omit<TokenIconProps, \"symbol\" | \"shape\"> {\n  /** Chain name, e.g. `Arbitrum`. */\n  name: string;\n}\n\n/** A rounded-square chain badge with the same lettered fallback. */\nexport function ChainIcon({ name, ...props }: ChainIconProps) {\n  return <TokenIcon symbol={name.replace(/\\s+/g, \"\").slice(0, 4)} shape=\"square\" {...props} />;\n}\n\nexport interface SymbolDisplayProps {\n  /** `PERP_BTC_USDC`, `BTC-PERP`, `BTC/USDC` … */\n  symbol: string;\n  /** How much of the symbol to show. */\n  format?: \"base\" | \"base-quote\" | \"base-type\";\n  /** Show the token icon before the name. */\n  showIcon?: boolean;\n  iconSrc?: string;\n  size?: TokenIconSize;\n  /** Trailing badge — leverage, `RWA`, `New`… */\n  badge?: ReactNode;\n  className?: string;\n}\n\n/** Token icon + ticker, the way markets, positions and orders label an instrument. */\nexport function SymbolDisplay({ symbol, format = \"base-type\", showIcon = true, iconSrc, size = \"xs\", badge, className }: SymbolDisplayProps) {\n  const { base, quote, type } = parseSymbol(symbol);\n  return (\n    <span data-slot=\"symbol-display\" className={cn(\"inline-flex min-w-0 items-center gap-1.5 font-medium\", className)}>\n      {showIcon && <TokenIcon symbol={base} src={iconSrc} size={size} />}\n      <span className=\"truncate\">\n        {base}\n        {format === \"base-quote\" && quote && <span className=\"text-muted-foreground\">/{quote}</span>}\n        {format === \"base-type\" && type === \"PERP\" && <span className=\"text-muted-foreground\">-PERP</span>}\n      </span>\n      {badge != null && <SymbolBadge>{badge}</SymbolBadge>}\n    </span>\n  );\n}\n\n/** A tiny tonal pill for leverage, market type or listing status. */\nexport function SymbolBadge({ children, className }: { children: ReactNode; className?: string }) {\n  return (\n    <span className={cn(\"inline-flex h-4 items-center rounded-[5px] bg-container-high px-1 text-[10px] leading-none font-medium text-muted-foreground\", className)}>\n      {children}\n    </span>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "trading"
+  ],
+  "meta": {
+    "group": "trading",
+    "docs": "https://dxuireact.com/docs/components/token-icon"
+  }
+}

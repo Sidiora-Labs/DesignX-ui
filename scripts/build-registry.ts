@@ -201,6 +201,7 @@ const kitKeys = (
     [
       "components/agents",
       "components/charts",
+      "components/trading",
       "components/motion",
       "components/text",
       "components/transitions",
@@ -217,6 +218,7 @@ const neededItemLibs = new Set<string>();
 const GROUP_CATEGORY = {
   agents: "agents",
   charts: "charts",
+  trading: "trading",
   motion: "motion-kit",
   text: "text",
   transitions: "transitions",
@@ -385,5 +387,5 @@ await writeFile(
 const count = (t: string) => items.filter((i) => i.type === t).length;
 const byGroup = (g: string) => items.filter((i) => i.meta?.group === g).length;
 console.log(
-  `✓ registry: ${items.length} items → public/r  (ui ${count("registry:ui")}, dx ${byGroup("dx")}, agents ${byGroup("agents")}, charts ${byGroup("charts")}, motion ${byGroup("motion")}, text ${byGroup("text")}, transitions ${byGroup("transitions")}, effects ${byGroup("effects")}, elements ${byGroup("elements")}, libs ${count("registry:lib") + count("registry:hook")}, blocks ${count("registry:block")})`,
+  `✓ registry: ${items.length} items → public/r  (ui ${count("registry:ui")}, dx ${byGroup("dx")}, agents ${byGroup("agents")}, charts ${byGroup("charts")}, trading ${byGroup("trading")}, motion ${byGroup("motion")}, text ${byGroup("text")}, transitions ${byGroup("transitions")}, effects ${byGroup("effects")}, elements ${byGroup("elements")}, libs ${count("registry:lib") + count("registry:hook")}, blocks ${count("registry:block")})`,
 );

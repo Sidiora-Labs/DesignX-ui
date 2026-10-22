@@ -1,0 +1,33 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "market-selector",
+  "type": "registry:component",
+  "title": "Market Selector",
+  "description": "A symbol trigger that opens a searchable markets dropdown.",
+  "dependencies": [
+    "lucide-react@^0.577.0"
+  ],
+  "registryDependencies": [
+    "@dx/markets-list",
+    "@dx/popover",
+    "@dx/sheet",
+    "@dx/token-icon",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/trading/market-selector.tsx",
+      "type": "registry:component",
+      "target": "components/trading/market-selector.tsx",
+      "content": "import { ChevronDownIcon, XIcon } from \"lucide-react\";\nimport { useCallback, useState, useSyncExternalStore, type ReactNode } from \"react\";\n\nimport { MarketsList, type Market, type MarketsListProps } from \"@/components/trading/markets-list\";\nimport { SymbolBadge, SymbolDisplay } from \"@/components/trading/token-icon\";\nimport { Popover, PopoverContent, PopoverTrigger } from \"@/components/ui/popover\";\nimport { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from \"@/components/ui/sheet\";\nimport { cn } from \"@/lib/utils\";\n\nconst MOBILE_QUERY = \"(max-width: 767px)\";\n\nfunction useIsNarrow() {\n  return useSyncExternalStore(\n    (cb) => {\n      const mql = window.matchMedia(MOBILE_QUERY);\n      mql.addEventListener(\"change\", cb);\n      return () => mql.removeEventListener(\"change\", cb);\n    },\n    () => window.matchMedia(MOBILE_QUERY).matches,\n    () => false,\n  );\n}\n\nexport interface MarketSelectorProps extends Omit<MarketsListProps, \"activeSymbol\" | \"className\" | \"bodyClassName\"> {\n  /** The market currently traded — shown on the trigger and highlighted in the list. */\n  symbol: string;\n  iconSrc?: string;\n  /** Badge on the trigger, e.g. max leverage. */\n  badge?: ReactNode;\n  /** Replace the trigger's content. */\n  trigger?: ReactNode;\n  open?: boolean;\n  defaultOpen?: boolean;\n  onOpenChange?: (open: boolean) => void;\n  /** `auto` uses a popover on desktop and a side sheet under 768px. */\n  mode?: \"auto\" | \"popover\" | \"sheet\";\n  /** Close after a market is picked. */\n  closeOnSelect?: boolean;\n  /** Heading of the mobile sheet. */\n  title?: ReactNode;\n  className?: string;\n  contentClassName?: string;\n}\n\n/** A symbol trigger that opens a searchable markets list — a popover on desktop, a sheet on mobile. */\nexport function MarketSelector({\n  symbol,\n  iconSrc,\n  badge,\n  trigger,\n  open: openProp,\n  defaultOpen = false,\n  onOpenChange,\n  mode = \"auto\",\n  closeOnSelect = true,\n  title = \"Markets\",\n  className,\n  contentClassName,\n  onSymbolSelect,\n  ...listProps\n}: MarketSelectorProps) {\n  const [inner, setInner] = useState(defaultOpen);\n  const open = openProp ?? inner;\n  const setOpen = useCallback(\n    (next: boolean) => {\n      if (openProp === undefined) setInner(next);\n      onOpenChange?.(next);\n    },\n    [openProp, onOpenChange],\n  );\n  const narrow = useIsNarrow();\n  const sheet = mode === \"sheet\" || (mode === \"auto\" && narrow);\n\n  const select = (market: Market) => {\n    onSymbolSelect?.(market);\n    if (closeOnSelect) setOpen(false);\n  };\n\n  const triggerClass = cn(\n    \"focus-ring group inline-flex h-9 items-center gap-1.5 rounded-lg px-2 text-sm font-semibold transition-colors hover:bg-container-high data-popup-open:bg-container-high\",\n    className,\n  );\n  const triggerContent = trigger ?? (\n    <>\n      <SymbolDisplay symbol={symbol} iconSrc={iconSrc} size=\"sm\" />\n      {badge != null && <SymbolBadge className=\"bg-primary/12 text-primary\">{badge}</SymbolBadge>}\n      <ChevronDownIcon className=\"size-3.5 text-muted-foreground transition-transform duration-200 group-data-popup-open:rotate-180\" />\n      <span className=\"sr-only\">, change market</span>\n    </>\n  );\n\n  const list = (extra: Partial<MarketsListProps>) => (\n    <MarketsList\n      autoFocusSearch={!sheet}\n      {...listProps}\n      {...extra}\n      activeSymbol={symbol}\n      onSymbolSelect={select}\n    />\n  );\n\n  if (sheet) {\n    return (\n      <Sheet open={open} onOpenChange={(o) => setOpen(o)}>\n        <SheetTrigger className={triggerClass}>{triggerContent}</SheetTrigger>\n        <SheetContent side=\"left\" showCloseButton={false} className={cn(\"gap-0 overflow-hidden p-0\", contentClassName)}>\n          <div className=\"flex items-center justify-between px-4 pt-4\">\n            <SheetTitle className=\"text-base font-semibold\">{title}</SheetTitle>\n            <button\n              type=\"button\"\n              aria-label=\"Close\"\n              onClick={() => setOpen(false)}\n              className=\"focus-ring grid size-8 place-items-center rounded-full text-muted-foreground hover:bg-container-high hover:text-foreground\"\n            >\n              <XIcon className=\"size-4\" />\n            </button>\n          </div>\n          <SheetDescription className=\"sr-only\">Search and pick a market to trade.</SheetDescription>\n          {list({ className: \"min-h-0 flex-1 bg-popover pb-[env(safe-area-inset-bottom)]\" })}\n        </SheetContent>\n      </Sheet>\n    );\n  }\n\n  return (\n    <Popover open={open} onOpenChange={(o) => setOpen(o)}>\n      <PopoverTrigger className={triggerClass}>{triggerContent}</PopoverTrigger>\n      <PopoverContent\n        align=\"start\"\n        aria-label={typeof title === \"string\" ? title : \"Markets\"}\n        className={cn(\"flex h-[min(480px,70vh)] w-[min(440px,calc(100vw-2rem))] flex-col overflow-hidden rounded-xl p-0\", contentClassName)}\n      >\n        {list({ className: \"min-h-0 flex-1 bg-popover\" })}\n      </PopoverContent>\n    </Popover>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "trading"
+  ],
+  "meta": {
+    "group": "trading",
+    "docs": "https://dxuireact.com/docs/components/market-selector"
+  }
+}

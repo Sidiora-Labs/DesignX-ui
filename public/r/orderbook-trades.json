@@ -1,0 +1,30 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "author": "DesignX <ui@designx.dev>",
+  "name": "orderbook-trades",
+  "type": "registry:component",
+  "title": "Order Book & Trades",
+  "description": "A tabbed panel that pairs the Order Book with Recent Trades.",
+  "registryDependencies": [
+    "@dx/lib-trading",
+    "@dx/order-book",
+    "@dx/recent-trades",
+    "@dx/tabs",
+    "@dx/utils"
+  ],
+  "files": [
+    {
+      "path": "components/trading/orderbook-trades.tsx",
+      "type": "registry:component",
+      "target": "components/trading/orderbook-trades.tsx",
+      "content": "import { useState, type ReactNode } from \"react\";\n\nimport { OrderBook, type OrderBookLevel, type OrderBookProps } from \"@/components/charts/order-book\";\nimport { RecentTrades, type RecentTradesProps, type Trade } from \"@/components/trading/recent-trades\";\nimport { Tabs, TabsContent, TabsList, TabsTrigger } from \"@/components/ui/tabs\";\nimport { formatNumber } from \"@/lib/trading\";\nimport { cn } from \"@/lib/utils\";\n\nexport type OrderBookTradesTab = \"book\" | \"trades\";\n\nexport interface OrderBookTradesProps {\n  bids: readonly OrderBookLevel[];\n  asks: readonly OrderBookLevel[];\n  trades: readonly Trade[];\n  /** Your fills — adds a \"My trades\" tab inside the trades view. */\n  myTrades?: readonly Trade[];\n  /** Levels per side of the book. */\n  levels?: number;\n  /** Last traded price for the spread row. */\n  lastPrice?: number;\n  /** e.g. `BTC`. */\n  base?: string;\n  /** e.g. `USDC`. */\n  quote?: string;\n  /** Price increment — formats both the book and the tape. */\n  tick?: number;\n  /** Decimal places for sizes. */\n  sizeDp?: number;\n  /** `tabs` stacks the two behind tabs; `columns` shows them side by side. */\n  layout?: \"tabs\" | \"columns\";\n  tab?: OrderBookTradesTab;\n  defaultTab?: OrderBookTradesTab;\n  onTabChange?: (tab: OrderBookTradesTab) => void;\n  onTradeClick?: (trade: Trade) => void;\n  /** Extra props for the order book. */\n  orderBookProps?: Partial<Omit<OrderBookProps, \"bids\" | \"asks\">>;\n  /** Extra props for the trades tape. */\n  tradesProps?: Partial<Omit<RecentTradesProps, \"trades\">>;\n  /** Rendered at the end of the tab row, e.g. a tick-size select. */\n  toolbarEnd?: ReactNode;\n  className?: string;\n}\n\nconst BOOK_RESET = \"max-w-none rounded-none border-0 bg-transparent\";\n\n/** A panel pairing the Order Book with Recent Trades — tabbed or side by side. */\nexport function OrderBookTrades({\n  bids,\n  asks,\n  trades,\n  myTrades,\n  levels = 10,\n  lastPrice,\n  base,\n  quote,\n  tick,\n  sizeDp = 4,\n  layout = \"tabs\",\n  tab: tabProp,\n  defaultTab = \"book\",\n  onTabChange,\n  onTradeClick,\n  orderBookProps,\n  tradesProps,\n  toolbarEnd,\n  className,\n}: OrderBookTradesProps) {\n  const [innerTab, setInnerTab] = useState(defaultTab);\n  const tab = tabProp ?? innerTab;\n  const setTab = (t: OrderBookTradesTab) => {\n    if (tabProp === undefined) setInnerTab(t);\n    onTabChange?.(t);\n  };\n\n  const fmtPrice = (v: number) => formatNumber(v, \"price\", { tick });\n  const book = (\n    <OrderBook\n      bids={bids}\n      asks={asks}\n      levels={levels}\n      lastPrice={lastPrice}\n      baseSymbol={base}\n      quoteSymbol={quote}\n      formatPrice={tick ? fmtPrice : undefined}\n      {...orderBookProps}\n      className={cn(BOOK_RESET, orderBookProps?.className)}\n    />\n  );\n  const tape = (\n    <RecentTrades\n      trades={trades}\n      myTrades={myTrades}\n      base={base}\n      quote={quote}\n      tick={tick}\n      sizeDp={sizeDp}\n      onTradeClick={onTradeClick}\n      {...tradesProps}\n      className={cn(\"h-full bg-transparent\", tradesProps?.className)}\n    />\n  );\n\n  if (layout === \"columns\")\n    return (\n      <div data-slot=\"orderbook-trades\" className={cn(\"grid auto-rows-fr grid-cols-1 gap-3 sm:grid-cols-2\", className)}>\n        <section aria-label=\"Order book\" className=\"flex min-h-0 flex-col overflow-hidden rounded-2xl bg-container pt-3\">\n          <h3 className=\"px-4 text-sm font-medium\">Order book</h3>\n          <div className=\"min-h-0 flex-1 overflow-y-auto\">{book}</div>\n        </section>\n        <section aria-label=\"Trades\" className=\"flex min-h-0 flex-col overflow-hidden rounded-2xl bg-container pt-3\">\n          <h3 className=\"px-3 pb-1 text-sm font-medium\">Trades</h3>\n          <div className=\"min-h-0 flex-1\">{tape}</div>\n        </section>\n      </div>\n    );\n\n  return (\n    <Tabs\n      data-slot=\"orderbook-trades\"\n      value={tab}\n      onValueChange={(v) => setTab(v as OrderBookTradesTab)}\n      className={cn(\"flex min-h-0 flex-col gap-0 overflow-hidden rounded-2xl bg-container\", className)}\n    >\n      <div className=\"flex shrink-0 items-center gap-2 border-b border-border px-3\">\n        <TabsList variant=\"line\" className=\"h-10 gap-4 border-b-0\">\n          <TabsTrigger value=\"book\" className=\"h-10! text-[13px]\">\n            Order book\n          </TabsTrigger>\n          <TabsTrigger value=\"trades\" className=\"h-10! text-[13px]\">\n            Trades\n          </TabsTrigger>\n        </TabsList>\n        {toolbarEnd && <div className=\"ml-auto flex items-center gap-1\">{toolbarEnd}</div>}\n      </div>\n      <TabsContent value=\"book\" className=\"min-h-0 overflow-y-auto\">\n        {book}\n      </TabsContent>\n      <TabsContent value=\"trades\" className=\"min-h-0 pt-1\">\n        {tape}\n      </TabsContent>\n    </Tabs>\n  );\n}\n"
+    }
+  ],
+  "categories": [
+    "trading"
+  ],
+  "meta": {
+    "group": "trading",
+    "docs": "https://dxuireact.com/docs/components/orderbook-trades"
+  }
+}

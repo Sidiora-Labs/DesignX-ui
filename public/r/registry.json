@@ -3929,6 +3929,1499 @@
     },
     {
       "author": "DesignX <ui@designx.dev>",
+      "name": "numeral",
+      "type": "registry:component",
+      "title": "Numeral",
+      "description": "Tabular numbers for trading — price, percent, compact and USD rules, sign colouring and balance masking.",
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/numeral.tsx",
+          "type": "registry:component",
+          "target": "components/trading/numeral.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/numeral"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "token-icon",
+      "type": "registry:component",
+      "title": "Token Icon",
+      "description": "Token and chain icons with a deterministic lettered fallback, plus a symbol label with badges.",
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/token-icon.tsx",
+          "type": "registry:component",
+          "target": "components/trading/token-icon.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/token-icon"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "symbol-info-bar",
+      "type": "registry:component",
+      "title": "Symbol Info Bar",
+      "description": "The instrument header — symbol, last price, 24h change, mark, index, open interest and funding.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/symbol-info-bar.tsx",
+          "type": "registry:component",
+          "target": "components/trading/symbol-info-bar.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/symbol-info-bar"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "markets-list",
+      "type": "registry:component",
+      "title": "Markets List",
+      "description": "A searchable, sortable list of markets with favourites, category tabs and 24h change.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/input-group",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/markets-list.tsx",
+          "type": "registry:component",
+          "target": "components/trading/markets-list.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/markets-list"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "market-selector",
+      "type": "registry:component",
+      "title": "Market Selector",
+      "description": "A symbol trigger that opens a searchable markets dropdown.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/markets-list",
+        "@dx/popover",
+        "@dx/sheet",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/market-selector.tsx",
+          "type": "registry:component",
+          "target": "components/trading/market-selector.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/market-selector"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "markets-ticker",
+      "type": "registry:component",
+      "title": "Markets Ticker",
+      "description": "A horizontal strip of markets with price and change, filtered by type.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/popover",
+        "@dx/radio-group",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/markets-ticker.tsx",
+          "type": "registry:component",
+          "target": "components/trading/markets-ticker.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/markets-ticker"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "markets-overview",
+      "type": "registry:component",
+      "title": "Markets Overview",
+      "description": "Top gainers, losers, new listings and volume leaders as summary cards.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/markets-overview.tsx",
+          "type": "registry:component",
+          "target": "components/trading/markets-overview.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/markets-overview"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "funding-rate",
+      "type": "registry:component",
+      "title": "Funding Rate",
+      "description": "A funding rate readout with interval countdown, annualised rate and a detail popover.",
+      "registryDependencies": [
+        "@dx/dialog",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/popover",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/funding-rate.tsx",
+          "type": "registry:component",
+          "target": "components/trading/funding-rate.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/funding-rate"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "funding-comparison",
+      "type": "registry:component",
+      "title": "Funding Comparison",
+      "description": "Funding rates for each market compared across venues.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/input-group",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/select",
+        "@dx/tabs",
+        "@dx/toggle-group",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/funding-comparison.tsx",
+          "type": "registry:component",
+          "target": "components/trading/funding-comparison.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/funding-comparison"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "recent-trades",
+      "type": "registry:component",
+      "title": "Recent Trades",
+      "description": "A tape of the latest fills — price, size and time, coloured by aggressor side.",
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/tabs",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/recent-trades.tsx",
+          "type": "registry:component",
+          "target": "components/trading/recent-trades.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/recent-trades"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "chart-panel",
+      "type": "registry:component",
+      "title": "Chart Panel",
+      "description": "A chart frame with interval, chart-type and indicator toolbars around your charting library.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/dropdown-menu",
+        "@dx/lib-trading",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/chart-panel/index.tsx",
+          "type": "registry:component",
+          "target": "components/trading/chart-panel/index.tsx"
+        },
+        {
+          "path": "components/trading/chart-panel/candles.tsx",
+          "type": "registry:component",
+          "target": "components/trading/chart-panel/candles.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/chart-panel"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "orderbook-trades",
+      "type": "registry:component",
+      "title": "Order Book & Trades",
+      "description": "A tabbed panel that pairs the Order Book with Recent Trades.",
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/order-book",
+        "@dx/recent-trades",
+        "@dx/tabs",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/orderbook-trades.tsx",
+          "type": "registry:component",
+          "target": "components/trading/orderbook-trades.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/orderbook-trades"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "order-entry",
+      "type": "registry:component",
+      "title": "Order Entry",
+      "description": "Buy and sell form — order types, price and size inputs, a percentage slider, TP/SL and options.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/dropdown-menu",
+        "@dx/leverage-selector",
+        "@dx/lib-ease",
+        "@dx/lib-trading",
+        "@dx/margin-mode",
+        "@dx/numeral",
+        "@dx/popover",
+        "@dx/select",
+        "@dx/slider",
+        "@dx/spinner",
+        "@dx/switch",
+        "@dx/tooltip",
+        "@dx/tpsl-editor",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/order-entry/index.tsx",
+          "type": "registry:component",
+          "target": "components/trading/order-entry/index.tsx"
+        },
+        {
+          "path": "components/trading/order-entry/fields.tsx",
+          "type": "registry:component",
+          "target": "components/trading/order-entry/fields.tsx"
+        },
+        {
+          "path": "components/trading/order-entry/summary.tsx",
+          "type": "registry:component",
+          "target": "components/trading/order-entry/summary.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/order-entry"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "leverage-selector",
+      "type": "registry:component",
+      "title": "Leverage Selector",
+      "description": "A leverage slider with marks, stepper input and max position notional.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/slider",
+        "@dx/spinner",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/leverage-selector.tsx",
+          "type": "registry:component",
+          "target": "components/trading/leverage-selector.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/leverage-selector"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "margin-mode",
+      "type": "registry:component",
+      "title": "Margin Mode",
+      "description": "Cross and isolated margin switch with an explainer dialog.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/dialog",
+        "@dx/scroll-area",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/margin-mode.tsx",
+          "type": "registry:component",
+          "target": "components/trading/margin-mode.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/margin-mode"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "tpsl-editor",
+      "type": "registry:component",
+      "title": "TP/SL Editor",
+      "description": "Take-profit and stop-loss rows that switch between price, offset and PnL inputs.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/dropdown-menu",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/slider",
+        "@dx/spinner",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/tpsl-editor.tsx",
+          "type": "registry:component",
+          "target": "components/trading/tpsl-editor.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/tpsl-editor"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "order-confirm",
+      "type": "registry:component",
+      "title": "Order Confirm",
+      "description": "A confirmation dialog that summarises an order before it is sent.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/dialog",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/scroll-area",
+        "@dx/spinner",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/order-confirm.tsx",
+          "type": "registry:component",
+          "target": "components/trading/order-confirm.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/order-confirm"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "positions-table",
+      "type": "registry:component",
+      "title": "Positions Table",
+      "description": "Open positions with PnL, margin and liquidation price — a table on desktop, cards on mobile.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/empty",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/table",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/positions-table.tsx",
+          "type": "registry:component",
+          "target": "components/trading/positions-table.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/positions-table"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "close-position",
+      "type": "registry:component",
+      "title": "Close Position",
+      "description": "A dialog to close a position at market or limit, in part or in full.",
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/input-group",
+        "@dx/label",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/radio-group",
+        "@dx/slider",
+        "@dx/toggle-group",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/close-position.tsx",
+          "type": "registry:component",
+          "target": "components/trading/close-position.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/close-position"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "adjust-margin",
+      "type": "registry:component",
+      "title": "Adjust Margin",
+      "description": "Add or remove isolated margin with a live liquidation-price preview.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/input-group",
+        "@dx/lib-ease",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/slider",
+        "@dx/toggle-group",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/adjust-margin.tsx",
+          "type": "registry:component",
+          "target": "components/trading/adjust-margin.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/adjust-margin"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "reverse-position",
+      "type": "registry:component",
+      "title": "Reverse Position",
+      "description": "Flip a long into a short — or back — with a side-by-side order summary.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/reverse-position.tsx",
+          "type": "registry:component",
+          "target": "components/trading/reverse-position.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/reverse-position"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "orders-table",
+      "type": "registry:component",
+      "title": "Orders Table",
+      "description": "Open, TP/SL, filled and cancelled orders with cancel and edit actions.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/badge",
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/empty",
+        "@dx/input-group",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/progress",
+        "@dx/skeleton",
+        "@dx/table",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/orders-table.tsx",
+          "type": "registry:component",
+          "target": "components/trading/orders-table.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/orders-table"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "position-history",
+      "type": "registry:component",
+      "title": "Position History",
+      "description": "Closed and liquidated positions with realised PnL and a detail view.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/badge",
+        "@dx/collapsible",
+        "@dx/empty",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/table",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/position-history.tsx",
+          "type": "registry:component",
+          "target": "components/trading/position-history.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/position-history"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "funding-fee-history",
+      "type": "registry:component",
+      "title": "Funding Fee History",
+      "description": "Funding payments per position and interval, with totals.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/empty",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/select",
+        "@dx/skeleton",
+        "@dx/table",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/funding-fee-history.tsx",
+          "type": "registry:component",
+          "target": "components/trading/funding-fee-history.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/funding-fee-history"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "account-summary",
+      "type": "registry:component",
+      "title": "Account Summary",
+      "description": "A header pill that opens total value, collateral and margin usage.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/asset-panel",
+        "@dx/button",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/popover",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/account-summary.tsx",
+          "type": "registry:component",
+          "target": "components/trading/account-summary.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/account-summary"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "asset-panel",
+      "type": "registry:component",
+      "title": "Asset Panel",
+      "description": "Account value, unrealised PnL, free collateral and a margin ratio meter beside the order form.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/lib-ease",
+        "@dx/lib-trading",
+        "@dx/meter",
+        "@dx/numeral",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/asset-panel.tsx",
+          "type": "registry:component",
+          "target": "components/trading/asset-panel.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/asset-panel"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "portfolio-assets",
+      "type": "registry:component",
+      "title": "Portfolio Assets",
+      "description": "Balances per token with value, collateral weight and transfer actions.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/asset-panel",
+        "@dx/button",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/portfolio-assets.tsx",
+          "type": "registry:component",
+          "target": "components/trading/portfolio-assets.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/portfolio-assets"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "portfolio-performance",
+      "type": "registry:component",
+      "title": "Portfolio Performance",
+      "description": "Account value and PnL over time with range tabs and headline stats.",
+      "dependencies": [
+        "recharts@^3.10.1"
+      ],
+      "registryDependencies": [
+        "@dx/chart",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/tabs",
+        "@dx/toggle-group",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/portfolio-performance.tsx",
+          "type": "registry:component",
+          "target": "components/trading/portfolio-performance.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/portfolio-performance"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "deposit-withdraw",
+      "type": "registry:component",
+      "title": "Deposit & Withdraw",
+      "description": "Move funds in and out — token and network selects, amount, fees and what you receive.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/input",
+        "@dx/input-group",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/select",
+        "@dx/spinner",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/deposit-withdraw.tsx",
+          "type": "registry:component",
+          "target": "components/trading/deposit-withdraw.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/deposit-withdraw"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "deposit-status",
+      "type": "registry:component",
+      "title": "Deposit Status",
+      "description": "Pending and completed transfer status with step progress.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/lib-ease",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/deposit-status.tsx",
+          "type": "registry:component",
+          "target": "components/trading/deposit-status.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/deposit-status"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "transfer-history",
+      "type": "registry:component",
+      "title": "Transfer History",
+      "description": "Deposits and withdrawals with status, network and transaction links.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/badge",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/transfer-history.tsx",
+          "type": "registry:component",
+          "target": "components/trading/transfer-history.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/transfer-history"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "fee-tier",
+      "type": "registry:component",
+      "title": "Fee Tier",
+      "description": "Maker and taker fee tiers by 30-day volume, with your current tier highlighted.",
+      "registryDependencies": [
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/progress",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/fee-tier.tsx",
+          "type": "registry:component",
+          "target": "components/trading/fee-tier.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/fee-tier"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "chain-selector",
+      "type": "registry:component",
+      "title": "Chain Selector",
+      "description": "Pick a network from mainnets and testnets, with icons and the current chain.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/dialog",
+        "@dx/popover",
+        "@dx/spinner",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/chain-selector.tsx",
+          "type": "registry:component",
+          "target": "components/trading/chain-selector.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/chain-selector"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "api-key-manager",
+      "type": "registry:component",
+      "title": "API Key Manager",
+      "description": "Create, list and revoke API keys with permissions and IP restrictions.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/alert-dialog",
+        "@dx/badge",
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/dialog",
+        "@dx/lib-trading",
+        "@dx/spinner",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/api-key-manager.tsx",
+          "type": "registry:component",
+          "target": "components/trading/api-key-manager.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/api-key-manager"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "leaderboard",
+      "type": "registry:component",
+      "title": "Leaderboard",
+      "description": "Ranked traders by volume or PnL, with podium styling and your own row pinned.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/input-group",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/skeleton",
+        "@dx/tabs",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/leaderboard.tsx",
+          "type": "registry:component",
+          "target": "components/trading/leaderboard.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/leaderboard"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "campaign-card",
+      "type": "registry:component",
+      "title": "Campaign Card",
+      "description": "A trading competition card with countdown, prize pool and join state.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/campaign-card.tsx",
+          "type": "registry:component",
+          "target": "components/trading/campaign-card.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/campaign-card"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "epoch-rewards",
+      "type": "registry:component",
+      "title": "Epoch Rewards",
+      "description": "Current epoch progress, estimated rewards, boosts and a claim action.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/progress",
+        "@dx/skeleton",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/epoch-rewards.tsx",
+          "type": "registry:component",
+          "target": "components/trading/epoch-rewards.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/epoch-rewards"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "vault-card",
+      "type": "registry:component",
+      "title": "Vault Card",
+      "description": "A strategy vault with TVL, APY, your deposits and deposit / withdraw actions.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/token-icon",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/vault-card.tsx",
+          "type": "registry:component",
+          "target": "components/trading/vault-card.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/vault-card"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "vault-form",
+      "type": "registry:component",
+      "title": "Vault Form",
+      "description": "Deposit into or withdraw from a vault, with shares and lock-up details.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/dialog",
+        "@dx/input-group",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/tabs",
+        "@dx/token-icon",
+        "@dx/utils",
+        "@dx/vault-card"
+      ],
+      "files": [
+        {
+          "path": "components/trading/vault-form.tsx",
+          "type": "registry:component",
+          "target": "components/trading/vault-form.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/vault-form"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "referral-card",
+      "type": "registry:component",
+      "title": "Referral Card",
+      "description": "Your referral link and code with copy actions and rebate rates.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/input",
+        "@dx/slider",
+        "@dx/tooltip",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/referral-card.tsx",
+          "type": "registry:component",
+          "target": "components/trading/referral-card.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/referral-card"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "affiliate-summary",
+      "type": "registry:component",
+      "title": "Affiliate Summary",
+      "description": "Commission, referral volume and referees at a glance, with a commission chart.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "recharts@^3.10.1"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/chart",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/progress",
+        "@dx/toggle-group",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/affiliate-summary.tsx",
+          "type": "registry:component",
+          "target": "components/trading/affiliate-summary.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/affiliate-summary"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "referees-table",
+      "type": "registry:component",
+      "title": "Referees Table",
+      "description": "Referred traders with volume, fees and commission earned.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/input",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/table",
+        "@dx/tabs",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/referees-table.tsx",
+          "type": "registry:component",
+          "target": "components/trading/referees-table.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/referees-table"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "pnl-share-card",
+      "type": "registry:component",
+      "title": "PnL Share Card",
+      "description": "A shareable position card — symbol, side, leverage, ROI and prices on a branded poster.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/checkbox",
+        "@dx/dialog",
+        "@dx/input",
+        "@dx/label",
+        "@dx/lib-trading",
+        "@dx/radio-group",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/pnl-share-card.tsx",
+          "type": "registry:component",
+          "target": "components/trading/pnl-share-card.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/pnl-share-card"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "trade-notification",
+      "type": "registry:component",
+      "title": "Trade Notification",
+      "description": "Order filled, cancelled and liquidation alerts for your toast stack.",
+      "dependencies": [
+        "lucide-react@^0.577.0"
+      ],
+      "registryDependencies": [
+        "@dx/button",
+        "@dx/lib-trading",
+        "@dx/numeral",
+        "@dx/popover",
+        "@dx/scroll-area",
+        "@dx/sonner",
+        "@dx/tabs",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/trade-notification.tsx",
+          "type": "registry:component",
+          "target": "components/trading/trade-notification.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/trade-notification"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "announcement-bar",
+      "type": "registry:component",
+      "title": "Announcement Bar",
+      "description": "Rotating exchange announcements with dismiss and a full list.",
+      "dependencies": [
+        "lucide-react@^0.577.0",
+        "motion@^14.0.0"
+      ],
+      "registryDependencies": [
+        "@dx/lib-ease",
+        "@dx/utils"
+      ],
+      "files": [
+        {
+          "path": "components/trading/announcement-bar.tsx",
+          "type": "registry:component",
+          "target": "components/trading/announcement-bar.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "group": "trading",
+        "docs": "https://dxuireact.com/docs/components/announcement-bar"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
       "name": "motion-button",
       "type": "registry:component",
       "title": "Button",
@@ -12360,6 +13853,19 @@
     },
     {
       "author": "DesignX <ui@designx.dev>",
+      "name": "lib-trading",
+      "type": "registry:lib",
+      "title": "lib-trading",
+      "files": [
+        {
+          "path": "lib/trading.ts",
+          "type": "registry:lib",
+          "target": "lib/trading.ts"
+        }
+      ]
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
       "name": "lib-utils",
       "type": "registry:lib",
       "title": "lib-utils",
@@ -12559,6 +14065,49 @@
       "meta": {
         "iframeHeight": "600px",
         "preview": "https://dxuireact.com/blocks#forgot-01"
+      }
+    },
+    {
+      "author": "DesignX <ui@designx.dev>",
+      "name": "trading-01",
+      "type": "registry:block",
+      "title": "Trading terminal",
+      "description": "A perpetuals trading screen — markets, chart, order book, order entry, account and positions.",
+      "registryDependencies": [
+        "@dx/account-summary",
+        "@dx/asset-panel",
+        "@dx/chart-panel",
+        "@dx/margin-mode",
+        "@dx/market-selector",
+        "@dx/markets-list",
+        "@dx/markets-ticker",
+        "@dx/order-entry",
+        "@dx/orderbook-trades",
+        "@dx/orders-table",
+        "@dx/positions-table",
+        "@dx/recent-trades",
+        "@dx/sonner",
+        "@dx/symbol-info-bar",
+        "@dx/tabs"
+      ],
+      "files": [
+        {
+          "path": "blocks/trading-01/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/trading-01/index.tsx"
+        },
+        {
+          "path": "blocks/trading-01/data.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/trading-01/data.tsx"
+        }
+      ],
+      "categories": [
+        "trading"
+      ],
+      "meta": {
+        "iframeHeight": "1280px",
+        "preview": "https://dxuireact.com/blocks#trading-01"
       }
     },
     {
