@@ -1,7 +1,7 @@
 import { Link } from "wouter";
 import { ArrowRightIcon, BoxIcon, PaletteIcon, SparklesIcon, TerminalIcon } from "lucide-react";
 
-import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { catalog } from "../catalog";
 import { CodeBlock } from "../code-block";
 import { registryTemplate } from "../registry-url";
 
@@ -9,7 +9,7 @@ export function IntroductionGuide() {
   return (
     <>
       <p>
-        DX UI is the DesignX component system: around seventy accessible components built on{" "}
+        DX UI is the DesignX component system: {catalog.length} accessible components built on{" "}
         <a href="https://base-ui.com" target="_blank" rel="noreferrer">
           Base UI
         </a>
@@ -41,23 +41,19 @@ export function IntroductionGuide() {
           <strong>shadcn compatible.</strong> The registry follows the shadcn schema, so either CLI can install from it.
         </li>
       </ul>
-      <div className="not-prose mt-8 grid gap-3 sm:grid-cols-2">
+      <div className="not-prose mt-10 grid gap-4 sm:grid-cols-2">
         {[
           { href: "/docs/installation", icon: BoxIcon, title: "Installation", desc: "Set up a new or existing project." },
           { href: "/docs/cli", icon: TerminalIcon, title: "CLI", desc: "Add components with one command." },
           { href: "/docs/theming", icon: PaletteIcon, title: "Theming", desc: "Tokens, surfaces and accents." },
-          { href: "/docs/components/smooth-input", icon: SparklesIcon, title: "DX Motion", desc: "The expressive layer." },
+          { href: "/docs/components", icon: SparklesIcon, title: "Components", desc: "Browse every kit, live." },
         ].map((c) => (
-          <Link key={c.href} href={c.href} className="focus-ring group rounded-xl">
-            <Card variant="tonal" className="h-full transition-colors group-hover:bg-container-high">
-              <CardHeader>
-                <c.icon className="mb-2 size-5 text-muted-foreground" />
-                <CardTitle className="flex items-center gap-1.5">
-                  {c.title} <ArrowRightIcon className="size-4 opacity-0 transition-opacity group-hover:opacity-100" />
-                </CardTitle>
-                <CardDescription>{c.desc}</CardDescription>
-              </CardHeader>
-            </Card>
+          <Link key={c.href} href={c.href} className="site-focus group flex flex-col rounded-3xl bg-tile p-6 transition-colors hover:bg-divider/50">
+            <c.icon className="size-5 text-pencil" />
+            <span className="mt-6 flex items-center gap-1.5 text-lg leading-[1.33] font-semibold tracking-[-0.025em] text-ink">
+              {c.title} <ArrowRightIcon className="size-4 -translate-x-1 opacity-0 transition-[opacity,transform] group-hover:translate-x-0 group-hover:opacity-100" />
+            </span>
+            <span className="mt-1 text-sm leading-[1.43] text-pencil">{c.desc}</span>
           </Link>
         ))}
       </div>

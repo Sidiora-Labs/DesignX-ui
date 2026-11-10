@@ -153,6 +153,7 @@ export function BlocksShowcase() {
           </div>
         )}
         {seen && (
+          // oxlint-disable-next-line react/iframe-missing-sandbox -- same-origin preview of our own block
           <iframe
             key={slug}
             src={`/blocks/view/${slug}`}

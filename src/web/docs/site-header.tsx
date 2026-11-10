@@ -7,7 +7,8 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { DxLogo } from "./logo";
-import { docsNav, mainNav } from "./nav";
+import { DocsNav } from "./docs-layout";
+import { mainNav } from "./nav";
 import { SearchButton } from "./search";
 import { ThemeToggle } from "./theme-switcher";
 import { btn, iconBtn } from "@/site/ui";
@@ -84,22 +85,7 @@ function MobileNav() {
               </Link>
             ))}
           </div>
-          {docsNav.map((section) => (
-            <div key={section.title} className="mt-7">
-              <div className="mb-2 font-code text-[11px] tracking-[0.06em] text-faint uppercase">{section.title}</div>
-              <div className="flex flex-col">
-                {section.items.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={cn("py-1 text-sm text-pencil", location === item.href && "font-semibold text-ink")}
-                  >
-                    {item.title}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+          <DocsNav className="mt-8" />
         </div>
       </SheetContent>
     </Sheet>

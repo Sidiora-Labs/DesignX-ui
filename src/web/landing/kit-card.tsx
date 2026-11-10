@@ -38,10 +38,11 @@ function LazyDemo({ slug }: { slug: string }) {
   return Comp ? <Comp /> : null;
 }
 
-export function KitCard({ slug, size = "s" }: { slug: string; size?: CardSize }) {
+/** `persist={false}` unmounts the live demo when the card scrolls away — for long galleries. */
+export function KitCard({ slug, size = "s", persist = true }: { slug: string; size?: CardSize; persist?: boolean }) {
   const item = catalogBySlug[slug];
   const ref = React.useRef<HTMLElement>(null);
-  const seen = useInView(ref, { once: true, margin: "200px 0px" });
+  const seen = useInView(ref, { once: persist, margin: "200px 0px" });
   const [hover, setHover] = React.useState(false);
   if (!item) return null;
   const feature = size === "f";

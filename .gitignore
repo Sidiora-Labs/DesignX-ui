@@ -73,6 +73,7 @@ scripts/
 /scripts/*
 !/scripts/build-registry.ts
 !/scripts/check-registry.mjs
+!/scripts/block-thumbs.mjs
 
 # local hosting runtime
 .runable/

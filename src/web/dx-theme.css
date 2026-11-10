@@ -9,12 +9,13 @@
   --font-sans: "Google Sans Flex", "Google Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Google Sans Code", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --radius-xs: 4px;
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 16px;
-  --radius-xl: 24px;
-  --radius-2xl: 36px;
+  /* The whole scale hangs off --radius (12px by default): 4 · 8 · 12 · 16 · 24 · 36 */
+  --radius-xs: calc(var(--radius) / 3);
+  --radius-sm: calc(var(--radius) * 2 / 3);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) * 4 / 3);
+  --radius-xl: calc(var(--radius) * 2);
+  --radius-2xl: calc(var(--radius) * 3);
 
   --ease-dx: cubic-bezier(0.2, 0, 0, 1);
   --ease-dx-out: cubic-bezier(0.05, 0.7, 0.1, 1);
@@ -70,6 +71,7 @@
 
 :root,
 .light {
+  --radius: 12px;
   --background: #ffffff;
   --foreground: #121317;
   --container: #f8f9fc;

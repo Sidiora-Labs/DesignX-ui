@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "wouter";
 import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
@@ -180,5 +181,52 @@ export function SegmentedPill<T extends string>({
         );
       })}
     </div>
+  );
+}
+
+/** Filter chip with an optional mono count, for gallery category rows. */
+export function Chip({ active, count, className, children, ...props }: React.ComponentProps<"button"> & { active?: boolean; count?: number }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      className={cn(
+        "site-focus inline-flex h-8 shrink-0 items-center gap-2 rounded-2xl border px-3 font-ui text-[13px] font-medium whitespace-nowrap transition-colors",
+        active ? "site-bevel border-transparent bg-graphite text-on-graphite" : "border-hairline text-pencil hover:border-divider hover:text-ink",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+      {count != null && <span className={cn("font-code text-[11px] tabular-nums", active ? "text-on-graphite/60" : "text-faint")}>{count}</span>}
+    </button>
+  );
+}
+
+/** Breadcrumb trail in mono micro-type. The last item is the current page. */
+export function Crumbs({ items, className }: { items: { title: string; href?: string }[]; className?: string }) {
+  return (
+    <nav aria-label="Breadcrumb" className={className}>
+      <ol className="flex flex-wrap items-center gap-2 font-code text-[11px] leading-[1.7] tracking-[0.06em] uppercase">
+        {items.map((item, i) => (
+          <li key={`${i}-${item.title}`} className="flex items-center gap-2">
+            {i > 0 && (
+              <span aria-hidden className="text-divider">
+                /
+              </span>
+            )}
+            {item.href ? (
+              <Link href={item.href} className="site-focus rounded-sm text-faint transition-colors hover:text-ink">
+                {item.title}
+              </Link>
+            ) : (
+              <span aria-current="page" className="text-pencil">
+                {item.title}
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
   );
 }

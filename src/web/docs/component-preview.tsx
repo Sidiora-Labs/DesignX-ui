@@ -32,6 +32,25 @@ function useDemo(name: string) {
   return { Comp, code };
 }
 
+/** A throwing demo shows a retry state instead of taking the page down. */
+class PreviewBoundary extends React.Component<{ children: React.ReactNode; onRetry: () => void }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (!this.state.failed) return this.props.children;
+    return (
+      <div className="flex flex-col items-center gap-3 text-center text-sm text-muted-foreground">
+        This preview failed to render.
+        <button type="button" className="underline underline-offset-4 hover:text-foreground" onClick={this.props.onRetry}>
+          Try again
+        </button>
+      </div>
+    );
+  }
+}
+
 export function ComponentPreview({
   name,
   className,
@@ -64,7 +83,7 @@ export function ComponentPreview({
           style={{ minHeight }}
         >
           <div className="relative z-10 flex w-full justify-center" key={key}>
-            {Comp ? <Comp /> : <Spinner className="size-5 text-muted-foreground" />}
+            <PreviewBoundary onRetry={() => setKey((k) => k + 1)}>{Comp ? <Comp /> : <Spinner className="size-5 text-muted-foreground" />}</PreviewBoundary>
           </div>
         </Frame>
         {view === "code" && <CodeBlock code={code || "// loading…"} collapsible maxHeight={420} />}

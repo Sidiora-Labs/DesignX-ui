@@ -1,8 +1,9 @@
 import * as React from "react";
-import { useParams } from "wouter";
+import { Link, useParams } from "wouter";
 import { ArrowUpRightIcon } from "lucide-react";
 
-import { catalogBySlug, groupLabels } from "@/docs/catalog";
+import { catalog, catalogBySlug, groupLabels } from "@/docs/catalog";
+import { KitCard } from "@/landing/kit-card";
 import { apiDocs } from "@/docs/api";
 import { CodeBlock } from "@/docs/code-block";
 import { ComponentPreview } from "@/docs/component-preview";
@@ -22,6 +23,12 @@ export default function ComponentDocPage() {
   const item = catalogBySlug[slug];
   const api = apiDocs[slug];
   const examples = React.useMemo(() => exampleNames(slug), [slug]);
+  const related = React.useMemo(() => {
+    if (!item) return [];
+    const peers = catalog.filter((c) => c.group === item.group);
+    const at = peers.indexOf(item);
+    return [1, 2, 3, 4].map((n) => peers[(at + n) % peers.length]).filter((c, i, all) => c && c !== item && all.indexOf(c) === i);
+  }, [item]);
 
   React.useEffect(() => {
     if (item) document.title = `${item.title}DX UI`;
@@ -38,8 +45,17 @@ export default function ComponentDocPage() {
 
   return (
     <div className="flex gap-12" key={slug}>
-      <article className="docs-prose min-w-0 flex-1">
-        <DocsHeader title={item.title} description={item.description} isNew={item.isNew} eyebrow={groupLabels[item.group]}>
+      <article className="docs-prose min-w-0 max-w-5xl flex-1">
+        <DocsHeader
+          title={item.title}
+          description={item.description}
+          crumbs={[
+            { title: "Docs", href: "/docs" },
+            { title: "Components", href: "/docs/components" },
+            ...(item.group === "ui" ? [] : [{ title: groupLabels[item.group], href: `/docs/components?group=${item.group}` }]),
+            { title: item.title },
+          ]}
+        >
           {item.base && (
             <a href={`https://base-ui.com/react/components/${item.base}`} target="_blank" rel="noreferrer" className={tagLink}>
               Base UI <ArrowUpRightIcon />
@@ -93,6 +109,23 @@ export default function ComponentDocPage() {
               </section>
             ))}
           </>
+        )}
+        {related.length > 0 && (
+          <section aria-labelledby="related" className="not-prose mt-20">
+            <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">
+              <h2 id="related" className="text-[28px] leading-[1.14] font-bold tracking-[-0.025em] text-ink">
+                More in {groupLabels[item.group]}
+              </h2>
+              <Link href={`/docs/components?group=${item.group}`} className="site-focus rounded-md text-sm text-pencil hover:text-ink">
+                View all
+              </Link>
+            </div>
+            <div className="grid auto-rows-[260px] grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+              {related.map((c) => (
+                <KitCard key={c.slug} slug={c.slug} persist={false} />
+              ))}
+            </div>
+          </section>
         )}
         <PrevNext />
       </article>

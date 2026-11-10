@@ -84,7 +84,7 @@ export const SHOWCASE_BLURB: Record<ShowcaseId, { text: string; href: string; ct
 export function KitGrid({ id }: { id: Kit["id"] }) {
   const kit = KITS.find((k) => k.id === id)!;
   return (
-    <div className="grid auto-rows-[240px] grid-flow-dense gap-3 sm:auto-rows-[280px] sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid auto-rows-[240px] grid-flow-dense grid-cols-1 gap-3 sm:auto-rows-[280px] sm:grid-cols-2 lg:grid-cols-4">
       {kit.cards.map(([slug, size]) => (
         <KitCard key={slug} slug={slug} size={size} />
       ))}

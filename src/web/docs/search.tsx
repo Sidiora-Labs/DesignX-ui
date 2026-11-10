@@ -100,7 +100,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
           </CommandGroup>
           <CommandGroup heading="Blocks">
             {blocks.map((b) => (
-              <CommandItem key={b.slug} value={`block ${b.title}`} onSelect={() => go(() => navigate(`/blocks#${b.slug}`))}>
+              <CommandItem key={b.slug} value={`block ${b.title}`} onSelect={() => go(() => navigate(`/blocks/${b.slug}`))}>
                 <LayoutTemplateIcon />
                 {b.title}
               </CommandItem>
