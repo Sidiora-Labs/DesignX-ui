@@ -3,8 +3,7 @@ import { Link, useLocation } from "wouter";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { btn, Eyebrow, Tag } from "@/site/ui";
 import { docsNav, flatDocs } from "./nav";
 import { SiteFooter } from "./site-footer";
 import { SiteHeader } from "./site-header";
@@ -17,10 +16,10 @@ export function DocsSidebar() {
   }, []);
 
   return (
-    <aside className="sticky top-14 hidden h-[calc(100svh-3.5rem)] w-60 shrink-0 scrollbar-hover overflow-y-auto overscroll-contain py-8 pr-4 pl-1 md:block">
+    <aside className="sticky top-16 hidden h-[calc(100svh-4rem)] w-60 shrink-0 scrollbar-hover overflow-y-auto overscroll-contain py-8 pr-4 pl-1 md:block">
       {docsNav.map((section) => (
-        <div key={section.title} className="mb-7">
-          <div className="mb-1.5 px-3 text-xs font-medium text-muted-foreground/80">{section.title}</div>
+        <div key={section.title} className="mb-8">
+          <div className="mb-2 px-3 font-code text-[11px] leading-[1.7] tracking-[0.06em] text-faint uppercase">{section.title}</div>
           <div className="flex flex-col gap-px">
             {section.items.map((item) => {
               const active = location === item.href;
@@ -31,12 +30,12 @@ export function DocsSidebar() {
                   ref={active ? activeRef : undefined}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "focus-ring state-layer relative flex h-8 items-center gap-2 rounded-full px-3 text-[13px] text-muted-foreground transition-colors hover:text-foreground",
-                    active && "bg-container-high font-medium text-foreground",
+                    "site-focus relative flex h-8 items-center gap-2 rounded-xl px-3 text-sm text-pencil transition-colors hover:text-ink",
+                    active && "bg-tile font-semibold text-ink",
                   )}
                 >
                   {item.title}
-                  {item.isNew && <span className="ml-auto size-1.5 rounded-full bg-[var(--dx-blue-3)]" aria-label="New" />}
+                  {item.isNew && <span className="ml-auto font-code text-[10px] tracking-[-0.006em] text-faint">new</span>}
                 </Link>
               );
             })}
@@ -53,11 +52,11 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
     window.scrollTo({ top: 0 });
   }, [location]);
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="site flex min-h-svh flex-col">
       <SiteHeader />
       <div className="mx-auto flex w-full max-w-[1440px] flex-1 gap-6 px-4 md:px-6 lg:gap-12">
         <DocsSidebar />
-        <main className="min-w-0 flex-1 py-8 md:py-10">{children}</main>
+        <main className="min-w-0 flex-1 py-8 md:py-12">{children}</main>
       </div>
       <SiteFooter />
     </div>
@@ -78,14 +77,14 @@ export function DocsHeader({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="animate-rise mb-10">
-      {eyebrow && <div className="mb-3 text-xs font-medium tracking-[0.08em] text-muted-foreground uppercase">{eyebrow}</div>}
-      <div className="flex items-center gap-3">
-        <h1 className="text-[34px] leading-[1.1] font-medium tracking-[-0.03em] md:text-[40px]">{title}</h1>
-        {isNew && <Badge variant="info">New</Badge>}
+    <div className="animate-rise not-prose mb-12">
+      {eyebrow && <Eyebrow className="mb-4">{eyebrow}</Eyebrow>}
+      <div className="flex flex-wrap items-center gap-3">
+        <h1 className="text-[clamp(2.25rem,6vw,3rem)] leading-[1.13] font-bold tracking-[-0.025em] text-ink">{title}</h1>
+        {isNew && <Tag>New</Tag>}
       </div>
-      <p className="mt-3 max-w-2xl text-[17px] leading-relaxed text-muted-foreground">{description}</p>
-      {children && <div className="mt-5 flex flex-wrap items-center gap-2">{children}</div>}
+      <p className="mt-6 max-w-2xl text-lg leading-[1.33] tracking-[-0.025em] text-pretty text-pencil">{description}</p>
+      {children && <div className="mt-6 flex flex-wrap items-center gap-2">{children}</div>}
     </div>
   );
 }
@@ -97,18 +96,18 @@ export function PrevNext() {
   const prev = flatDocs[i - 1];
   const next = flatDocs[i + 1];
   return (
-    <div className="mt-16 flex items-center justify-between gap-4 border-t border-outline-variant pt-6">
+    <div className="not-prose mt-16 flex items-center justify-between gap-4 border-t border-hairline pt-8">
       {prev ? (
-        <Button variant="tonal" render={<Link href={prev.href} />}>
+        <Link href={prev.href} className={btn({ variant: "ghost" })}>
           <ChevronLeftIcon /> {prev.title}
-        </Button>
+        </Link>
       ) : (
         <span />
       )}
       {next && (
-        <Button variant="tonal" render={<Link href={next.href} />}>
+        <Link href={next.href} className={btn({ variant: "ghost" })}>
           {next.title} <ChevronRightIcon />
-        </Button>
+        </Link>
       )}
     </div>
   );
@@ -130,16 +129,16 @@ export function Toc({ items }: { items: { id: string; title: string }[] }) {
   }, [items]);
   if (!items.length) return null;
   return (
-    <nav aria-label="On this page" className="sticky top-24 hidden w-48 shrink-0 self-start xl:block">
-      <div className="mb-3 text-xs font-medium text-muted-foreground">On this page</div>
-      <ul className="flex flex-col gap-2 border-l border-outline-variant">
+    <nav aria-label="On this page" className="sticky top-28 hidden w-48 shrink-0 self-start xl:block">
+      <div className="mb-3 font-code text-[11px] leading-[1.7] tracking-[0.06em] text-faint uppercase">On this page</div>
+      <ul className="flex flex-col gap-2 border-l border-hairline">
         {items.map((item) => (
           <li key={item.id}>
             <a
               href={`#${item.id}`}
               className={cn(
-                "-ml-px block border-l border-transparent pl-3 text-[13px] text-muted-foreground transition-colors hover:text-foreground",
-                active === item.id && "border-foreground text-foreground",
+                "-ml-px block border-l border-transparent pl-3 text-sm text-faint transition-colors hover:text-ink",
+                active === item.id && "border-ink text-ink",
               )}
             >
               {item.title}

@@ -2,11 +2,8 @@ import * as React from "react";
 import { ExternalLinkIcon, FileCodeIcon, MonitorIcon, RotateCcwIcon, SmartphoneIcon, TabletIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { btn, Eyebrow, iconBtn, SegmentedPill, Serif, Tag, type Segment } from "@/site/ui";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { blocks, type BlockCategory, type BlockItem } from "@/docs/catalog";
 import { CodeBlock, CommandBlock } from "@/docs/code-block";
@@ -20,6 +17,16 @@ const viewports = {
   mobile: { width: "390px", icon: SmartphoneIcon, label: "Mobile" },
 } as const;
 type Viewport = keyof typeof viewports;
+
+const VIEWS: Segment<"preview" | "code">[] = [
+  { value: "preview", label: "Preview" },
+  { value: "code", label: "Code" },
+];
+const VIEWPORTS: Segment<Viewport>[] = (Object.keys(viewports) as Viewport[]).map((k) => ({
+  value: k,
+  icon: viewports[k].icon,
+  label: <span className="sr-only">{viewports[k].label}</span>,
+}));
 
 function useBlockFiles(slug: string, enabled: boolean) {
   const [files, setFiles] = React.useState<{ path: string; code: string }[] | null>(null);
@@ -39,7 +46,7 @@ function BlockCode({ slug }: { slug: string }) {
   const [active, setActive] = React.useState(0);
   if (!files)
     return (
-      <div className="flex h-80 items-center justify-center rounded-xl border border-outline-variant text-muted-foreground">
+      <div className="flex h-80 items-center justify-center rounded-3xl border border-hairline text-faint">
         <Spinner />
       </div>
     );
@@ -55,8 +62,8 @@ function BlockCode({ slug }: { slug: string }) {
               onClick={() => setActive(i)}
               aria-current={i === active ? "true" : undefined}
               className={cn(
-                "focus-ring state-layer flex h-8 shrink-0 items-center gap-2 rounded-full px-3 text-left font-mono text-xs text-muted-foreground",
-                i === active && "bg-container-high text-foreground",
+                "site-focus flex h-8 shrink-0 items-center gap-2 rounded-xl px-3 text-left font-code text-xs tracking-[-0.025em] text-pencil transition-colors hover:text-ink",
+                i === active && "bg-tile text-ink",
               )}
             >
               <FileCodeIcon className="size-3.5 shrink-0" />
@@ -72,50 +79,38 @@ function BlockCode({ slug }: { slug: string }) {
 
 function BlockSection({ block }: { block: BlockItem }) {
   const [viewport, setViewport] = React.useState<Viewport>("desktop");
+  const [view, setView] = React.useState<"preview" | "code">("preview");
   const [reload, setReload] = React.useState(0);
   const [loaded, setLoaded] = React.useState(false);
   const src = `/blocks/view/${block.slug}`;
 
   return (
-    <section id={block.slug} className="scroll-mt-20">
-      <Tabs defaultValue="preview" className="gap-4">
+    <section id={block.slug} className="scroll-mt-24">
+      <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <a href={`#${block.slug}`} className="text-lg font-medium tracking-tight hover:underline">
+              <a href={`#${block.slug}`} className="site-focus rounded-md text-2xl leading-[1.17] font-semibold tracking-[-0.025em] text-ink hover:underline">
                 {block.title}
               </a>
-              <Badge variant="outline" className="font-mono">
-                {block.slug}
-              </Badge>
+              <Tag>{block.slug}</Tag>
             </div>
-            <p className="mt-1 text-sm text-muted-foreground">{block.description}</p>
+            <p className="mt-2 text-sm leading-[1.43] text-pencil">{block.description}</p>
           </div>
           <div className="flex items-center gap-2">
-            <TabsList>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
-              <TabsTrigger value="code">Code</TabsTrigger>
-            </TabsList>
-            <ToggleGroup
+            <SegmentedPill id={`${block.slug}-view`} label="Preview or code" size="sm" items={VIEWS} value={view} onValueChange={setView} />
+            <SegmentedPill
+              id={`${block.slug}-viewport`}
+              label="Viewport"
+              tone="quiet"
               size="sm"
-              variant="outline"
-              className="hidden lg:flex"
-              value={[viewport]}
-              onValueChange={(v) => v[0] && setViewport(v[0] as Viewport)}
-            >
-              {(Object.keys(viewports) as Viewport[]).map((k) => {
-                const V = viewports[k];
-                return (
-                  <ToggleGroupItem key={k} value={k} aria-label={V.label}>
-                    <V.icon />
-                  </ToggleGroupItem>
-                );
-              })}
-            </ToggleGroup>
+              className="hidden lg:inline-flex"
+              items={VIEWPORTS}
+              value={viewport}
+              onValueChange={setViewport}
+            />
             <Tooltip>
-              <TooltipTrigger
-                render={<Button variant="ghost" size="icon-sm" aria-label="Reload preview" onClick={() => setReload((r) => r + 1)} />}
-              >
+              <TooltipTrigger render={<button type="button" className={iconBtn()} aria-label="Reload preview" onClick={() => setReload((r) => r + 1)} />}>
                 <RotateCcwIcon />
               </TooltipTrigger>
               <TooltipContent>Reload</TooltipContent>
@@ -123,7 +118,7 @@ function BlockSection({ block }: { block: BlockItem }) {
             <Tooltip>
               <TooltipTrigger
                 // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-                render={<Button variant="ghost" size="icon-sm" aria-label="Open in new tab" render={<a href={src} target="_blank" rel="noreferrer" />} />}
+                render={<a href={src} target="_blank" rel="noreferrer" className={iconBtn()} aria-label="Open in new tab" />}
               >
                 <ExternalLinkIcon />
               </TooltipTrigger>
@@ -132,10 +127,13 @@ function BlockSection({ block }: { block: BlockItem }) {
           </div>
         </div>
 
-        <TabsContent value="preview">
-          <div className="relative overflow-hidden rounded-2xl border border-outline-variant bg-container p-0 lg:p-3">
+        {view === "preview" ? (
+          <div className={cn("relative overflow-hidden rounded-3xl", viewport === "desktop" ? "border border-hairline" : "bg-tile lg:p-3")}>
             <div
-              className="relative mx-auto overflow-hidden rounded-xl bg-background shadow-[var(--shadow-float)] transition-[width] duration-500 ease-(--ease-dx) lg:border lg:border-outline-variant"
+              className={cn(
+                "dx-scope relative mx-auto overflow-hidden bg-background transition-[width] duration-500 ease-(--ease-dx)",
+                viewport !== "desktop" && "lg:rounded-[18px]",
+              )}
               style={{ width: viewports[viewport].width, maxWidth: "100%", height: block.height }}
             >
               {!loaded && (
@@ -153,12 +151,13 @@ function BlockSection({ block }: { block: BlockItem }) {
               />
             </div>
           </div>
-        </TabsContent>
-        <TabsContent value="code" className="flex flex-col gap-3">
-          <CommandBlock command={`npx shadcn@latest add @dx/${block.slug}`} />
-          <BlockCode slug={block.slug} />
-        </TabsContent>
-      </Tabs>
+        ) : (
+          <div className="flex flex-col gap-3">
+            <CommandBlock command={`npx shadcn@latest add @dx/${block.slug}`} />
+            <BlockCode slug={block.slug} />
+          </div>
+        )}
+      </div>
     </section>
   );
 }
@@ -171,42 +170,43 @@ const byCategory = (id: BlockCategory) => blocks.filter((b) => (b.category ?? "a
 
 export default function BlocksPage() {
   React.useEffect(() => {
-    document.title = "BlocksDX UI";
+    document.title = "Blocks — DX UI";
   }, []);
 
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="site flex min-h-svh flex-col">
       <SiteHeader />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-24 md:px-6">
-        <header className="flex flex-col gap-4 py-14 md:py-20">
-          <Badge variant="tonal" className="w-fit">
-            {blocks.length} blocks
-          </Badge>
-          <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">Building blocks for the real thing.</h1>
-          <p className="max-w-2xl text-lg text-pretty text-muted-foreground">
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-24 md:px-6 md:pb-32">
+        <header className="flex flex-col py-16 md:py-24">
+          <Eyebrow>{blocks.length} blocks</Eyebrow>
+          <h1 className="mt-4 max-w-4xl text-[clamp(2.5rem,8vw,4.5rem)] leading-none font-bold tracking-[-0.045em] text-balance text-ink">
+            Building blocks for the <Serif>real thing.</Serif>
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg leading-[1.33] tracking-[-0.025em] text-pretty text-pencil">
             Dashboards, auth flows and settings screens composed from DX UI. Preview them at any viewport, then add them to your app with one
             command.
           </p>
-          {SECTIONS.map((sec) => (
-            <nav key={sec.id} aria-label={`${sec.label} blocks`} className="mt-2 flex flex-col gap-2">
-              <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{sec.label}</span>
-              <div className="flex flex-wrap gap-2">
-                {byCategory(sec.id).map((b) => (
-                  // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-                  <Button key={b.slug} variant="outline" size="sm" render={<a href={`#${b.slug}`} />}>
-                    {b.title}
-                  </Button>
-                ))}
-              </div>
-            </nav>
-          ))}
+          <div className="mt-12 grid gap-8">
+            {SECTIONS.map((sec) => (
+              <nav key={sec.id} aria-label={`${sec.label} blocks`} className="flex flex-col gap-3">
+                <Eyebrow className="text-faint">{sec.label}</Eyebrow>
+                <div className="flex flex-wrap gap-2">
+                  {byCategory(sec.id).map((b) => (
+                    <a key={b.slug} href={`#${b.slug}`} className={btn({ variant: "ghost", size: "sm" })}>
+                      {b.title}
+                    </a>
+                  ))}
+                </div>
+              </nav>
+            ))}
+          </div>
         </header>
-        <div className="flex flex-col gap-24">
+        <div className="flex flex-col gap-24 md:gap-32">
           {SECTIONS.map((sec) => (
-            <div key={sec.id} id={sec.id} className="flex scroll-mt-20 flex-col gap-20">
-              <div className="flex items-baseline justify-between gap-4 border-b border-outline-variant pb-4">
-                <h2 className="text-2xl font-medium tracking-[-0.02em]">{sec.label}</h2>
-                <span className="text-sm text-muted-foreground">{byCategory(sec.id).length} blocks</span>
+            <div key={sec.id} id={sec.id} className="flex scroll-mt-24 flex-col gap-16 md:gap-24">
+              <div className="flex items-baseline justify-between gap-4 border-b border-hairline pb-6">
+                <h2 className="text-[clamp(2rem,6vw,3rem)] leading-[1.13] font-bold tracking-[-0.025em] text-ink">{sec.label}</h2>
+                <span className="font-code text-xs tracking-[-0.025em] text-faint">{byCategory(sec.id).length} blocks</span>
               </div>
               {byCategory(sec.id).map((b) => (
                 <BlockSection key={b.slug} block={b} />

@@ -1,11 +1,18 @@
 import * as React from "react";
 import { Link } from "wouter";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SegmentedPill, type Segment } from "@/site/ui";
 import { CodeBlock } from "./code-block";
 import { catalogBySlug, type CatalogItem } from "./catalog";
 import type { ItemFile } from "./item-files";
 import { loadComponentSource, loadItemGraph, parseDependencies } from "./sources";
+
+type Method = "cli" | "shadcn" | "manual";
+const METHODS: Segment<Method>[] = [
+  { value: "cli", label: "dx-ui CLI" },
+  { value: "shadcn", label: "shadcn CLI" },
+  { value: "manual", label: "Manual" },
+];
 
 type Loaded = { files: ItemFile[]; requires: string[] };
 
@@ -27,26 +34,25 @@ export function InstallBlock({ item }: { item: CatalogItem }) {
       live = false;
     };
   }, [group, slug, src]);
+  const [method, setMethod] = React.useState<Method>("cli");
+  const uid = React.useId();
   const deps = [...new Set(loaded.files.flatMap((f) => parseDependencies(f.content)))].sort();
 
   return (
-    <Tabs defaultValue="cli">
-      <TabsList variant="line">
-        <TabsTrigger value="cli">dx-ui CLI</TabsTrigger>
-        <TabsTrigger value="shadcn">shadcn CLI</TabsTrigger>
-        <TabsTrigger value="manual">Manual</TabsTrigger>
-      </TabsList>
-      <TabsContent value="cli" className="pt-2">
-        <CodeBlock code={`npx @sidioralabs/designx-ui@latest add ${slug}`} lang="bash" />
-      </TabsContent>
-      <TabsContent value="shadcn" className="pt-2">
+    <div className="not-prose flex flex-col gap-3">
+      <SegmentedPill id={uid} label="Install method" tone="quiet" size="sm" items={METHODS} value={method} onValueChange={setMethod} className="self-start" />
+      {method === "cli" && <CodeBlock code={`npx @sidioralabs/designx-ui@latest add ${slug}`} lang="bash" />}
+      {method === "shadcn" && (
+      <div>
         <CodeBlock code={`npx shadcn@latest add @dx/${slug}`} lang="bash" />
-        <p className="mt-3 text-[13px] text-muted-foreground">
-          Requires the <code className="rounded-xs bg-container-high px-1 font-mono text-[12px]">@dx</code> registry in your components.jsonsee{" "}
-          <Link href="/docs/cli" className="text-foreground underline underline-offset-4">CLI</Link>.
+        <p className="mt-3 text-sm text-pencil">
+          Requires the <code className="rounded-md bg-tile px-1.5 py-0.5 font-code text-[12px] text-ink">@dx</code> registry in your components.jsonsee{" "}
+          <Link href="/docs/cli" className="text-ink underline decoration-divider underline-offset-4 hover:decoration-ink">CLI</Link>.
         </p>
-      </TabsContent>
-      <TabsContent value="manual" className="flex flex-col gap-5 pt-2">
+      </div>
+      )}
+      {method === "manual" && (
+      <div className="flex flex-col gap-6 pt-1">
         {deps.length > 0 && (
           <div>
             <Step n={1}>Install the dependencies.</Step>
@@ -58,12 +64,12 @@ export function InstallBlock({ item }: { item: CatalogItem }) {
             Copy and paste the following {loaded.files.length > 1 ? `${loaded.files.length} files` : "code"} into your project.
           </Step>
           {loaded.requires.length > 0 && (
-            <p className="mb-3 text-[13px] text-muted-foreground">
+            <p className="mb-3 text-sm text-pencil">
               Also requires{" "}
               {loaded.requires.map((d, i) => (
                 <React.Fragment key={d}>
                   {i > 0 && ", "}
-                  <Link href={`/docs/components/${d}`} className="text-foreground underline underline-offset-4">
+                  <Link href={`/docs/components/${d}`} className="text-ink underline decoration-divider underline-offset-4 hover:decoration-ink">
                     {catalogBySlug[d].title}
                   </Link>
                 </React.Fragment>
@@ -81,15 +87,16 @@ export function InstallBlock({ item }: { item: CatalogItem }) {
         <div>
           <Step n={deps.length > 0 ? 3 : 2}>Update the import paths to match your project setup.</Step>
         </div>
-      </TabsContent>
-    </Tabs>
+      </div>
+      )}
+    </div>
   );
 }
 
 function Step({ n, children }: { n: number; children: React.ReactNode }) {
   return (
-    <div className="mb-3 flex items-center gap-3 text-[14px] font-medium">
-      <span className="flex size-6 items-center justify-center rounded-full bg-container-high font-mono text-xs">{n}</span>
+    <div className="mb-3 flex items-center gap-3 text-sm font-semibold text-ink">
+      <span className="flex size-6 items-center justify-center rounded-full bg-tile font-code text-[11px] font-normal">{n}</span>
       {children}
     </div>
   );

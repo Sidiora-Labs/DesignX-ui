@@ -18,8 +18,6 @@ import {
   SunIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Kbd, KbdGroup } from "@/components/ui/kbd";
 import {
   CommandDialog,
   CommandEmpty,
@@ -137,16 +135,13 @@ function isTyping(e: KeyboardEvent) {
 export function SearchButton() {
   const { open } = useSearch();
   return (
-    <Button
-      variant="tonal"
+    <button
+      type="button"
       onClick={open}
-      className="h-9 w-full justify-start gap-2 rounded-full px-3.5 font-normal text-muted-foreground sm:w-56 lg:w-64"
+      className="site-focus flex h-9 w-full items-center gap-2 rounded-2xl border border-hairline px-3.5 font-ui text-sm font-medium text-faint transition-colors hover:border-divider hover:text-pencil sm:w-56"
     >
       <span className="flex-1 text-left">Search docs…</span>
-      <KbdGroup className="hidden sm:inline-flex">
-        <Kbd className="bg-background">⌘</Kbd>
-        <Kbd className="bg-background">K</Kbd>
-      </KbdGroup>
-    </Button>
+      <kbd className="hidden font-code text-[10px] leading-[1.7] tracking-[-0.006em] text-faint sm:inline">⌘K</kbd>
+    </button>
   );
 }

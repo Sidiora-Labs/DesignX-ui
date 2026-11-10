@@ -22,7 +22,7 @@ export function CopyButton({ value, className, label = "Copy" }: { value: string
             variant="ghost"
             size="icon-sm"
             aria-label={label}
-            className={cn("text-muted-foreground hover:text-foreground", className)}
+            className={cn("rounded-xl text-pencil hover:text-ink", className)}
             onClick={() => {
               void navigator.clipboard?.writeText(value);
               setCopied(true);

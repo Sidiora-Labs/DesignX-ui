@@ -44,7 +44,7 @@ export function PreviewFit({ children, hover, maxScale = 0.82 }: { children: Rea
   return (
     <div
       ref={outerRef}
-      className="relative m-2 mb-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-[22px] bg-background contain-[paint]"
+      className="dx-scope relative m-2 mb-0 flex min-h-0 flex-1 items-center justify-center overflow-hidden rounded-[18px] bg-background contain-[paint]"
     >
       <div
         ref={stageRef}

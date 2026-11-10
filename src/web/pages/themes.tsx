@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { btn, Eyebrow, SegmentedPill, Serif, type Segment } from "@/site/ui";
 import { CodeBlock, CommandBlock } from "@/docs/code-block";
 import { CopyButton } from "@/docs/copy-button";
 import { SiteFooter } from "@/docs/site-footer";
@@ -25,6 +25,24 @@ const presets: Preset[] = [
 ];
 
 const scopeClass = (p: Pick<Preset, "mode" | "accent">) => cn(p.mode, p.accent === "dx-gradient" && "accent-dx-gradient");
+
+const MODES: Segment<"light" | "dark">[] = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+];
+const ACCENTS: Segment<"ink" | "dx-gradient">[] = [
+  { value: "ink", label: "Ink" },
+  { value: "dx-gradient", label: "DX Gradient" },
+];
+
+function Heading({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="min-w-0">
+      <h2 className="text-[clamp(2rem,6vw,3rem)] leading-[1.13] font-bold tracking-[-0.025em] text-ink">{title}</h2>
+      <p className="mt-4 max-w-xl text-lg leading-[1.33] tracking-[-0.025em] text-pencil">{children}</p>
+    </div>
+  );
+}
 
 function MiniUI() {
   return (
@@ -70,17 +88,18 @@ function PresetCard({ preset }: { preset: Preset }) {
   const active = resolvedTheme === preset.mode && accent === preset.accent;
   return (
     <div className="flex flex-col gap-3">
-      <div className={cn(scopeClass(preset), "rounded-2xl border border-border bg-background p-4 text-foreground")}>
+      <div className={cn(scopeClass(preset), "dx-scope rounded-3xl border border-hairline bg-background p-4")}>
         <MiniUI />
       </div>
       <div className="flex items-start justify-between gap-3 px-1">
         <div>
-          <div className="text-sm font-medium">{preset.title}</div>
-          <div className="text-xs text-muted-foreground">{preset.note}</div>
+          <div className="text-sm font-semibold text-ink">{preset.title}</div>
+          <div className="mt-0.5 text-sm text-pencil">{preset.note}</div>
         </div>
-        <Button
-          size="xs"
-          variant={active ? "tonal" : "outline"}
+        <button
+          type="button"
+          aria-pressed={active}
+          className={btn({ variant: active ? "filled" : "ghost", size: "sm" })}
           onClick={() => {
             setTheme(preset.mode);
             setAccent(preset.accent);
@@ -88,7 +107,7 @@ function PresetCard({ preset }: { preset: Preset }) {
         >
           {active ? <CheckIcon /> : null}
           {active ? "Applied" : "Apply"}
-        </Button>
+        </button>
       </div>
     </div>
   );
@@ -123,28 +142,15 @@ function TokenExplorer() {
   }, [mode, accent]);
 
   return (
-    <section id="tokens" className="scroll-mt-20">
-      <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-medium tracking-tight">Tokens</h2>
-          <p className="mt-1 text-sm text-muted-foreground">Every color variable, resolved for the selected scheme. Click a value to copy it.</p>
-        </div>
+    <section id="tokens" className="scroll-mt-24">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <Heading title="Tokens">Every color variable, resolved for the selected scheme. Hover a row to copy it.</Heading>
         <div className="flex flex-wrap gap-2">
-          <Tabs value={mode} onValueChange={(v) => setMode(v as "light" | "dark")}>
-            <TabsList>
-              <TabsTrigger value="light">Light</TabsTrigger>
-              <TabsTrigger value="dark">Dark</TabsTrigger>
-            </TabsList>
-          </Tabs>
-          <Tabs value={accent} onValueChange={(v) => setAccent(v as "ink" | "dx-gradient")}>
-            <TabsList>
-              <TabsTrigger value="ink">Ink</TabsTrigger>
-              <TabsTrigger value="dx-gradient">DX Gradient</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <SegmentedPill id="tokens-mode" label="Scheme" size="sm" items={MODES} value={mode} onValueChange={setMode} />
+          <SegmentedPill id="tokens-accent" label="Accent" tone="quiet" size="sm" items={ACCENTS} value={accent} onValueChange={setAccent} />
         </div>
       </div>
-      <div ref={ref} className={cn(scopeClass({ mode, accent }), "rounded-2xl border border-border bg-background p-4 text-foreground md:p-6")}>
+      <div ref={ref} className={cn(scopeClass({ mode, accent }), "dx-scope rounded-3xl border border-hairline bg-background p-4 md:p-6")}>
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
           {tokenGroups.map((g) => (
             <div key={g.title}>
@@ -184,21 +190,20 @@ const radii = [
 
 function RadiusScale() {
   return (
-    <section id="radius" className="scroll-mt-20">
-      <h2 className="text-2xl font-medium tracking-tight">Shape</h2>
-      <p className="mt-1 mb-6 text-sm text-muted-foreground">
-        Controls are pills, fields are 12px, cards are 24px, dialogs are 28px. Larger surface, softer corner.
-      </p>
+    <section id="radius" className="scroll-mt-24">
+      <div className="mb-8">
+        <Heading title="Shape">Controls are pills, fields are 12px, cards are 24px, dialogs are 28px. Larger surface, softer corner.</Heading>
+      </div>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
         {radii.map(([name, px]) => (
           <div key={name} className="flex flex-col gap-2">
             <div
-              className="aspect-square border border-border bg-container-high"
+              className="aspect-square bg-tile"
               style={{ borderRadius: name === "full" ? 9999 : `var(--radius-${name})` }}
             />
-            <div className="flex justify-between font-mono text-xs">
+            <div className="flex justify-between font-code text-xs tracking-[-0.025em] text-ink">
               <span>rounded-{name}</span>
-              <span className="text-muted-foreground">{px}</span>
+              <span className="text-faint">{px}</span>
             </div>
           </div>
         ))}
@@ -213,14 +218,11 @@ function ThemeSource() {
     void import("../dx-theme.css?raw").then((m) => setCss(m.default));
   }, []);
   return (
-    <section id="source" className="scroll-mt-20">
+    <section id="source" className="scroll-mt-24">
       <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 className="text-2xl font-medium tracking-tight">Use it</h2>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Install the theme item, or paste the file after <code className="font-mono text-foreground">@import "tailwindcss";</code>
-          </p>
-        </div>
+        <Heading title="Use it">
+          Install the theme item, or paste the file after <code className="font-code text-[0.9em] text-ink">@import "tailwindcss";</code>
+        </Heading>
         {css && <CopyButton value={css} label="Copy CSS" />}
       </div>
       <div className="flex flex-col gap-3">
@@ -228,7 +230,7 @@ function ThemeSource() {
         {css ? (
           <CodeBlock code={css} lang="css" title="dx-theme.css" collapsible maxHeight={420} />
         ) : (
-          <div className="h-40 animate-pulse rounded-lg bg-container" />
+          <div className="h-40 animate-pulse rounded-2xl bg-tile" />
         )}
       </div>
     </section>
@@ -237,24 +239,25 @@ function ThemeSource() {
 
 export default function ThemesPage() {
   React.useEffect(() => {
-    document.title = "ThemesDX UI";
+    document.title = "Themes — DX UI";
   }, []);
 
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="site flex min-h-svh flex-col">
       <SiteHeader />
-      <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-20 px-4 pb-24 md:px-6">
-        <header className="flex flex-col gap-4 pt-14 md:pt-20">
-          <Badge variant="tonal" className="w-fit">
-            Themes
-          </Badge>
-          <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">One token file. Two schemes. One accent.</h1>
-          <p className="max-w-2xl text-lg text-pretty text-muted-foreground">
-            DX UI is themed entirely with CSS variables. Scope a scheme to any element with <code className="font-mono">.light</code>,{" "}
-            <code className="font-mono">.dark</code> or <code className="font-mono">.accent-dx-gradient</code>like the previews below.
+      <main className="mx-auto flex w-full max-w-[1200px] flex-1 flex-col gap-16 px-4 pb-24 md:gap-24 md:px-6 md:pb-32">
+        <header className="flex flex-col pt-16 md:pt-24">
+          <Eyebrow>Themes</Eyebrow>
+          <h1 className="mt-4 max-w-4xl text-[clamp(2.5rem,8vw,4.5rem)] leading-none font-bold tracking-[-0.045em] text-balance text-ink">
+            One token file. Two schemes. <Serif>One accent.</Serif>
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg leading-[1.33] tracking-[-0.025em] text-pretty text-pencil">
+            DX UI is themed entirely with CSS variables. Scope a scheme to any element with <code className="font-code text-[0.9em] text-ink">.light</code>,{" "}
+            <code className="font-code text-[0.9em] text-ink">.dark</code> or <code className="font-code text-[0.9em] text-ink">.accent-dx-gradient</code> — like the
+            previews below.
           </p>
         </header>
-        <section className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {presets.map((p) => (
             <PresetCard key={p.id} preset={p} />
           ))}

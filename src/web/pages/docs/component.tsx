@@ -2,7 +2,6 @@ import * as React from "react";
 import { useParams } from "wouter";
 import { ArrowUpRightIcon } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { catalogBySlug, groupLabels } from "@/docs/catalog";
 import { apiDocs } from "@/docs/api";
 import { CodeBlock } from "@/docs/code-block";
@@ -12,6 +11,9 @@ import { InstallBlock } from "@/docs/install-block";
 import { PropsTable } from "@/docs/props-table";
 import { exampleNames, hasDemo } from "@/docs/sources";
 import NotFound from "../not-found";
+
+const tagLink =
+  "site-focus inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline px-3 text-[13px] text-pencil transition-colors hover:border-divider hover:text-ink [&_svg]:size-3.5";
 
 const titleCase = (s: string) => s.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
@@ -39,22 +41,19 @@ export default function ComponentDocPage() {
       <article className="docs-prose min-w-0 flex-1">
         <DocsHeader title={item.title} description={item.description} isNew={item.isNew} eyebrow={groupLabels[item.group]}>
           {item.base && (
-            // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-            <Badge variant="tonal" render={<a href={`https://base-ui.com/react/components/${item.base}`} target="_blank" rel="noreferrer" />}>
+            <a href={`https://base-ui.com/react/components/${item.base}`} target="_blank" rel="noreferrer" className={tagLink}>
               Base UI <ArrowUpRightIcon />
-            </Badge>
+            </a>
           )}
           {item.lib && (
-            // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-            <Badge variant="tonal" render={<a href={item.lib.href} target="_blank" rel="noreferrer" />}>
+            <a href={item.lib.href} target="_blank" rel="noreferrer" className={tagLink}>
               {item.lib.name} <ArrowUpRightIcon />
-            </Badge>
+            </a>
           )}
           {(item.group === "dx" || item.group === "motion") && (
-            // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-            <Badge variant="tonal" render={<a href="https://motion.dev" target="_blank" rel="noreferrer" />}>
+            <a href="https://motion.dev" target="_blank" rel="noreferrer" className={tagLink}>
               Motion <ArrowUpRightIcon />
-            </Badge>
+            </a>
           )}
         </DocsHeader>
 
@@ -74,7 +73,7 @@ export default function ComponentDocPage() {
           <>
             <h2 id="examples">Examples</h2>
             {examples.map((name) => (
-              <section key={name} className="mb-10">
+              <section key={name} className="mb-12">
                 <h3 id={name}>{api?.exampleTitles?.[name.split(".")[1]] ?? titleCase(name.split(".")[1])}</h3>
                 <ComponentPreview name={name} minHeight={260} align={api?.align} />
               </section>

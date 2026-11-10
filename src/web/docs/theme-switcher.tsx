@@ -4,13 +4,14 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { useTheme } from "@/components/theme-provider";
+import { iconBtn } from "@/site/ui";
 
 export function ThemeToggle() {
   const { resolvedTheme, toggleTheme } = useTheme();
   const dark = resolvedTheme === "dark";
   return (
     <Tooltip>
-      <TooltipTrigger render={<Button variant="ghost" size="icon-sm" aria-label="Toggle dark mode" onClick={toggleTheme} />}>
+      <TooltipTrigger render={<button type="button" className={iconBtn()} aria-label="Toggle dark mode" onClick={toggleTheme} />}>
         {dark ? <SunIcon /> : <MoonIcon />}
       </TooltipTrigger>
       <TooltipContent>{dark ? "Light mode" : "Dark mode"}</TooltipContent>

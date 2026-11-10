@@ -58,9 +58,9 @@ export function KitCard({ slug, size = "s" }: { slug: string; size?: CardSize })
       <Link
         href={`/docs/components/${slug}`}
         aria-label={`View ${item.title}`}
-        className="focus-ring absolute inset-0 z-20 rounded-[28px]"
+        className="site-focus absolute inset-0 z-20 rounded-3xl"
       />
-      <div className="relative flex h-full flex-col overflow-hidden rounded-[28px] border border-outline-variant bg-container transition-colors duration-300 group-hover/card:border-border-strong">
+      <div className="relative flex h-full flex-col overflow-hidden rounded-3xl bg-tile">
         {seen ? (
           <PreviewFit hover={hover} maxScale={feature ? 1 : 0.8}>
             <Boundary>
@@ -68,14 +68,14 @@ export function KitCard({ slug, size = "s" }: { slug: string; size?: CardSize })
             </Boundary>
           </PreviewFit>
         ) : (
-          <div aria-hidden="true" className="m-2 mb-0 flex-1 rounded-[22px] bg-background" />
+          <div aria-hidden="true" className="m-2 mb-0 flex-1 rounded-[18px] bg-background" />
         )}
-        <div className="flex shrink-0 items-center justify-between gap-3 px-5 py-4">
+        <div className="flex shrink-0 items-center justify-between gap-3 px-6 py-4 font-ui">
           <div className="min-w-0">
-            <h3 className={cn("truncate font-medium tracking-[-0.01em]", feature ? "text-[17px]" : "text-[15px]")}>{item.title}</h3>
-            <p className="mt-0.5 line-clamp-1 text-[13px] text-muted-foreground">{item.description}</p>
+            <h3 className={cn("truncate font-semibold tracking-[-0.025em] text-ink", feature ? "text-lg" : "text-[15px]")}>{item.title}</h3>
+            <p className="mt-0.5 line-clamp-1 text-sm font-medium text-pencil">{item.description}</p>
           </div>
-          <ArrowUpRightIcon className="size-4 shrink-0 -translate-x-1 text-muted-foreground opacity-0 transition-[opacity,transform] duration-300 group-hover/card:translate-x-0 group-hover/card:opacity-100" />
+          <ArrowUpRightIcon className="size-4 shrink-0 -translate-x-1 text-ink opacity-0 transition-[opacity,transform] duration-300 group-hover/card:translate-x-0 group-hover/card:opacity-100" />
         </div>
       </div>
     </article>
