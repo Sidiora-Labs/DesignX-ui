@@ -1,219 +1,123 @@
 import * as React from "react";
-import { ExternalLinkIcon, FileCodeIcon, MonitorIcon, RotateCcwIcon, SmartphoneIcon, TabletIcon } from "lucide-react";
+import { useLocation, useSearchParams } from "wouter";
+import { SearchIcon, XIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { blocks, type BlockCategory, type BlockItem } from "@/docs/catalog";
-import { CodeBlock, CommandBlock } from "@/docs/code-block";
+import { blockBySlug, blockGroups, type BlockGroupId } from "@/docs/block-groups";
+import { blocks } from "@/docs/catalog";
 import { SiteFooter } from "@/docs/site-footer";
 import { SiteHeader } from "@/docs/site-header";
-import { loadBlockFiles } from "@/docs/sources";
-
-const viewports = {
-  desktop: { width: "100%", icon: MonitorIcon, label: "Desktop" },
-  tablet: { width: "768px", icon: TabletIcon, label: "Tablet" },
-  mobile: { width: "390px", icon: SmartphoneIcon, label: "Mobile" },
-} as const;
-type Viewport = keyof typeof viewports;
-
-function useBlockFiles(slug: string, enabled: boolean) {
-  const [files, setFiles] = React.useState<{ path: string; code: string }[] | null>(null);
-  React.useEffect(() => {
-    if (!enabled || files) return;
-    let alive = true;
-    void loadBlockFiles(slug).then((f) => alive && setFiles(f));
-    return () => {
-      alive = false;
-    };
-  }, [slug, enabled, files]);
-  return files;
-}
-
-function BlockCode({ slug }: { slug: string }) {
-  const files = useBlockFiles(slug, true);
-  const [active, setActive] = React.useState(0);
-  if (!files)
-    return (
-      <div className="flex h-80 items-center justify-center rounded-xl border border-outline-variant text-muted-foreground">
-        <Spinner />
-      </div>
-    );
-  const file = files[active] ?? files[0];
-  return (
-    <div className="flex flex-col gap-3 md:flex-row">
-      {files.length > 1 && (
-        <nav aria-label="Files" className="flex shrink-0 flex-row gap-1 scrollbar-none overflow-x-auto md:w-56 md:flex-col">
-          {files.map((f, i) => (
-            <button
-              key={f.path}
-              type="button"
-              onClick={() => setActive(i)}
-              aria-current={i === active ? "true" : undefined}
-              className={cn(
-                "focus-ring state-layer flex h-8 shrink-0 items-center gap-2 rounded-full px-3 text-left font-mono text-xs text-muted-foreground",
-                i === active && "bg-container-high text-foreground",
-              )}
-            >
-              <FileCodeIcon className="size-3.5 shrink-0" />
-              <span className="truncate">{f.path.split("/").slice(1).join("/")}</span>
-            </button>
-          ))}
-        </nav>
-      )}
-      <CodeBlock key={file.path} code={file.code} title={file.path} className="min-w-0 flex-1" collapsible maxHeight={560} />
-    </div>
-  );
-}
-
-function BlockSection({ block }: { block: BlockItem }) {
-  const [viewport, setViewport] = React.useState<Viewport>("desktop");
-  const [reload, setReload] = React.useState(0);
-  const [loaded, setLoaded] = React.useState(false);
-  const src = `/blocks/view/${block.slug}`;
-
-  return (
-    <section id={block.slug} className="scroll-mt-20">
-      <Tabs defaultValue="preview" className="gap-4">
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <div className="min-w-0">
-            <div className="flex items-center gap-2">
-              <a href={`#${block.slug}`} className="text-lg font-medium tracking-tight hover:underline">
-                {block.title}
-              </a>
-              <Badge variant="outline" className="font-mono">
-                {block.slug}
-              </Badge>
-            </div>
-            <p className="mt-1 text-sm text-muted-foreground">{block.description}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <TabsList>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
-              <TabsTrigger value="code">Code</TabsTrigger>
-            </TabsList>
-            <ToggleGroup
-              size="sm"
-              variant="outline"
-              className="hidden lg:flex"
-              value={[viewport]}
-              onValueChange={(v) => v[0] && setViewport(v[0] as Viewport)}
-            >
-              {(Object.keys(viewports) as Viewport[]).map((k) => {
-                const V = viewports[k];
-                return (
-                  <ToggleGroupItem key={k} value={k} aria-label={V.label}>
-                    <V.icon />
-                  </ToggleGroupItem>
-                );
-              })}
-            </ToggleGroup>
-            <Tooltip>
-              <TooltipTrigger
-                render={<Button variant="ghost" size="icon-sm" aria-label="Reload preview" onClick={() => setReload((r) => r + 1)} />}
-              >
-                <RotateCcwIcon />
-              </TooltipTrigger>
-              <TooltipContent>Reload</TooltipContent>
-            </Tooltip>
-            <Tooltip>
-              <TooltipTrigger
-                // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-                render={<Button variant="ghost" size="icon-sm" aria-label="Open in new tab" render={<a href={src} target="_blank" rel="noreferrer" />} />}
-              >
-                <ExternalLinkIcon />
-              </TooltipTrigger>
-              <TooltipContent>Open in new tab</TooltipContent>
-            </Tooltip>
-          </div>
-        </div>
-
-        <TabsContent value="preview">
-          <div className="relative overflow-hidden rounded-2xl border border-outline-variant bg-container p-0 lg:p-3">
-            <div
-              className="relative mx-auto overflow-hidden rounded-xl bg-background shadow-[var(--shadow-float)] transition-[width] duration-500 ease-(--ease-dx) lg:border lg:border-outline-variant"
-              style={{ width: viewports[viewport].width, maxWidth: "100%", height: block.height }}
-            >
-              {!loaded && (
-                <div className="absolute inset-0 flex items-center justify-center text-muted-foreground">
-                  <Spinner />
-                </div>
-              )}
-              <iframe
-                key={reload}
-                src={src}
-                title={`${block.title} preview`}
-                loading="lazy"
-                onLoad={() => setLoaded(true)}
-                className={cn("size-full bg-background transition-opacity duration-300", loaded ? "opacity-100" : "opacity-0")}
-              />
-            </div>
-          </div>
-        </TabsContent>
-        <TabsContent value="code" className="flex flex-col gap-3">
-          <CommandBlock command={`npx shadcn@latest add @dx/${block.slug}`} />
-          <BlockCode slug={block.slug} />
-        </TabsContent>
-      </Tabs>
-    </section>
-  );
-}
-
-const SECTIONS: { id: BlockCategory; label: string }[] = [
-  { id: "application", label: "Application" },
-  { id: "marketing", label: "Marketing" },
-];
-const byCategory = (id: BlockCategory) => blocks.filter((b) => (b.category ?? "application") === id);
+import { BlockCard } from "@/site/block-thumb";
+import { Chip, Eyebrow, Serif } from "@/site/ui";
 
 export default function BlocksPage() {
+  const [, navigate] = useLocation();
+  const [params, setParams] = useSearchParams();
+  const group = (params.get("category") ?? "all") as BlockGroupId | "all";
+  const query = params.get("q") ?? "";
+
   React.useEffect(() => {
-    document.title = "BlocksDX UI";
-  }, []);
+    document.title = "Blocks — DX UI";
+    // Old links pointed at /blocks#<slug>; send them to the block's own page.
+    const hash = window.location.hash.slice(1);
+    if (hash && blockBySlug[hash]) navigate(`/blocks/${hash}`, { replace: true });
+  }, [navigate]);
+
+  const set = (key: "category" | "q", value: string) =>
+    setParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        if (!value || value === "all") next.delete(key);
+        else next.set(key, value);
+        return next;
+      },
+      { replace: true },
+    );
+
+  const q = query.trim().toLowerCase();
+  const visible = blockGroups
+    .filter((g) => group === "all" || g.id === group)
+    .map((g) => ({
+      ...g,
+      items: q ? g.items.filter((b) => `${b.title} ${b.slug} ${b.description}`.toLowerCase().includes(q)) : g.items,
+    }))
+    .filter((g) => g.items.length > 0);
+  const count = visible.reduce((n, g) => n + g.items.length, 0);
 
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="site flex min-h-svh flex-col">
       <SiteHeader />
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-24 md:px-6">
-        <header className="flex flex-col gap-4 py-14 md:py-20">
-          <Badge variant="tonal" className="w-fit">
-            {blocks.length} blocks
-          </Badge>
-          <h1 className="max-w-3xl text-4xl font-medium tracking-[-0.03em] text-balance md:text-5xl">Building blocks for the real thing.</h1>
-          <p className="max-w-2xl text-lg text-pretty text-muted-foreground">
-            Dashboards, auth flows and settings screens composed from DX UI. Preview them at any viewport, then add them to your app with one
-            command.
+      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 pb-24 md:px-6 md:pb-32">
+        <header className="pt-16 pb-12 md:pt-24">
+          <Eyebrow>{blocks.length} blocks · copy, paste, own</Eyebrow>
+          <h1 className="mt-4 max-w-4xl text-[clamp(2.5rem,8vw,4.5rem)] leading-none font-bold tracking-[-0.045em] text-balance text-ink">
+            Building blocks for the <Serif>real thing.</Serif>
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg leading-[1.33] tracking-[-0.025em] text-pretty text-pencil">
+            Dashboards, auth flows and marketing sections composed from DX UI. Open one to preview it at any viewport, then add it to your app
+            with one command.
           </p>
-          {SECTIONS.map((sec) => (
-            <nav key={sec.id} aria-label={`${sec.label} blocks`} className="mt-2 flex flex-col gap-2">
-              <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">{sec.label}</span>
-              <div className="flex flex-wrap gap-2">
-                {byCategory(sec.id).map((b) => (
-                  // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-                  <Button key={b.slug} variant="outline" size="sm" render={<a href={`#${b.slug}`} />}>
-                    {b.title}
-                  </Button>
-                ))}
-              </div>
-            </nav>
-          ))}
         </header>
-        <div className="flex flex-col gap-24">
-          {SECTIONS.map((sec) => (
-            <div key={sec.id} id={sec.id} className="flex scroll-mt-20 flex-col gap-20">
-              <div className="flex items-baseline justify-between gap-4 border-b border-outline-variant pb-4">
-                <h2 className="text-2xl font-medium tracking-[-0.02em]">{sec.label}</h2>
-                <span className="text-sm text-muted-foreground">{byCategory(sec.id).length} blocks</span>
-              </div>
-              {byCategory(sec.id).map((b) => (
-                <BlockSection key={b.slug} block={b} />
-              ))}
-            </div>
-          ))}
+
+        <div className="sticky top-16 z-30 -mx-4 flex flex-col gap-3 bg-canvas/90 px-4 py-3 backdrop-blur-xl md:-mx-6 md:px-6 lg:flex-row lg:items-center lg:justify-between">
+          <div role="group" aria-label="Category" className="-mx-4 flex scrollbar-none gap-2 overflow-x-auto px-4 md:mx-0 md:px-0 lg:flex-wrap">
+            <Chip active={group === "all"} count={blocks.length} onClick={() => set("category", "all")}>
+              All
+            </Chip>
+            {blockGroups.map((g) => (
+              <Chip key={g.id} active={group === g.id} count={g.items.length} onClick={() => set("category", g.id)}>
+                {g.label}
+              </Chip>
+            ))}
+          </div>
+          <label className="relative block w-full shrink-0 lg:w-64">
+            <span className="sr-only">Search blocks</span>
+            <SearchIcon className="pointer-events-none absolute top-1/2 left-3.5 size-4 -translate-y-1/2 text-faint" />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => set("q", e.target.value)}
+              placeholder="Search blocks…"
+              className="site-focus h-9 w-full rounded-2xl border border-hairline bg-transparent pr-9 pl-10 text-sm font-medium text-ink placeholder:text-faint [&::-webkit-search-cancel-button]:hidden"
+            />
+            {query && (
+              <button type="button" aria-label="Clear search" onClick={() => set("q", "")} className="absolute top-1/2 right-2 grid size-6 -translate-y-1/2 place-items-center rounded-lg text-faint hover:text-ink">
+                <XIcon className="size-3.5" />
+              </button>
+            )}
+          </label>
         </div>
+
+        <p aria-live="polite" className="sr-only">
+          {count} blocks shown
+        </p>
+
+        {visible.length === 0 ? (
+          <div className="flex flex-col items-center py-32 text-center">
+            <p className="text-2xl font-semibold tracking-[-0.025em] text-ink">No blocks match “{query}”.</p>
+            <button type="button" onClick={() => setParams({}, { replace: true })} className="site-focus mt-4 rounded-md text-sm text-pencil underline decoration-divider underline-offset-4 hover:text-ink">
+              Clear filters
+            </button>
+          </div>
+        ) : (
+          <div className="mt-8 flex flex-col gap-16 md:gap-24">
+            {visible.map((g, gi) => (
+              <section key={g.id} aria-labelledby={`blocks-${g.id}`}>
+                <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">
+                  <h2 id={`blocks-${g.id}`} className="text-[28px] leading-[1.14] font-bold tracking-[-0.025em] text-ink">
+                    {g.label}
+                  </h2>
+                  <span className="font-code text-xs tracking-[-0.025em] text-faint tabular-nums">{g.items.length}</span>
+                </div>
+                <div className={cn("grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4")}>
+                  {g.items.map((b, i) => (
+                    <BlockCard key={b.slug} block={b} eager={gi === 0 && i < 4} />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </div>
+        )}
       </main>
       <SiteFooter />
     </div>

@@ -48,4 +48,9 @@ xs 4 · sm 8 · md 12 · lg 16 · xl 24 · 2xl 36 · full
 - Layout motion (tabs indicator, expanding tabs, number flow): Motion spring bounce 0.
 
 ## Docs site layout
-Sticky blurred header, left docs sidebar (240px), content max 760px, right "on this page" rail. Landing: oversized headline, live component showcase mosaic on container surfaces.
+The site chrome (landing, docs, blocks, themes) wears a separate monochrome skin — "graphite on vellum" — defined in `src/web/styles.css` and `src/web/site/ui.tsx`. It is not part of the registry; the component theme above is untouched and renders inside `.dx-scope` preview frames.
+
+- **Palette:** canvas `#fafafa`, tile `#ededed`, hairline `#e5e7eb`, divider `#dadada`, graphite `#242424` (filled actions), ink `#171717`, pencil `#5c5c5c`, faint `#a3a3a3`. No chromatic color in chrome. Dark mode inverts the same ladder.
+- **Type:** Inter 500/600/700 with tight negative tracking (-0.025em headings, -0.05em display); one Instrument Serif italic phrase per headline as punctuation; Fragment Mono for code and micro-labels.
+- **Shape:** 16px buttons, 24px frames/tiles, full pills only for segmented controls. No drop shadows — hairline borders or the tile step; the filled button and dark pill carry an inset bevel.
+- **Layout:** floating header with centered links and a filled "Get started"; landing is a centered hero stack (dark segmented pill, 96px Inter headline, subhead, filled + ghost actions) over a live showcase, a grayscale "built on" strip, then left-aligned section heading + full-width frame sections at 64–96px rhythm. Docs keep the 240px sidebar, content column and "on this page" rail.

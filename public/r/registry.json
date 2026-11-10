@@ -62,12 +62,12 @@
         "theme": {
           "font-sans": "\"Google Sans Flex\", \"Google Sans\", ui-sans-serif, system-ui, sans-serif",
           "font-mono": "\"Google Sans Code\", ui-monospace, SFMono-Regular, Menlo, monospace",
-          "radius-xs": "4px",
-          "radius-sm": "8px",
-          "radius-md": "12px",
-          "radius-lg": "16px",
-          "radius-xl": "24px",
-          "radius-2xl": "36px",
+          "radius-xs": "calc(var(--radius) / 3)",
+          "radius-sm": "calc(var(--radius) * 2 / 3)",
+          "radius-md": "var(--radius)",
+          "radius-lg": "calc(var(--radius) * 4 / 3)",
+          "radius-xl": "calc(var(--radius) * 2)",
+          "radius-2xl": "calc(var(--radius) * 3)",
           "ease-dx": "cubic-bezier(0.2, 0, 0, 1)",
           "ease-dx-out": "cubic-bezier(0.05, 0.7, 0.1, 1)",
           "color-background": "var(--background)",
@@ -119,6 +119,7 @@
           "color-sidebar-ring": "var(--sidebar-ring)"
         },
         "light": {
+          "radius": "12px",
           "background": "#ffffff",
           "foreground": "#121317",
           "container": "#f8f9fc",
@@ -13914,24 +13915,24 @@
           "target": "components/blocks/dashboard-01/section-cards.tsx"
         },
         {
-          "path": "blocks/dashboard-01/projects-table.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/dashboard-01/projects-table.tsx"
-        },
-        {
-          "path": "blocks/dashboard-01/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/dashboard-01/index.tsx"
-        },
-        {
           "path": "blocks/dashboard-01/app-sidebar.tsx",
           "type": "registry:block",
           "target": "components/blocks/dashboard-01/app-sidebar.tsx"
         },
         {
+          "path": "blocks/dashboard-01/projects-table.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-01/projects-table.tsx"
+        },
+        {
           "path": "blocks/dashboard-01/chart-area.tsx",
           "type": "registry:block",
           "target": "components/blocks/dashboard-01/chart-area.tsx"
+        },
+        {
+          "path": "blocks/dashboard-01/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/dashboard-01/index.tsx"
         }
       ],
       "categories": [
@@ -14092,14 +14093,14 @@
       ],
       "files": [
         {
-          "path": "blocks/trading-01/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/trading-01/index.tsx"
-        },
-        {
           "path": "blocks/trading-01/data.tsx",
           "type": "registry:block",
           "target": "components/blocks/trading-01/data.tsx"
+        },
+        {
+          "path": "blocks/trading-01/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/trading-01/index.tsx"
         }
       ],
       "categories": [
@@ -14140,14 +14141,14 @@
       ],
       "files": [
         {
-          "path": "blocks/settings-01/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/settings-01/index.tsx"
-        },
-        {
           "path": "blocks/settings-01/sections.tsx",
           "type": "registry:block",
           "target": "components/blocks/settings-01/sections.tsx"
+        },
+        {
+          "path": "blocks/settings-01/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/settings-01/index.tsx"
         }
       ],
       "categories": [
@@ -14173,14 +14174,14 @@
       ],
       "files": [
         {
-          "path": "blocks/header-1/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/header-1/index.tsx"
-        },
-        {
           "path": "blocks/header-1/hero-grid.module.css",
           "type": "registry:block",
           "target": "components/blocks/header-1/hero-grid.module.css"
+        },
+        {
+          "path": "blocks/header-1/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/header-1/index.tsx"
         },
         {
           "path": "blocks/shared/animated-group.tsx",
@@ -14310,14 +14311,14 @@
       ],
       "files": [
         {
-          "path": "blocks/header-4/index.tsx",
-          "type": "registry:block",
-          "target": "components/blocks/header-4/index.tsx"
-        },
-        {
           "path": "blocks/header-4/hero-grid.module.css",
           "type": "registry:block",
           "target": "components/blocks/header-4/hero-grid.module.css"
+        },
+        {
+          "path": "blocks/header-4/index.tsx",
+          "type": "registry:block",
+          "target": "components/blocks/header-4/index.tsx"
         },
         {
           "path": "blocks/shared/animated-group.tsx",

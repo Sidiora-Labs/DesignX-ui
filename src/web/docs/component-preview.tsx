@@ -2,9 +2,8 @@ import * as React from "react";
 import { RotateCcwIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Frame, iconBtn, SegmentedPill, type Segment } from "@/site/ui";
 import { CodeBlock } from "./code-block";
 import { loadDemo, loadDemoSource } from "./sources";
 
@@ -12,6 +11,11 @@ import { loadDemo, loadDemoSource } from "./sources";
 function tidy(source: string) {
   return source.replace(/export default function \w+/, "export function Example").trim();
 }
+
+const VIEWS: Segment<"preview" | "code">[] = [
+  { value: "preview", label: "Preview" },
+  { value: "code", label: "Code" },
+];
 
 function useDemo(name: string) {
   const [Comp, setComp] = React.useState<React.ComponentType | null>(null);
@@ -28,6 +32,25 @@ function useDemo(name: string) {
   return { Comp, code };
 }
 
+/** A throwing demo shows a retry state instead of taking the page down. */
+class PreviewBoundary extends React.Component<{ children: React.ReactNode; onRetry: () => void }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  render() {
+    if (!this.state.failed) return this.props.children;
+    return (
+      <div className="flex flex-col items-center gap-3 text-center text-sm text-muted-foreground">
+        This preview failed to render.
+        <button type="button" className="underline underline-offset-4 hover:text-foreground" onClick={this.props.onRetry}>
+          Try again
+        </button>
+      </div>
+    );
+  }
+}
+
 export function ComponentPreview({
   name,
   className,
@@ -41,35 +64,30 @@ export function ComponentPreview({
 }) {
   const { Comp, code } = useDemo(name);
   const [key, setKey] = React.useState(0);
+  const [view, setView] = React.useState<"preview" | "code">("preview");
+  const uid = React.useId();
 
   return (
-    <Tabs defaultValue="preview" className={cn("not-prose gap-3", className)}>
+    <div className={cn("not-prose flex flex-col gap-3", className)}>
       <div className="flex items-center justify-between">
-        <TabsList variant="line">
-          <TabsTrigger value="preview">Preview</TabsTrigger>
-          <TabsTrigger value="code">Code</TabsTrigger>
-        </TabsList>
-        <Button variant="ghost" size="icon-sm" aria-label="Replay" className="text-muted-foreground" onClick={() => setKey((k) => k + 1)}>
+        <SegmentedPill id={uid} label="Preview or code" size="sm" items={VIEWS} value={view} onValueChange={setView} controls={`${uid}-panel`} />
+        <button type="button" aria-label="Replay" className={iconBtn()} onClick={() => setKey((k) => k + 1)}>
           <RotateCcwIcon />
-        </Button>
+        </button>
       </div>
-      <TabsContent value="preview">
-        <div
-          className={cn(
-            "relative flex w-full overflow-hidden rounded-xl border border-outline-variant bg-background p-6 sm:p-10",
-            align === "center" ? "items-center justify-center" : "items-start justify-center",
-          )}
+      <div id={`${uid}-panel`} role="tabpanel">
+        {/* Kept mounted while the code is open so the demo keeps its state. */}
+        <Frame
+          hidden={view !== "preview"}
+          className={cn("relative flex w-full p-6 sm:p-10", view !== "preview" && "hidden", align === "center" ? "items-center justify-center" : "items-start justify-center")}
           style={{ minHeight }}
         >
-          <div className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)] opacity-70" />
           <div className="relative z-10 flex w-full justify-center" key={key}>
-            {Comp ? <Comp /> : <Spinner className="size-5 text-muted-foreground" />}
+            <PreviewBoundary onRetry={() => setKey((k) => k + 1)}>{Comp ? <Comp /> : <Spinner className="size-5 text-muted-foreground" />}</PreviewBoundary>
           </div>
-        </div>
-      </TabsContent>
-      <TabsContent value="code">
-        <CodeBlock code={code || "// loading…"} collapsible maxHeight={420} />
-      </TabsContent>
-    </Tabs>
+        </Frame>
+        {view === "code" && <CodeBlock code={code || "// loading…"} collapsible maxHeight={420} />}
+      </div>
+    </div>
   );
 }

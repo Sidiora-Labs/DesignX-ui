@@ -36,7 +36,7 @@ export default function GuidePage() {
   return (
     <div className="flex gap-12" key={guide}>
       <article className="docs-prose min-w-0 flex-1 max-w-3xl">
-        <DocsHeader title={page.title} description={page.description} eyebrow="Getting started" />
+        <DocsHeader title={page.title} description={page.description} crumbs={[{ title: "Docs", href: "/docs" }, { title: "Getting started" }, { title: page.title }]} />
         <div ref={ref}>
           <Body />
         </div>

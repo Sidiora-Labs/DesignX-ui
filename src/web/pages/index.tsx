@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Link } from "wouter";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import {
-  ArrowRightIcon,
   ArrowUpIcon,
   BellIcon,
   CalendarIcon,
@@ -34,19 +34,21 @@ import { CopyButton } from "@/docs/copy-button";
 import { SiteFooter } from "@/docs/site-footer";
 import { SiteHeader } from "@/docs/site-header";
 import { catalog } from "@/docs/catalog";
-import { KitsSection } from "@/landing/kits";
-import { BuildCta, Faq, GettingStarted } from "@/landing/sections";
+import { KitGrid, SHOWCASE_SEGMENTS, ShowcaseCaption, type ShowcaseId } from "@/landing/kits";
+import { BlocksShowcase, BuildCta, Faq, GettingStarted, LiveDemoLink, StackStrip } from "@/landing/sections";
+import { btn, SegmentedPill } from "@/site/ui";
+import { EASE_OUT } from "@/lib/ease";
 
 const INSTALL = "npx @sidioralabs/designx-ui@latest init";
 
 function PromptCard() {
-  const [thinking, setThinking] = React.useState(true);
+  const [thinking, setThinking] = React.useState(false);
   return (
-    <div className="relative rounded-[28px]">
+    <div className="relative rounded-[20px] bg-background">
       <GlowBorder active={thinking} />
-      <div className="relative grid gap-4 rounded-[28px] p-5">
+      <div className="relative grid gap-4 rounded-[20px] p-5">
         <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
-          <SparklesIcon className="size-4 text-[var(--dx-blue-3)]" />
+          <SparklesIcon className="size-4" />
           {thinking ? "Thinking…" : "Ready"}
         </div>
         <p className="text-[15px] leading-relaxed">Draft a launch plan for DX UI with milestones for docs, registry and the CLI.</p>
@@ -73,7 +75,7 @@ function PricingCard() {
   const [yearly, setYearly] = React.useState(true);
   const price = seats * (yearly ? 16 : 20);
   return (
-    <Card variant="tonal">
+    <Card className="rounded-[20px] border-0 shadow-none">
       <CardHeader>
         <CardTitle>Team plan</CardTitle>
         <CardDescription>Every digit animates into place.</CardDescription>
@@ -130,7 +132,7 @@ const morphTabs = [
     icon: MusicIcon,
     content: (
       <div className="flex items-center gap-3 p-2">
-        <div className="size-12 rounded-[14px] bg-gradient-to-br from-[var(--dx-blue-3)] to-[var(--dx-purple-3)]" />
+        <div className="grid size-12 place-items-center rounded-[14px] bg-container-higher"><MusicIcon className="size-4 text-muted-foreground" /></div>
         <div className="text-sm">
           <div className="font-medium">Midnight City</div>
           <div className="text-xs text-muted-foreground">M83</div>
@@ -142,8 +144,8 @@ const morphTabs = [
 
 function Tile({ className, children, label }: { className?: string; children: React.ReactNode; label?: string }) {
   return (
-    <div className={cn("relative flex flex-col rounded-[28px] border border-outline-variant bg-background p-5", className)}>
-      {label && <div className="mb-4 text-[11px] font-medium tracking-[0.12em] text-muted-foreground uppercase">{label}</div>}
+    <div className={cn("relative flex flex-col rounded-[20px] bg-background p-5", className)}>
+      {label && <div className="mb-4 font-code text-[11px] tracking-[0.06em] text-pencil uppercase">{label}</div>}
       {children}
     </div>
   );
@@ -153,8 +155,8 @@ function Showcase() {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
   const [code, setCode] = React.useState("2048");
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      <div className="grid gap-4">
+    <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3">
         <PromptCard />
         <PricingCard />
         <Tile label="Toggle group">
@@ -167,7 +169,7 @@ function Showcase() {
           </ToggleGroup>
         </Tile>
       </div>
-      <div className="grid gap-4">
+      <div className="grid gap-3">
         <Tile label="Morph panel" className="h-72 justify-between">
           <div className="flex flex-1 items-end justify-center">
             <MorphPanel tabs={morphTabs} />
@@ -177,14 +179,14 @@ function Showcase() {
           <Calendar mode="single" selected={date} onSelect={setDate} className="p-0" />
         </Tile>
       </div>
-      <div className="grid gap-4 md:col-span-2 lg:col-span-1">
+      <div className="grid gap-3 md:col-span-2 lg:col-span-1">
         <Tile label="Digit input" className="items-center">
           <DigitInput numeric maxLength={6} value={code} onValueChange={setCode} placeholder="000000" aria-label="Code" />
         </Tile>
-        <Card>
+        <Card className="rounded-[20px] border-0 shadow-none">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              Storage <Badge variant="warning">82%</Badge>
+              Storage <Badge variant="outline">82%</Badge>
             </CardTitle>
             <CardDescription>41 GB of 50 GB used</CardDescription>
           </CardHeader>
@@ -225,76 +227,80 @@ function Showcase() {
 
 export default function Index() {
   React.useEffect(() => {
-    document.title = "DX UIDesignX component system";
+    document.title = "DX UI — DesignX component system";
   }, []);
-  const kits = catalog.filter((c) => c.src).length;
+  const [view, setView] = React.useState<ShowcaseId>("components");
+  const reduce = useReducedMotion();
+  const total = catalog.length - (catalog.length % 10);
 
   return (
-    <div className="flex min-h-svh flex-col">
+    <div className="site flex min-h-svh flex-col">
       <SiteHeader />
       <main className="flex-1">
-        <section className="relative overflow-hidden">
-          <div className="bg-grid pointer-events-none absolute inset-0 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)] opacity-60" />
-          <div className="relative mx-auto max-w-[1200px] px-4 pt-20 pb-14 text-center md:px-6 md:pt-28">
-            <Link href="/docs/components/chat-app" className="animate-rise focus-ring mb-6 inline-flex max-w-full rounded-full sm:mb-7">
-              <Badge variant="tonal" className="h-auto min-h-7 max-w-full gap-2 px-3 py-1 text-left text-xs sm:text-sm">
-                <span className="size-1.5 shrink-0 rounded-full bg-[var(--dx-blue-3)]" />
-                <span className="min-w-0">{kits} new: Agents · Charts · Motion Kit</span>
-                <ArrowRightIcon className="size-3.5 shrink-0" />
-              </Badge>
+        <section className="mx-auto max-w-[1200px] px-4 pt-16 text-center md:px-6 md:pt-24">
+          <div className="animate-rise flex justify-center">
+            <SegmentedPill
+              id="hero"
+              label="Showcase"
+              items={SHOWCASE_SEGMENTS}
+              value={view}
+              onValueChange={setView}
+              controls="showcase"
+              className="max-sm:w-full max-sm:[&_svg]:hidden max-sm:justify-between max-sm:[&>button]:px-2.5 max-sm:[&>button]:text-[13px]"
+            />
+          </div>
+          <h1
+            className="animate-rise mx-auto mt-12 max-w-5xl text-[clamp(2.75rem,10vw,6rem)] leading-none font-bold tracking-[-0.05em] text-balance text-ink md:mt-16"
+            style={{ animationDelay: "60ms" }}
+          >
+            The component system for calm interfaces.
+          </h1>
+          <p
+            className="animate-rise mx-auto mt-8 max-w-xl text-lg leading-[1.33] tracking-[-0.025em] text-pretty text-pencil"
+            style={{ animationDelay: "120ms" }}
+          >
+            {total}+ accessible components on Base UI, Tailwind 4 and Motion. Copy them in, then make them yours.
+          </p>
+          <div className="animate-rise mt-8 flex flex-col items-stretch justify-center gap-2 sm:flex-row sm:items-center" style={{ animationDelay: "180ms" }}>
+            <Link href="/docs" className={btn({ size: "lg", className: "w-full sm:w-auto" })}>
+              Start building
             </Link>
-            <h1
-              className="animate-rise mx-auto max-w-4xl text-[clamp(2.25rem,9vw,5.5rem)] leading-[1.02] font-normal tracking-[-0.045em] sm:text-[clamp(2.75rem,7vw,5.5rem)]"
-              style={{ animationDelay: "60ms" }}
-            >
-              The component system
-              <br />
-              <span className="bg-gradient-to-r from-[var(--dx-blue-4)] via-[var(--dx-purple-3)] to-[var(--dx-pink-4)] bg-clip-text text-transparent">
-                for calm interfaces.
-              </span>
-            </h1>
-            <p className="animate-rise mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:mt-6 sm:text-lg" style={{ animationDelay: "120ms" }}>
-              {catalog.length - (catalog.length % 10)}+ accessible components on Base UI, Tailwind 4 and Motion. Copy them in, then make them yours.
-            </p>
-            <div className="animate-rise mt-7 flex flex-col items-stretch justify-center gap-3 sm:mt-9 sm:flex-row sm:items-center" style={{ animationDelay: "180ms" }}>
-              <Button size="lg" className="w-full sm:w-auto" render={<Link href="/docs" />}>
-                Get started <ArrowRightIcon />
-              </Button>
-              <Button size="lg" variant="tonal" className="w-full sm:w-auto" render={<Link href="/docs/components/button" />}>
-                Browse components
-              </Button>
-            </div>
-            <div
-              className="animate-rise mx-auto mt-5 flex w-full max-w-full items-center gap-2 rounded-2xl border border-outline-variant bg-background p-2 pl-3 text-left font-mono text-[11px] sm:mt-6 sm:w-fit sm:items-center sm:gap-3 sm:rounded-full sm:py-1.5 sm:pr-1.5 sm:pl-4 sm:text-[13px]"
-              style={{ animationDelay: "240ms" }}
-            >
-              <span className="shrink-0 text-muted-foreground">$</span>
-              <code className="min-w-0 flex-1 break-all sm:flex-none sm:break-normal">{INSTALL}</code>
-              <CopyButton text={INSTALL} className="shrink-0" />
-            </div>
+            <LiveDemoLink href="#showcase" />
+          </div>
+          <div
+            className="animate-rise mx-auto mt-8 flex w-full max-w-full items-center gap-3 font-code text-[13px] tracking-[-0.025em] text-pencil sm:w-fit"
+            style={{ animationDelay: "240ms" }}
+          >
+            <span className="shrink-0 text-faint">$</span>
+            <code className="min-w-0 flex-1 text-left break-all sm:flex-none sm:break-normal">{INSTALL}</code>
+            <CopyButton value={INSTALL} className="shrink-0" />
           </div>
         </section>
-        <section className="mx-auto max-w-[1200px] px-4 pb-24 md:px-6">
-          <div className="mb-6 flex flex-col gap-4 px-1 sm:flex-row sm:items-end sm:justify-between">
-            <div className="min-w-0">
-              <h2 className="text-xl font-normal tracking-[-0.02em] sm:text-2xl">Everything here is live.</h2>
-              <p className="mt-1 max-w-2xl text-sm text-muted-foreground sm:text-[15px]">Click, type and drag. Every tile is built from registry components.</p>
-            </div>
-            <div className="flex flex-wrap gap-2">
-              <Button variant="outline" render={<Link href="/blocks" />}>
-                View blocks
-              </Button>
-              <Button variant="outline" render={<Link href="/themes" />}>
-                Themes
-              </Button>
-            </div>
-          </div>
-          <div className="rounded-[24px] bg-container p-2 sm:rounded-[36px] sm:p-3 md:p-4">
-            <Showcase />
-          </div>
+
+        <section id="showcase" role="tabpanel" aria-label="Live showcase" className="mx-auto max-w-[1200px] scroll-mt-24 px-4 pt-16 md:px-6">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={view}
+              initial={reduce ? false : { opacity: 0, y: 12, filter: "blur(4px)" }}
+              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+              exit={reduce ? undefined : { opacity: 0, y: -8, filter: "blur(4px)" }}
+              transition={{ duration: 0.3, ease: EASE_OUT }}
+            >
+              {view === "components" ? (
+                <div className="dx-scope rounded-3xl bg-tile p-3">
+                  <Showcase />
+                </div>
+              ) : (
+                <KitGrid id={view} />
+              )}
+              <ShowcaseCaption id={view} />
+            </motion.div>
+          </AnimatePresence>
         </section>
-        <KitsSection />
+
+        <StackStrip />
         <GettingStarted />
+        <BlocksShowcase />
         <Faq />
         <BuildCta />
       </main>

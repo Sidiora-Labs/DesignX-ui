@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { btn } from "@/site/ui";
 import { CopyButton } from "./copy-button";
 import { highlight, type CodeLang } from "./highlight";
 
@@ -31,9 +31,9 @@ export function CodeBlock({ code, lang = "tsx", title, className, collapsible = 
   const long = collapsible && trimmed.split("\n").length > 16;
 
   return (
-    <div data-code-block className={cn("group/code relative overflow-hidden rounded-lg bg-container text-[13px]", className)}>
+    <div data-code-block className={cn("group/code not-prose relative overflow-hidden rounded-2xl bg-tile text-[13px] text-ink", className)}>
       {title && (
-        <div className="flex h-10 items-center gap-2 border-b border-outline-variant px-4 font-mono text-xs text-muted-foreground">{title}</div>
+        <div className="flex h-10 items-center gap-2 border-b border-divider/60 px-4 font-code text-xs tracking-[-0.025em] text-pencil">{title}</div>
       )}
       <CopyButton value={trimmed} className={cn("absolute right-2 z-10", title ? "top-1" : "top-2")} />
       <div
@@ -41,15 +41,15 @@ export function CodeBlock({ code, lang = "tsx", title, className, collapsible = 
         style={long && !expanded ? { maxHeight } : undefined}
       >
         {html ? (
-          <div className="[&_pre]:min-w-full [&_pre]:w-max [&_pre]:px-4 [&_pre]:py-3.5 [&_pre]:pr-12 [&_pre]:font-mono [&_pre]:leading-[1.7]" dangerouslySetInnerHTML={{ __html: html }} />
+          <div className="[&_pre]:min-w-full [&_pre]:w-max [&_pre]:px-4 [&_pre]:py-3.5 [&_pre]:pr-12 [&_pre]:font-code [&_pre]:leading-[1.7]" dangerouslySetInnerHTML={{ __html: html }} />
         ) : (
-          <pre className="px-4 py-3.5 pr-12 font-mono leading-[1.7] text-muted-foreground">{trimmed}</pre>
+          <pre className="px-4 py-3.5 pr-12 font-code leading-[1.7] text-pencil">{trimmed}</pre>
         )}
         {long && !expanded && (
-          <div className="absolute inset-x-0 bottom-0 flex h-28 items-end justify-center bg-gradient-to-t from-container via-container/80 to-transparent pb-4">
-            <Button size="sm" variant="tonal" onClick={() => setExpanded(true)}>
+          <div className="absolute inset-x-0 bottom-0 flex h-28 items-end justify-center bg-gradient-to-t from-tile via-tile/80 to-transparent pb-4">
+            <button type="button" className={btn({ size: "sm" })} onClick={() => setExpanded(true)}>
               Expand code
-            </Button>
+            </button>
           </div>
         )}
       </div>

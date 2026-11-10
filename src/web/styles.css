@@ -4,6 +4,57 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ==========================================================================
+   Site chrome — "graphite on vellum" (not part of the registry)
+   The landing, docs, blocks and themes pages wear this monochrome skin.
+   The component theme in dx-theme.css is untouched: live previews render
+   inside `.dx-scope` frames with the tokens users actually install.
+   ========================================================================== */
+@theme inline {
+  --font-ui: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-editorial: "Instrument Serif", ui-serif, Georgia, Cambria, "Times New Roman", serif;
+  --font-code: "Fragment Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-canvas: var(--site-canvas);
+  --color-tile: var(--site-tile);
+  --color-hairline: var(--site-hairline);
+  --color-divider: var(--site-divider);
+  --color-graphite: var(--site-graphite);
+  --color-on-graphite: var(--site-on-graphite);
+  --color-ink: var(--site-ink);
+  --color-pencil: var(--site-pencil);
+  --color-faint: var(--site-faint);
+}
+
+:root,
+.light {
+  --site-canvas: #fafafa;
+  --site-tile: #ededed;
+  --site-hairline: #e5e7eb;
+  --site-divider: #dadada;
+  --site-graphite: #242424;
+  --site-on-graphite: #fafafa;
+  --site-ink: #171717;
+  --site-pencil: #5c5c5c;
+  --site-faint: #a3a3a3;
+  --site-bevel:
+    inset 0 4px 4px -2px rgba(255, 255, 255, 0.25), inset 0 -4px 4px -2px rgba(0, 0, 0, 0.25),
+    inset -2px 0 2px -2px rgba(255, 255, 255, 0.1);
+}
+/* The reference is light-only; dark is the same drawing on carbon paper. */
+.dark {
+  --site-canvas: #171717;
+  --site-tile: #242424;
+  --site-hairline: #2e2e2e;
+  --site-divider: #3a3a3a;
+  --site-graphite: #fafafa;
+  --site-on-graphite: #171717;
+  --site-ink: #fafafa;
+  --site-pencil: #a3a3a3;
+  --site-faint: #6e6e6e;
+  --site-bevel: inset 0 4px 4px -2px rgba(255, 255, 255, 0.6), inset 0 -4px 4px -2px rgba(0, 0, 0, 0.16);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -13,34 +64,71 @@
     -moz-osx-font-smoothing: grayscale;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-canvas text-foreground font-sans;
     font-feature-settings: "ss02" on;
     font-size: 14px;
     line-height: 1.45;
   }
+  /* Bare block previews (iframes) keep the product surface, not the site canvas. */
+  html[data-block-view] body {
+    @apply bg-background;
+  }
   ::selection {
-    background: color-mix(in srgb, var(--info) 22%, transparent);
+    background: color-mix(in srgb, var(--site-ink) 16%, transparent);
   }
 }
 
-/* ---------- Docs site helpers (not part of the registry) ---------- */
+@layer components {
+  /* Chrome typography: Inter, never lighter than 500, slightly tightened. */
+  .site {
+    font-family: var(--font-ui);
+    font-feature-settings: normal;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: var(--site-ink);
+  }
+  /* Live product UI inside the chrome: back to the shipped component theme. */
+  .dx-scope {
+    font-family: var(--font-sans);
+    font-feature-settings: "ss02" on;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.45;
+    letter-spacing: normal;
+    color: var(--foreground);
+    text-align: start;
+  }
+  .site-bevel {
+    box-shadow: var(--site-bevel);
+  }
+  .site-focus {
+    outline: none;
+  }
+  .site-focus:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--site-canvas),
+      0 0 0 4px var(--site-ink);
+  }
+}
+
+/* ---------- Docs prose ---------- */
 .docs-prose h2:not(.not-prose, .not-prose *) {
-  @apply mt-12 mb-4 scroll-m-24 text-[22px] font-medium tracking-[-0.015em];
+  @apply mt-16 mb-6 scroll-m-24 text-[28px] leading-[1.14] font-bold tracking-[-0.025em] text-ink;
 }
 .docs-prose h3:not(.not-prose, .not-prose *) {
-  @apply mt-8 mb-3 scroll-m-24 text-[17px] font-medium tracking-[-0.01em];
+  @apply mt-10 mb-4 scroll-m-24 text-lg leading-[1.33] font-semibold tracking-[-0.025em] text-ink;
 }
 .docs-prose p:not(.not-prose, .not-prose *) {
-  @apply text-muted-foreground mb-4 text-[15px] leading-[1.65];
+  @apply text-pencil mb-4 text-base leading-[1.6];
 }
 .docs-prose ul:not(.not-prose, .not-prose *) {
-  @apply text-muted-foreground mb-4 ml-5 list-disc space-y-1.5 text-[15px];
+  @apply text-pencil mb-4 ml-5 list-disc space-y-1.5 text-base leading-[1.6];
 }
 .docs-prose code:not(pre code):not(.not-prose, .not-prose *) {
-  @apply bg-container-high rounded-xs px-1.5 py-0.5 font-mono text-[13px] text-foreground;
+  @apply bg-tile text-ink rounded-md px-1.5 py-0.5 font-code text-[13px] tracking-[-0.025em];
 }
 .docs-prose a:not([data-slot]):not(.not-prose, .not-prose *) {
-  @apply text-foreground underline underline-offset-4 decoration-border hover:decoration-foreground transition-colors;
+  @apply text-ink underline underline-offset-4 decoration-divider hover:decoration-ink transition-colors;
 }
 
 .bg-grid {

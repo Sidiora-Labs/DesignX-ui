@@ -1,9 +1,9 @@
 import * as React from "react";
-import { useParams } from "wouter";
+import { Link, useParams } from "wouter";
 import { ArrowUpRightIcon } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
-import { catalogBySlug, groupLabels } from "@/docs/catalog";
+import { catalog, catalogBySlug, groupLabels } from "@/docs/catalog";
+import { KitCard } from "@/landing/kit-card";
 import { apiDocs } from "@/docs/api";
 import { CodeBlock } from "@/docs/code-block";
 import { ComponentPreview } from "@/docs/component-preview";
@@ -13,6 +13,9 @@ import { PropsTable } from "@/docs/props-table";
 import { exampleNames, hasDemo } from "@/docs/sources";
 import NotFound from "../not-found";
 
+const tagLink =
+  "site-focus inline-flex h-7 items-center gap-1.5 rounded-full border border-hairline px-3 text-[13px] text-pencil transition-colors hover:border-divider hover:text-ink [&_svg]:size-3.5";
+
 const titleCase = (s: string) => s.replace(/-/g, " ").replace(/^\w/, (c) => c.toUpperCase());
 
 export default function ComponentDocPage() {
@@ -20,6 +23,12 @@ export default function ComponentDocPage() {
   const item = catalogBySlug[slug];
   const api = apiDocs[slug];
   const examples = React.useMemo(() => exampleNames(slug), [slug]);
+  const related = React.useMemo(() => {
+    if (!item) return [];
+    const peers = catalog.filter((c) => c.group === item.group);
+    const at = peers.indexOf(item);
+    return [1, 2, 3, 4].map((n) => peers[(at + n) % peers.length]).filter((c, i, all) => c && c !== item && all.indexOf(c) === i);
+  }, [item]);
 
   React.useEffect(() => {
     if (item) document.title = `${item.title}DX UI`;
@@ -36,25 +45,31 @@ export default function ComponentDocPage() {
 
   return (
     <div className="flex gap-12" key={slug}>
-      <article className="docs-prose min-w-0 flex-1">
-        <DocsHeader title={item.title} description={item.description} isNew={item.isNew} eyebrow={groupLabels[item.group]}>
+      <article className="docs-prose min-w-0 max-w-5xl flex-1">
+        <DocsHeader
+          title={item.title}
+          description={item.description}
+          crumbs={[
+            { title: "Docs", href: "/docs" },
+            { title: "Components", href: "/docs/components" },
+            ...(item.group === "ui" ? [] : [{ title: groupLabels[item.group], href: `/docs/components?group=${item.group}` }]),
+            { title: item.title },
+          ]}
+        >
           {item.base && (
-            // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-            <Badge variant="tonal" render={<a href={`https://base-ui.com/react/components/${item.base}`} target="_blank" rel="noreferrer" />}>
+            <a href={`https://base-ui.com/react/components/${item.base}`} target="_blank" rel="noreferrer" className={tagLink}>
               Base UI <ArrowUpRightIcon />
-            </Badge>
+            </a>
           )}
           {item.lib && (
-            // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-            <Badge variant="tonal" render={<a href={item.lib.href} target="_blank" rel="noreferrer" />}>
+            <a href={item.lib.href} target="_blank" rel="noreferrer" className={tagLink}>
               {item.lib.name} <ArrowUpRightIcon />
-            </Badge>
+            </a>
           )}
           {(item.group === "dx" || item.group === "motion") && (
-            // oxlint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/control-has-associated-label
-            <Badge variant="tonal" render={<a href="https://motion.dev" target="_blank" rel="noreferrer" />}>
+            <a href="https://motion.dev" target="_blank" rel="noreferrer" className={tagLink}>
               Motion <ArrowUpRightIcon />
-            </Badge>
+            </a>
           )}
         </DocsHeader>
 
@@ -74,7 +89,7 @@ export default function ComponentDocPage() {
           <>
             <h2 id="examples">Examples</h2>
             {examples.map((name) => (
-              <section key={name} className="mb-10">
+              <section key={name} className="mb-12">
                 <h3 id={name}>{api?.exampleTitles?.[name.split(".")[1]] ?? titleCase(name.split(".")[1])}</h3>
                 <ComponentPreview name={name} minHeight={260} align={api?.align} />
               </section>
@@ -94,6 +109,23 @@ export default function ComponentDocPage() {
               </section>
             ))}
           </>
+        )}
+        {related.length > 0 && (
+          <section aria-labelledby="related" className="not-prose mt-20">
+            <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">
+              <h2 id="related" className="text-[28px] leading-[1.14] font-bold tracking-[-0.025em] text-ink">
+                More in {groupLabels[item.group]}
+              </h2>
+              <Link href={`/docs/components?group=${item.group}`} className="site-focus rounded-md text-sm text-pencil hover:text-ink">
+                View all
+              </Link>
+            </div>
+            <div className="grid auto-rows-[260px] grid-cols-1 gap-3 sm:grid-cols-2 2xl:grid-cols-4">
+              {related.map((c) => (
+                <KitCard key={c.slug} slug={c.slug} persist={false} />
+              ))}
+            </div>
+          </section>
         )}
         <PrevNext />
       </article>
