@@ -27,6 +27,12 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://dxuireact.com/docs/components/motion-breadcrumb"
+    "docs": "https://dxuireact.com/docs/components/motion-breadcrumb",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

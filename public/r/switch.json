@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "switch",
-    "docs": "https://dxuireact.com/docs/components/switch"
+    "docs": "https://dxuireact.com/docs/components/switch",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "switch"
   }
 }

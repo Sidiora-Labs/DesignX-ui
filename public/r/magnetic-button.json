@@ -26,6 +26,12 @@
   ],
   "meta": {
     "group": "elements",
-    "docs": "https://dxuireact.com/docs/components/magnetic-button"
+    "docs": "https://dxuireact.com/docs/components/magnetic-button",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "security"
+    ]
   }
 }

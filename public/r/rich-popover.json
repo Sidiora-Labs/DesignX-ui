@@ -23,6 +23,12 @@
   ],
   "meta": {
     "group": "elements",
-    "docs": "https://dxuireact.com/docs/components/rich-popover"
+    "docs": "https://dxuireact.com/docs/components/rich-popover",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "security"
+    ]
   }
 }

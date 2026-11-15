@@ -26,6 +26,13 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://dxuireact.com/docs/components/ai-orb-face"
+    "docs": "https://dxuireact.com/docs/components/ai-orb-face",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

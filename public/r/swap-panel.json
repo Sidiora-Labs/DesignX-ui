@@ -26,6 +26,12 @@
   ],
   "meta": {
     "group": "elements",
-    "docs": "https://dxuireact.com/docs/components/swap-panel"
+    "docs": "https://dxuireact.com/docs/components/swap-panel",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "security"
+    ]
   }
 }

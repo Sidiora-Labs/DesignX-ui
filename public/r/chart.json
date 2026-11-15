@@ -23,6 +23,12 @@
   ],
   "meta": {
     "group": "ui",
-    "docs": "https://dxuireact.com/docs/components/chart"
+    "docs": "https://dxuireact.com/docs/components/chart",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ]
   }
 }

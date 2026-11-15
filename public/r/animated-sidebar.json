@@ -27,6 +27,12 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://dxuireact.com/docs/components/animated-sidebar"
+    "docs": "https://dxuireact.com/docs/components/animated-sidebar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

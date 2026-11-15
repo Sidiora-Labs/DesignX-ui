@@ -31,6 +31,12 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://dxuireact.com/docs/components/popover-morph"
+    "docs": "https://dxuireact.com/docs/components/popover-morph",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

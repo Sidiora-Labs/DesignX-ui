@@ -25,6 +25,12 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://dxuireact.com/docs/components/color-selector"
+    "docs": "https://dxuireact.com/docs/components/color-selector",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

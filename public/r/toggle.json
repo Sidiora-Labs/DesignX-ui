@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "toggle",
-    "docs": "https://dxuireact.com/docs/components/toggle"
+    "docs": "https://dxuireact.com/docs/components/toggle",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "toggle"
   }
 }

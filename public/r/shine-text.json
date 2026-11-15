@@ -21,6 +21,12 @@
   ],
   "meta": {
     "group": "text",
-    "docs": "https://dxuireact.com/docs/components/shine-text"
+    "docs": "https://dxuireact.com/docs/components/shine-text",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

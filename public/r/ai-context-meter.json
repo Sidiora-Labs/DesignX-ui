@@ -24,6 +24,13 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://dxuireact.com/docs/components/ai-context-meter"
+    "docs": "https://dxuireact.com/docs/components/ai-context-meter",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

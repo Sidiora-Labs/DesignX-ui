@@ -29,6 +29,12 @@
   ],
   "meta": {
     "group": "dx",
-    "docs": "https://dxuireact.com/docs/components/auth-drawer"
+    "docs": "https://dxuireact.com/docs/components/auth-drawer",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

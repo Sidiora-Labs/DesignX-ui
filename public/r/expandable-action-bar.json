@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "motion",
-    "docs": "https://dxuireact.com/docs/components/expandable-action-bar"
+    "docs": "https://dxuireact.com/docs/components/expandable-action-bar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

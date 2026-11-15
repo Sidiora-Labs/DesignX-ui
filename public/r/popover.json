@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "popover",
-    "docs": "https://dxuireact.com/docs/components/popover"
+    "docs": "https://dxuireact.com/docs/components/popover",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "popover"
   }
 }

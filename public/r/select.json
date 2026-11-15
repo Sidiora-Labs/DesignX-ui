@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "select",
-    "docs": "https://dxuireact.com/docs/components/select"
+    "docs": "https://dxuireact.com/docs/components/select",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "select"
   }
 }

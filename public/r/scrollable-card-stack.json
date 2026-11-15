@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "elements",
-    "docs": "https://dxuireact.com/docs/components/scrollable-card-stack"
+    "docs": "https://dxuireact.com/docs/components/scrollable-card-stack",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "security"
+    ]
   }
 }

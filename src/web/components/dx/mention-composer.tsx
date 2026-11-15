@@ -119,7 +119,7 @@ function MentionComposer({ mentions, onSubmit, placeholder = "Ask anythingtype @
               if (e.key === "Tab" && suggestions[0]) {
                 e.preventDefault();
                 complete(suggestions[0]);
-              } else if (e.key === "Enter") {
+              } else if (e.key === "Enter" && !e.nativeEvent.isComposing && e.nativeEvent.keyCode !== 229) {
                 e.preventDefault();
                 submit();
               }

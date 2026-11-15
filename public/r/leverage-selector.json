@@ -31,6 +31,13 @@
   ],
   "meta": {
     "group": "trading",
-    "docs": "https://dxuireact.com/docs/components/leverage-selector"
+    "docs": "https://dxuireact.com/docs/components/leverage-selector",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

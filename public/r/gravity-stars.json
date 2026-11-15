@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "effects",
-    "docs": "https://dxuireact.com/docs/components/gravity-stars"
+    "docs": "https://dxuireact.com/docs/components/gravity-stars",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

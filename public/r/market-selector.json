@@ -28,6 +28,13 @@
   ],
   "meta": {
     "group": "trading",
-    "docs": "https://dxuireact.com/docs/components/market-selector"
+    "docs": "https://dxuireact.com/docs/components/market-selector",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

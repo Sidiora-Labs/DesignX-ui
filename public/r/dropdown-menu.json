@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "menu",
-    "docs": "https://dxuireact.com/docs/components/dropdown-menu"
+    "docs": "https://dxuireact.com/docs/components/dropdown-menu",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "menu"
   }
 }

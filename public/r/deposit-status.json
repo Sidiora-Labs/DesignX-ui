@@ -29,6 +29,13 @@
   ],
   "meta": {
     "group": "trading",
-    "docs": "https://dxuireact.com/docs/components/deposit-status"
+    "docs": "https://dxuireact.com/docs/components/deposit-status",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

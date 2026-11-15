@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "accordion",
-    "docs": "https://dxuireact.com/docs/components/accordion"
+    "docs": "https://dxuireact.com/docs/components/accordion",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "accordion"
   }
 }

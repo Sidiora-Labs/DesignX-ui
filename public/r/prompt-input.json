@@ -29,6 +29,13 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://dxuireact.com/docs/components/prompt-input"
+    "docs": "https://dxuireact.com/docs/components/prompt-input",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

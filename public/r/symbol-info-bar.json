@@ -28,6 +28,13 @@
   ],
   "meta": {
     "group": "trading",
-    "docs": "https://dxuireact.com/docs/components/symbol-info-bar"
+    "docs": "https://dxuireact.com/docs/components/symbol-info-bar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

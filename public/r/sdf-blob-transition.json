@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "transitions",
-    "docs": "https://dxuireact.com/docs/components/sdf-blob-transition"
+    "docs": "https://dxuireact.com/docs/components/sdf-blob-transition",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

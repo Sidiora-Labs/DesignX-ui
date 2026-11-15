@@ -3,8 +3,11 @@ import { blocks, catalog, groupLabels, guides } from "./catalog";
 export type NavLink = { title: string; href: string; isNew?: boolean };
 export type NavSection = { title: string; items: NavLink[] };
 
+const guideLink = (g: (typeof guides)[number]) => ({ title: g.title, href: g.slug === "introduction" ? "/docs" : `/docs/${g.slug}` });
+
 export const docsNav: NavSection[] = [
-  { title: "Getting started", items: guides.map((g) => ({ title: g.title, href: g.slug === "introduction" ? "/docs" : `/docs/${g.slug}` })) },
+  { title: "Getting started", items: guides.filter((g) => g.section !== "standards").map(guideLink) },
+  { title: "Web standards", items: guides.filter((g) => g.section === "standards").map(guideLink) },
   {
     title: "Browse",
     items: [

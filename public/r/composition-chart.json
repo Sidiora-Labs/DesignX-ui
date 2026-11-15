@@ -57,6 +57,12 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://dxuireact.com/docs/components/composition-chart"
+    "docs": "https://dxuireact.com/docs/components/composition-chart",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

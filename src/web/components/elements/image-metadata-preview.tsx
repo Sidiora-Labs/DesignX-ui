@@ -61,6 +61,7 @@ export default function ImageMetadataPreview({
       >
         <img
           alt={alt}
+          decoding="async"
           draggable={false}
           height={437}
           src={imageSrc}

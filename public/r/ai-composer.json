@@ -26,6 +26,12 @@
   ],
   "meta": {
     "group": "dx",
-    "docs": "https://dxuireact.com/docs/components/ai-composer"
+    "docs": "https://dxuireact.com/docs/components/ai-composer",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

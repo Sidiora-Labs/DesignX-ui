@@ -52,6 +52,13 @@
   ],
   "meta": {
     "group": "trading",
-    "docs": "https://dxuireact.com/docs/components/order-entry"
+    "docs": "https://dxuireact.com/docs/components/order-entry",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

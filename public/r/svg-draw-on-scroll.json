@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "effects",
-    "docs": "https://dxuireact.com/docs/components/svg-draw-on-scroll"
+    "docs": "https://dxuireact.com/docs/components/svg-draw-on-scroll",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

@@ -27,6 +27,12 @@
   ],
   "meta": {
     "group": "dx",
-    "docs": "https://dxuireact.com/docs/components/token-swap"
+    "docs": "https://dxuireact.com/docs/components/token-swap",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

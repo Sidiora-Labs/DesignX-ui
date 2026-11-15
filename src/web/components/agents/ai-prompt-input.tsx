@@ -11,9 +11,6 @@ import {
   type ChangeEvent,
   type KeyboardEvent,
   type ReactNode,
-  useCallback,
-  useLayoutEffect,
-  useRef,
   useState,
 } from "react";
 import {
@@ -26,7 +23,6 @@ const SUBMIT_ICON_SIZE = 17;
 const STOP_ICON_SIZE = 13;
 
 const MIN_ROWS = 1;
-const MAX_ROWS = 8;
 const COUNTER_VISIBLE_RATIO = 0.8;
 const SPRING_DEFAULT: Transition = {
   bounce: 0.1,
@@ -91,10 +87,9 @@ const formatSize = (bytes: number): string => {
 /**
  * The prompt composer.
  *
- * Growth is animated with a layout spring rather than a CSS height transition,
- * so a pasted paragraph settles instead of snapping — and because the height is
- * measured from the textarea's own scroll height, the surrounding page never
- * reflows mid-keystroke.
+ * Growth uses the platform's field-sizing property with min/max block-size
+ * guardrails. Older browsers keep the native fixed textarea size instead of
+ * paying for a scrollHeight measurement on every keystroke.
  */
 const AIPromptInput = ({
   "aria-label": ariaLabel,
@@ -116,7 +111,6 @@ const AIPromptInput = ({
   const stateMotion = getAIStateMotion(state);
   const accentColor = getAIStateAccentColor(state, "transparent");
 
-  const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [internalValue, setInternalValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -124,31 +118,6 @@ const AIPromptInput = ({
   const draft = isControlled ? value : internalValue;
   const isStreaming = state === "streaming";
   const canSubmit = draft.trim().length > 0 && !disabled;
-
-  const resize = useCallback(() => {
-    const textarea = textareaRef.current;
-    if (!textarea) {
-      return;
-    }
-    // Collapse first, otherwise scrollHeight only ever grows.
-    textarea.style.height = "auto";
-    const lineHeight = Number.parseFloat(
-      getComputedStyle(textarea).lineHeight || "20"
-    );
-    const maxHeight = lineHeight * MAX_ROWS;
-    textarea.style.height = `${Math.min(textarea.scrollHeight, maxHeight)}px`;
-    textarea.style.overflowY =
-      textarea.scrollHeight > maxHeight ? "auto" : "hidden";
-  }, []);
-
-  useLayoutEffect(() => {
-    // Collapsing on an empty draft matters after submit: the box has to return
-    // to one row instead of holding the height of the message just sent.
-    if (draft.length === 0 && textareaRef.current) {
-      textareaRef.current.style.height = "";
-    }
-    resize();
-  }, [draft, resize]);
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const next = event.target.value;
@@ -175,6 +144,7 @@ const AIPromptInput = ({
   const handleKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
     // Enter sends, Shift+Enter breaks the line — the convention every chat UI
     // has trained users on.
+    if (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return;
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       submit();
@@ -270,14 +240,13 @@ const AIPromptInput = ({
 
       <textarea
         aria-label={ariaLabel}
-        className="max-h-64 w-full resize-none bg-transparent px-4 pt-3 pb-2 text-sm outline-none placeholder:text-muted-foreground"
+        className="field-sizing-content min-h-12 max-h-64 w-full resize-none overflow-y-auto bg-transparent px-4 pt-3 pb-2 text-sm outline-none placeholder:text-muted-foreground"
         disabled={disabled}
         onBlur={() => setIsFocused(false)}
         onChange={handleChange}
         onFocus={() => setIsFocused(true)}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
-        ref={textareaRef}
         rows={MIN_ROWS}
         value={draft}
       />

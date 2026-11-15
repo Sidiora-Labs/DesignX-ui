@@ -57,6 +57,12 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://dxuireact.com/docs/components/returns-calendar"
+    "docs": "https://dxuireact.com/docs/components/returns-calendar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

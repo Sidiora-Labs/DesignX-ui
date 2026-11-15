@@ -18,6 +18,12 @@
   ],
   "meta": {
     "group": "text",
-    "docs": "https://dxuireact.com/docs/components/scramble-hover"
+    "docs": "https://dxuireact.com/docs/components/scramble-hover",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

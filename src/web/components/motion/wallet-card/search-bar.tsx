@@ -133,7 +133,7 @@ export function SearchBar({
                   onChange?.(e.target.value);
                 }}
                 onKeyDown={(e) => {
-                  if (e.key === "Enter" && value.trim()) submit(value.trim());
+                  if (e.key === "Enter" && !e.nativeEvent.isComposing && e.nativeEvent.keyCode !== 229 && value.trim()) submit(value.trim());
                   if (e.key === "Escape") close();
                 }}
                 placeholder={placeholder}

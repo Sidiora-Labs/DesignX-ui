@@ -25,6 +25,12 @@
   ],
   "meta": {
     "group": "dx",
-    "docs": "https://dxuireact.com/docs/components/tick-scrollbar"
+    "docs": "https://dxuireact.com/docs/components/tick-scrollbar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

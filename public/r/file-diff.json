@@ -39,6 +39,13 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://dxuireact.com/docs/components/file-diff"
+    "docs": "https://dxuireact.com/docs/components/file-diff",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

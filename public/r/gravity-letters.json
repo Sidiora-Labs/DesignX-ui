@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "text",
-    "docs": "https://dxuireact.com/docs/components/gravity-letters"
+    "docs": "https://dxuireact.com/docs/components/gravity-letters",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

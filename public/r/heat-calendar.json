@@ -63,6 +63,12 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://dxuireact.com/docs/components/heat-calendar"
+    "docs": "https://dxuireact.com/docs/components/heat-calendar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

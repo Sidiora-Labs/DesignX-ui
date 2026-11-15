@@ -25,6 +25,12 @@
   ],
   "meta": {
     "group": "ui",
-    "docs": "https://dxuireact.com/docs/components/calendar"
+    "docs": "https://dxuireact.com/docs/components/calendar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ]
   }
 }

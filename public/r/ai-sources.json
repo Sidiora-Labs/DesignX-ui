@@ -25,6 +25,13 @@
   ],
   "meta": {
     "group": "agents",
-    "docs": "https://dxuireact.com/docs/components/ai-sources"
+    "docs": "https://dxuireact.com/docs/components/ai-sources",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "forms",
+      "security"
+    ]
   }
 }

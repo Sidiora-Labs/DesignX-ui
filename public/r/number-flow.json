@@ -25,6 +25,12 @@
   ],
   "meta": {
     "group": "dx",
-    "docs": "https://dxuireact.com/docs/components/number-flow"
+    "docs": "https://dxuireact.com/docs/components/number-flow",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

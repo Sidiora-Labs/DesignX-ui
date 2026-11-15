@@ -84,7 +84,9 @@ export const PostHeader = ({
       alt={author.name}
       className={cn("size-10 object-cover object-center", avatarRounded)}
       draggable={false}
+      decoding="async"
       height={40}
+      loading="lazy"
       src={author.avatar}
       width={40}
     />
@@ -140,8 +142,10 @@ export const PostMediaGrid = ({ media, alt }: { media: PostMedia[]; alt: string 
       alt={m.alt ?? alt}
       className={cn("h-full w-full rounded-[18px] border border-outline-variant object-cover", extra)}
       draggable={false}
+      decoding="async"
       height={m.height}
       key={m.src}
+      loading="lazy"
       src={m.src}
       width={m.width}
     />

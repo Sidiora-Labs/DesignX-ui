@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "effects",
-    "docs": "https://dxuireact.com/docs/components/drawing-cursor"
+    "docs": "https://dxuireact.com/docs/components/drawing-cursor",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

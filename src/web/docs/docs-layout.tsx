@@ -59,7 +59,7 @@ export function DocsNav({ className }: { className?: string }) {
     });
 
   return (
-    <div className={cn("flex min-h-0 flex-col", className)}>
+    <nav aria-label="Documentation" className={cn("flex min-h-0 flex-col", className)}>
       <label className="relative mb-4 block shrink-0">
         <span className="sr-only">Filter navigation</span>
         <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-3.5 -translate-y-1/2 text-faint" />
@@ -117,7 +117,7 @@ export function DocsNav({ className }: { className?: string }) {
           );
         })}
       </div>
-    </div>
+    </nav>
   );
 }
 
@@ -131,6 +131,7 @@ export function DocsSidebar() {
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const mainRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
     // New page: start at the top, unless the URL points at a heading.
     const id = decodeURIComponent(window.location.hash.slice(1));
@@ -147,12 +148,15 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
     }, 100);
     return () => window.clearInterval(t);
   }, [location]);
+  React.useEffect(() => {
+    mainRef.current?.focus({ preventScroll: true });
+  }, [location]);
   return (
     <div className="site flex min-h-svh flex-col">
       <SiteHeader />
       <div className="mx-auto flex w-full max-w-[1440px] flex-1 gap-6 px-4 md:px-6 lg:gap-12">
         <DocsSidebar />
-        <main className="min-w-0 flex-1 py-8 md:py-12">
+        <main id="main-content" ref={mainRef} tabIndex={-1} aria-labelledby="docs-page-title" className="min-w-0 flex-1 py-8 outline-none md:py-12">
           <DocsBoundary key={location}>{children}</DocsBoundary>
         </main>
       </div>
@@ -172,7 +176,7 @@ class DocsBoundary extends React.Component<{ children: React.ReactNode }, { fail
     return (
       <div className="flex min-h-[50svh] flex-col items-start justify-center">
         <Eyebrow>Something broke</Eyebrow>
-        <h1 className="mt-4 text-[28px] leading-[1.14] font-bold tracking-[-0.025em] text-ink">This page failed to render.</h1>
+        <h1 id="docs-page-title" className="mt-4 text-[28px] leading-[1.14] font-bold tracking-[-0.025em] text-ink">This page failed to render.</h1>
         <p className="mt-4 max-w-md text-base leading-[1.6] text-pencil">The rest of the docs still work. Try again, or pick another page from the sidebar.</p>
         <button type="button" className={btn({ variant: "ghost", className: "mt-6" })} onClick={() => this.setState({ failed: false })}>
           Try again
@@ -201,7 +205,7 @@ export function DocsHeader({
     <div className="animate-rise not-prose mb-12">
       {crumbs ? <Crumbs items={crumbs} className="mb-4" /> : eyebrow && <Eyebrow className="mb-4">{eyebrow}</Eyebrow>}
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-[clamp(2.25rem,6vw,3rem)] leading-[1.13] font-bold tracking-[-0.025em] text-ink">{title}</h1>
+        <h1 id="docs-page-title" className="text-[clamp(2.25rem,6vw,3rem)] leading-[1.13] font-bold tracking-[-0.025em] text-ink">{title}</h1>
         {isNew && <Tag>New</Tag>}
       </div>
       <p className="mt-6 max-w-2xl text-lg leading-[1.33] tracking-[-0.025em] text-pretty text-pencil">{description}</p>

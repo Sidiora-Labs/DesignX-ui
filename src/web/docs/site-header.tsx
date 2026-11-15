@@ -23,6 +23,9 @@ export function SiteHeader({ className }: { className?: string }) {
   const [location] = useLocation();
   return (
     <header className={cn("site sticky top-0 z-40 w-full bg-canvas/85 backdrop-blur-xl", className)}>
+      <a href="#main-content" className="site-focus sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-lg focus:bg-graphite focus:px-4 focus:py-2 focus:text-sm focus:text-on-graphite">
+        Skip to content
+      </a>
       <div className="mx-auto grid h-16 max-w-[1440px] grid-cols-[auto_1fr_auto] items-center gap-4 px-4 md:px-6 lg:grid-cols-[1fr_auto_1fr]">
         <div className="flex items-center gap-1">
           <MobileNav />

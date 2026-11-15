@@ -251,7 +251,7 @@ function EditableValue({ display, initial, label, onSave }: { display: ReactNode
         value={text}
         onChange={(e) => setText(sanitize(e.target.value))}
         onKeyDown={(e) => {
-          if (e.key === "Enter") commit();
+          if (e.key === "Enter" && !e.nativeEvent.isComposing && e.nativeEvent.keyCode !== 229) commit();
           if (e.key === "Escape") setEditing(false);
         }}
         className="h-6 w-24 rounded-md border border-input bg-background px-1.5 text-right font-mono text-xs tabular-nums outline-none focus-visible:border-foreground"

@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "field",
-    "docs": "https://dxuireact.com/docs/components/field"
+    "docs": "https://dxuireact.com/docs/components/field",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "field"
   }
 }

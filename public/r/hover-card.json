@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "preview-card",
-    "docs": "https://dxuireact.com/docs/components/hover-card"
+    "docs": "https://dxuireact.com/docs/components/hover-card",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "preview-card"
   }
 }

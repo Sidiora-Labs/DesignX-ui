@@ -21,6 +21,12 @@
   ],
   "meta": {
     "group": "text",
-    "docs": "https://dxuireact.com/docs/components/soft-blur-in"
+    "docs": "https://dxuireact.com/docs/components/soft-blur-in",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

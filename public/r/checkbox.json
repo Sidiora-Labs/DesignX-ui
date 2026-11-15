@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "checkbox",
-    "docs": "https://dxuireact.com/docs/components/checkbox"
+    "docs": "https://dxuireact.com/docs/components/checkbox",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "checkbox"
   }
 }

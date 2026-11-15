@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "tooltip",
-    "docs": "https://dxuireact.com/docs/components/tooltip"
+    "docs": "https://dxuireact.com/docs/components/tooltip",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "tooltip"
   }
 }

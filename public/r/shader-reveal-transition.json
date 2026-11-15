@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "transitions",
-    "docs": "https://dxuireact.com/docs/components/shader-reveal-transition"
+    "docs": "https://dxuireact.com/docs/components/shader-reveal-transition",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

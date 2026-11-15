@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "slider",
-    "docs": "https://dxuireact.com/docs/components/slider"
+    "docs": "https://dxuireact.com/docs/components/slider",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "slider"
   }
 }

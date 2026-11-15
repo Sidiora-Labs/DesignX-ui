@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "form",
-    "docs": "https://dxuireact.com/docs/components/form"
+    "docs": "https://dxuireact.com/docs/components/form",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "form"
   }
 }

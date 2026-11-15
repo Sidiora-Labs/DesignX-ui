@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "input",
-    "docs": "https://dxuireact.com/docs/components/input"
+    "docs": "https://dxuireact.com/docs/components/input",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "input"
   }
 }

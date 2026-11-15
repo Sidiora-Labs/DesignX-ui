@@ -24,6 +24,12 @@
   ],
   "meta": {
     "group": "text",
-    "docs": "https://dxuireact.com/docs/components/perspective-text-3d"
+    "docs": "https://dxuireact.com/docs/components/perspective-text-3d",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

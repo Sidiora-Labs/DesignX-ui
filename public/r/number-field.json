@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "number-field",
-    "docs": "https://dxuireact.com/docs/components/number-field"
+    "docs": "https://dxuireact.com/docs/components/number-field",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "number-field"
   }
 }

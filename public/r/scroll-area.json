@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "scroll-area",
-    "docs": "https://dxuireact.com/docs/components/scroll-area"
+    "docs": "https://dxuireact.com/docs/components/scroll-area",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "scroll-area"
   }
 }

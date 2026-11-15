@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "alert-dialog",
-    "docs": "https://dxuireact.com/docs/components/alert-dialog"
+    "docs": "https://dxuireact.com/docs/components/alert-dialog",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "alert-dialog"
   }
 }

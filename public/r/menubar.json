@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "menubar",
-    "docs": "https://dxuireact.com/docs/components/menubar"
+    "docs": "https://dxuireact.com/docs/components/menubar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "menubar"
   }
 }

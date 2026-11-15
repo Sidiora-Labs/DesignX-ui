@@ -11,6 +11,7 @@ import { DocsHeader, PrevNext, Toc } from "@/docs/docs-layout";
 import { InstallBlock } from "@/docs/install-block";
 import { PropsTable } from "@/docs/props-table";
 import { exampleNames, hasDemo } from "@/docs/sources";
+import { StandardsPanel } from "@/docs/standards-panel";
 import NotFound from "../not-found";
 
 const tagLink =
@@ -41,6 +42,7 @@ export default function ComponentDocPage() {
     ...(api?.usage ? [{ id: "usage", title: "Usage" }] : []),
     ...(examples.length ? [{ id: "examples", title: "Examples" }] : []),
     ...(api?.props?.length ? [{ id: "api", title: "API Reference" }] : []),
+    { id: "standards", title: "Standards checklist" },
   ];
 
   return (
@@ -111,6 +113,7 @@ export default function ComponentDocPage() {
             ))}
           </>
         )}
+        <StandardsPanel item={item} />
         {related.length > 0 && (
           <section aria-labelledby="related" className="not-prose mt-20">
             <div className="mb-6 flex items-baseline justify-between gap-4 border-b border-hairline pb-4">

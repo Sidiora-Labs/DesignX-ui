@@ -21,6 +21,12 @@
   ],
   "meta": {
     "group": "transitions",
-    "docs": "https://dxuireact.com/docs/components/shader-reveal-noise"
+    "docs": "https://dxuireact.com/docs/components/shader-reveal-noise",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "css-layout",
+      "performance"
+    ]
   }
 }

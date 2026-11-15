@@ -541,12 +541,20 @@ export const groupLabels: Record<CatalogGroup, string> = {
 
 export const catalogBySlug = Object.fromEntries(catalog.map((c) => [c.slug, c])) as Record<string, CatalogItem>;
 
-export type GuidePage = { slug: string; title: string; description: string };
+export type GuidePage = { slug: string; title: string; description: string; section?: "getting-started" | "standards" };
 
 export const guides: GuidePage[] = [
   { slug: "introduction", title: "Introduction", description: "Accessible, motion-first components you copy into your app and own." },
+  { slug: "modern-web", title: "Modern web standards", description: "Platform-first guidance for accessibility, CSS, forms, performance and secure composition.", section: "standards" },
   { slug: "installation", title: "Installation", description: "Add DX UI to a new or existing React + Tailwind 4 project." },
   { slug: "cli", title: "CLI", description: "Use the dx-ui CLI, or the shadcn CLI, to add components from the registry." },
+  { slug: "registry", title: "Registry", description: "Understand the shadcn-compatible registry contract, file graph and update workflow.", section: "standards" },
+  { slug: "accessibility", title: "Accessibility", description: "Keyboard, focus, semantics, contrast and reduced-motion expectations for every component.", section: "standards" },
+  { slug: "performance", title: "Performance", description: "Keep LCP, CLS and INP healthy as components and demos scale.", section: "standards" },
+  { slug: "css-layout", title: "CSS and layout", description: "Use intrinsic sizing, container queries, logical properties and progressive enhancement.", section: "standards" },
+  { slug: "forms", title: "Forms and input", description: "Preserve native form, autofill, validation and IME behaviour while styling controls.", section: "standards" },
+  { slug: "security", title: "Security and privacy", description: "Ship copied source with explicit policies, origins and data boundaries.", section: "standards" },
+  { slug: "ai-agents", title: "AI agent interfaces", description: "Streaming, approvals, tool calls and long-running work with clear accessible state.", section: "standards" },
   { slug: "theming", title: "Theming", description: "CSS variables, the tonal surface ladder, and the DX Gradient accent." },
   { slug: "tokens", title: "Tokens", description: "Every color, radius, motion and state-layer token in the system." },
   { slug: "typography", title: "Typography", description: "Google Sans Flex and Google Sans Code, on a tight fluid scale." },

@@ -24,7 +24,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "context-menu",
-    "docs": "https://dxuireact.com/docs/components/context-menu"
+    "docs": "https://dxuireact.com/docs/components/context-menu",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "context-menu"
   }
 }

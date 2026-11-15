@@ -243,6 +243,7 @@ export default function ProductCard({
             isHoverDevice && !shouldReduceMotion && "group-hover:scale-105"
           )}
           draggable={false}
+          decoding="async"
           src={image}
         />
 

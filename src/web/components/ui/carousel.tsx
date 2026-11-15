@@ -11,6 +11,8 @@ type CarouselOptions = UseCarouselParameters[0];
 type CarouselPlugin = UseCarouselParameters[1];
 
 type CarouselProps = {
+  /** Accessible name for the carousel region. */
+  "aria-label"?: string;
   opts?: CarouselOptions;
   plugins?: CarouselPlugin;
   orientation?: "horizontal" | "vertical";
@@ -88,7 +90,14 @@ function Carousel({ orientation = "horizontal", opts, setApi, plugins, className
     <CarouselContext.Provider
       value={{ carouselRef, api, opts, orientation, scrollPrev, scrollNext, canScrollPrev, canScrollNext, selectedIndex, snapCount, scrollTo }}
     >
-      <section onKeyDownCapture={handleKeyDown} className={cn("relative", className)} aria-roledescription="carousel" data-slot="carousel" {...(props as React.ComponentProps<"section">)}>
+      <section
+        onKeyDownCapture={handleKeyDown}
+        className={cn("relative", className)}
+        aria-roledescription="carousel"
+        aria-label={props["aria-label"] ?? "Carousel"}
+        data-slot="carousel"
+        {...(props as React.ComponentProps<"section">)}
+      >
         {children}
       </section>
     </CarouselContext.Provider>

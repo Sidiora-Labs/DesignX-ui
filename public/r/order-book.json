@@ -37,6 +37,12 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://dxuireact.com/docs/components/order-book"
+    "docs": "https://dxuireact.com/docs/components/order-book",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

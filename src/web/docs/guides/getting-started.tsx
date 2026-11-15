@@ -22,6 +22,11 @@ export function IntroductionGuide() {
         no bounce. A separate set of <strong>DX Motion</strong> components adds expressive micro-interactions: smooth
         carets, rolling digits, gooey filters and the DX gradient glow.
       </p>
+      <p>
+        The library follows a platform-first review contract based on Google Chrome&apos;s{" "}
+        <a href="https://developer.chrome.com/docs/modern-web-guidance" target="_blank" rel="noreferrer">Modern Web Guidance</a>: native semantics,
+        progressive enhancement, keyboard access, reduced motion, stable layout, and short interaction work.
+      </p>
       <h2 id="principles">Principles</h2>
       <ul>
         <li>
@@ -154,6 +159,37 @@ export function CliGuide() {
         .
       </p>
       <CodeBlock lang="bash" code={`curl ${registryTemplate.replace("{name}", "button")}`} />
+    </>
+  );
+}
+
+export function RegistryGuide() {
+  return (
+    <>
+      <p>
+        The registry is the transport layer behind the docs and both CLIs. It emits one JSON document per item plus an index and a schema,
+        while the source files remain ordinary TypeScript that you can own after installation.
+      </p>
+      <h2 id="contract">The contract</h2>
+      <ul>
+        <li><code>registry.json</code> contains the item index and the shadcn registry-item schema URL.</li>
+        <li><code>index.json</code> is the compact list used by the dx-ui CLI for search and <code>add --all</code>.</li>
+        <li>Each item declares files, npm dependencies, and other registry items it needs.</li>
+        <li>File paths and targets are relative, so an install cannot escape the destination directory.</li>
+      </ul>
+      <h2 id="inspect">Inspect an item</h2>
+      <CodeBlock lang="bash" code={`curl https://dxuireact.com/r/registry.json\ncurl https://dxuireact.com/r/button.json`} />
+      <h2 id="install">Install and own</h2>
+      <p>
+        Install with the CLI, review the generated diff, and keep the component in your repository. Updates are deliberate source changes;
+        the registry never hides a runtime dependency behind a package boundary.
+      </p>
+      <CodeBlock lang="bash" code={`npx @sidioralabs/designx-ui@latest add dialog\nnode scripts/check-registry.mjs public/r`} />
+      <h2 id="verification">Verification</h2>
+      <p>
+        Run the registry build and checker before publishing. The checker validates names, file safety, dependency closure, schema shape,
+        and index parity. Component pages expose the same file graph through the Manual install tab.
+      </p>
     </>
   );
 }

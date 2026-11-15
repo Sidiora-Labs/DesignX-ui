@@ -69,6 +69,12 @@
   ],
   "meta": {
     "group": "charts",
-    "docs": "https://dxuireact.com/docs/components/price-target-fan"
+    "docs": "https://dxuireact.com/docs/components/price-target-fan",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "performance",
+      "css-layout"
+    ]
   }
 }

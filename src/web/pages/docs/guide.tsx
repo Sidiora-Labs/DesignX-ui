@@ -3,14 +3,23 @@ import { useParams } from "wouter";
 
 import { guides } from "@/docs/catalog";
 import { DocsHeader, PrevNext, Toc } from "@/docs/docs-layout";
-import { CliGuide, DarkModeGuide, InstallationGuide, IntroductionGuide } from "@/docs/guides/getting-started";
+import { CliGuide, DarkModeGuide, InstallationGuide, IntroductionGuide, RegistryGuide } from "@/docs/guides/getting-started";
 import { MotionGuide, ThemingGuide, TokensGuide, TypographyGuide } from "@/docs/guides/design";
+import { AccessibilityGuide, AgentsGuide, CssLayoutGuide, FormsGuide, ModernWebGuide, PerformanceGuide, SecurityGuide } from "@/docs/guides/modern-web";
 import NotFound from "../not-found";
 
 const content: Record<string, React.ComponentType> = {
   introduction: IntroductionGuide,
+  "modern-web": ModernWebGuide,
   installation: InstallationGuide,
   cli: CliGuide,
+  registry: RegistryGuide,
+  accessibility: AccessibilityGuide,
+  performance: PerformanceGuide,
+  "css-layout": CssLayoutGuide,
+  forms: FormsGuide,
+  security: SecurityGuide,
+  "ai-agents": AgentsGuide,
   theming: ThemingGuide,
   tokens: TokensGuide,
   typography: TypographyGuide,
@@ -36,7 +45,7 @@ export default function GuidePage() {
   return (
     <div className="flex gap-12" key={guide}>
       <article className="docs-prose min-w-0 flex-1 max-w-3xl">
-        <DocsHeader title={page.title} description={page.description} crumbs={[{ title: "Docs", href: "/docs" }, { title: "Getting started" }, { title: page.title }]} />
+        <DocsHeader title={page.title} description={page.description} crumbs={[{ title: "Docs", href: "/docs" }, { title: page.section === "standards" ? "Web standards" : "Getting started" }, { title: page.title }]} />
         <div ref={ref}>
           <Body />
         </div>

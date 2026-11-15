@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="color-scheme" content="light dark" />
 		<link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32" />
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -19,6 +20,8 @@
 					var a = localStorage.getItem("dx-accent");
 					var dark = t === "dark" || (!t && window.matchMedia("(prefers-color-scheme: dark)").matches);
 					if (dark) document.documentElement.classList.add("dark");
+					var scheme = document.querySelector('meta[name="color-scheme"]');
+					if (scheme) scheme.setAttribute("content", dark ? "dark light" : "light dark");
 					if (a === "dx-gradient") document.documentElement.classList.add("accent-dx-gradient");
 				} catch (e) {}
 			})();

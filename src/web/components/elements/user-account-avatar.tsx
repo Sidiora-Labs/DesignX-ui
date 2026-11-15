@@ -1,7 +1,7 @@
 import { Popover } from "@base-ui/react/popover";
 import { Eye, Package, User } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
+import { useId, useState } from "react";
 
 export interface UserData {
   avatar: string;
@@ -42,6 +42,9 @@ export default function UserAccountAvatar({
   const [activeSection, setActiveSection] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData>(user);
   const shouldReduceMotion = useReducedMotion();
+  const fieldId = useId();
+  const nameFieldId = `${fieldId}-name`;
+  const emailFieldId = `${fieldId}-email`;
 
   const handleSectionClick = (section: string) => {
     setActiveSection(activeSection === section ? null : section);
@@ -67,7 +70,7 @@ export default function UserAccountAvatar({
       <div className="flex flex-col gap-1.5">
         <label
           className="font-medium text-muted-foreground text-xs"
-          htmlFor="name"
+          htmlFor={nameFieldId}
         >
           Name
         </label>
@@ -75,7 +78,7 @@ export default function UserAccountAvatar({
         <input
           className="rounded-md border border-border bg-background px-3 py-2 text-foreground text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           defaultValue={userData.name}
-          id="name"
+          id={nameFieldId}
           name="name"
           placeholder="Enter your name"
           type="text"
@@ -84,7 +87,7 @@ export default function UserAccountAvatar({
       <div className="flex flex-col gap-1.5">
         <label
           className="font-medium text-muted-foreground text-xs"
-          htmlFor="email"
+          htmlFor={emailFieldId}
         >
           Email
         </label>
@@ -92,7 +95,7 @@ export default function UserAccountAvatar({
         <input
           className="rounded-md border border-border bg-background px-3 py-2 text-foreground text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary"
           defaultValue={userData.email}
-          id="email"
+          id={emailFieldId}
           name="email"
           placeholder="Enter your email"
           type="email"
@@ -178,16 +181,19 @@ export default function UserAccountAvatar({
       <Popover.Trigger
         render={
         <button
+          aria-label={`Open account menu for ${userData.name}`}
           className={`flex cursor-pointer items-center gap-2 rounded-full border bg-background ${className}`}
           type="button"
         >
           <img
-            alt="User Avatar"
+            alt=""
             className="rounded-full"
             draggable={false}
             height={48}
+            loading="lazy"
             src={userData.avatar}
             width={48}
+            decoding="async"
           />
         </button>
         }

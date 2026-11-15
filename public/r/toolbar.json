@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "toolbar",
-    "docs": "https://dxuireact.com/docs/components/toolbar"
+    "docs": "https://dxuireact.com/docs/components/toolbar",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "toolbar"
   }
 }

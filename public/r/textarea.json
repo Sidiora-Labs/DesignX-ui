@@ -20,6 +20,12 @@
   ],
   "meta": {
     "group": "ui",
-    "docs": "https://dxuireact.com/docs/components/textarea"
+    "docs": "https://dxuireact.com/docs/components/textarea",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ]
   }
 }

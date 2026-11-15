@@ -520,6 +520,7 @@ function ResourceRow({
           }}
           onKeyDown={(event) => {
             event.stopPropagation();
+            if (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return;
             if (event.key === "Enter") {
               skipRenameBlurRef.current = true;
               onRenameCommit(draft);
@@ -763,6 +764,7 @@ export function AISidebar({
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent<HTMLDivElement>, row: FlatResource) => {
+      if (event.nativeEvent.isComposing || event.nativeEvent.keyCode === 229) return;
       const index = flat.findIndex(({ item }) => item.id === row.item.id);
       const previous = flat[index - 1];
       const next = flat[index + 1];

@@ -23,7 +23,13 @@
   ],
   "meta": {
     "group": "ui",
-    "base": "separator",
-    "docs": "https://dxuireact.com/docs/components/separator"
+    "docs": "https://dxuireact.com/docs/components/separator",
+    "modernWebGuidance": "https://developer.chrome.com/docs/modern-web-guidance",
+    "standards": [
+      "accessibility",
+      "forms",
+      "performance"
+    ],
+    "base": "separator"
   }
 }

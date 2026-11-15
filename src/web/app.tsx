@@ -75,7 +75,7 @@ function App() {
           </Switch>
         </React.Suspense>
       </SearchProvider>
-      {/* Do not removeoff by default, activated by parent iframe via postMessage */}
+      {/* Off by default; activated by the parent iframe via postMessage. */}
       {import.meta.env.DEV && <AgentFeedback />}
     </Provider>
   );

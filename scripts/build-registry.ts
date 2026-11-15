@@ -13,6 +13,7 @@ import path from "node:path";
 
 import { blocks, catalog } from "../src/web/docs/catalog";
 import { collectItemFiles, importSpecs, libItemName, resolveKey } from "../src/web/docs/item-files";
+import { modernGuidanceDocs, standardsForItem } from "../src/web/docs/standards";
 
 const root = path.resolve(import.meta.dir, "..");
 const web = path.join(root, "src/web");
@@ -39,6 +40,13 @@ type RegistryItem = {
 
 const ITEM_SCHEMA = "https://ui.shadcn.com/schema/registry-item.json";
 const NS = "@dx";
+
+const registryMeta = (c: (typeof catalog)[number]) => ({
+  group: c.group,
+  docs: `${homepage}/docs/components/${c.slug}`,
+  modernWebGuidance: modernGuidanceDocs,
+  standards: standardsForItem(c).map((area) => area.id),
+});
 
 /* ------------------------------------------------------------ helpers */
 
@@ -139,6 +147,7 @@ push({
   type: "registry:component",
   title: "Theme Provider",
   description: "Light / dark / system theme and the DX Gradient accent, persisted to localStorage.",
+  meta: { modernWebGuidance: modernGuidanceDocs, standards: ["accessibility", "performance"] },
   files: [{ path: "components/theme-provider.tsx", type: "registry:component", target: "components/theme-provider.tsx", content: themeProvider }],
 });
 
@@ -178,7 +187,7 @@ for (const c of catalog) {
         : { path: `dx/${c.slug}.tsx`, type: "registry:component", target: `components/dx/${c.slug}.tsx`, content: src },
     ],
     categories: [c.group === "ui" ? "components" : "motion"],
-    meta: { group: c.group, base: c.base, docs: `${homepage}/docs/components/${c.slug}` },
+    meta: { ...registryMeta(c), base: c.base },
   });
 }
 
@@ -250,7 +259,7 @@ for (const c of catalog) {
     registryDependencies: ns([...reg].sort()),
     files: graph.files.map((f) => ({ path: f.path, type: "registry:component", target: f.path, content: f.content })),
     categories: [GROUP_CATEGORY[c.group as keyof typeof GROUP_CATEGORY]],
-    meta: { group: c.group, docs: `${homepage}/docs/components/${c.slug}` },
+    meta: registryMeta(c),
   });
 }
 
