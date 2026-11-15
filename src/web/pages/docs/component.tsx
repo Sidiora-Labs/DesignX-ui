@@ -31,7 +31,7 @@ export default function ComponentDocPage() {
   }, [item]);
 
   React.useEffect(() => {
-    if (item) document.title = `${item.title}DX UI`;
+    if (item) document.title = `${item.title} · DX UI`;
   }, [item]);
 
   if (!item) return <NotFound />;

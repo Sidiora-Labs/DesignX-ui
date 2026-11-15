@@ -26,7 +26,7 @@ export default function GuidePage() {
   const [toc, setToc] = React.useState<{ id: string; title: string }[]>([]);
 
   React.useEffect(() => {
-    if (page) document.title = `${page.title}DX UI`;
+    if (page) document.title = `${page.title} · DX UI`;
     const hs = ref.current?.querySelectorAll("h2[id]") ?? [];
     setToc([...hs].map((h) => ({ id: h.id, title: h.textContent ?? "" })));
   }, [page]);
