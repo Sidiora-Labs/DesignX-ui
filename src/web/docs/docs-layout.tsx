@@ -257,6 +257,7 @@ export function Toc({ items }: { items: { id: string; title: string }[] }) {
           <li key={item.id}>
             <a
               href={`#${item.id}`}
+              aria-current={active === item.id ? "location" : undefined}
               className={cn(
                 "-ml-px block border-l border-transparent pl-3 text-sm text-faint transition-colors hover:text-ink",
                 active === item.id && "border-ink text-ink",

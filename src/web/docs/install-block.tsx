@@ -26,7 +26,7 @@ export function InstallBlock({ item }: { item: CatalogItem }) {
         if (live && g) setLoaded({ files: [...g.files, ...g.libs], requires: g.deps.filter((d) => catalogBySlug[d]) });
       });
     } else {
-      void loadComponentSource(group).then((code) => {
+      void loadComponentSource(group, slug).then((code) => {
         if (live) setLoaded({ files: [{ path: `components/${group}/${slug}.tsx`, content: code }], requires: [] });
       });
     }
@@ -46,7 +46,7 @@ export function InstallBlock({ item }: { item: CatalogItem }) {
       <div>
         <CodeBlock code={`npx shadcn@latest add @dx/${slug}`} lang="bash" />
         <p className="mt-3 text-sm text-pencil">
-          Requires the <code className="rounded-md bg-tile px-1.5 py-0.5 font-code text-[12px] text-ink">@dx</code> registry in your components.jsonsee{" "}
+          Requires the <code className="rounded-md bg-tile px-1.5 py-0.5 font-code text-[12px] text-ink">@dx</code> registry in your components.json; see{" "}
           <Link href="/docs/cli" className="text-ink underline decoration-divider underline-offset-4 hover:decoration-ink">CLI</Link>.
         </p>
       </div>

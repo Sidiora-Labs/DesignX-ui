@@ -75,7 +75,7 @@ export function ComponentPreview({
           <RotateCcwIcon />
         </button>
       </div>
-      <div id={`${uid}-panel`} role="tabpanel">
+      <div id={`${uid}-panel`} role="tabpanel" aria-labelledby={`${uid}-${view}`}>
         {/* Kept mounted while the code is open so the demo keeps its state. */}
         <Frame
           hidden={view !== "preview"}

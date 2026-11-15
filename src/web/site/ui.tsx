@@ -153,6 +153,7 @@ export function SegmentedPill<T extends string>({
         return (
           <button
             key={s.value}
+            id={`${id}-${s.value}`}
             type="button"
             role="tab"
             aria-selected={on}

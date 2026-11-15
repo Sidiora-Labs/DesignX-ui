@@ -37,7 +37,9 @@ export function CodeBlock({ code, lang = "tsx", title, className, collapsible = 
       )}
       <CopyButton value={trimmed} className={cn("absolute right-2 z-10", title ? "top-1" : "top-2")} />
       <div
-        className={cn("relative overflow-auto", long && !expanded && "overflow-hidden")}
+        tabIndex={0}
+        aria-label={typeof title === "string" ? `${title} code` : "Code example"}
+        className={cn("relative overflow-auto focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring", long && !expanded && "overflow-hidden")}
         style={long && !expanded ? { maxHeight } : undefined}
       >
         {html ? (
