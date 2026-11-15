@@ -49,6 +49,7 @@ export default function ComponentDocPage() {
         <DocsHeader
           title={item.title}
           description={item.description}
+          isNew={item.isNew}
           crumbs={[
             { title: "Docs", href: "/docs" },
             { title: "Components", href: "/docs/components" },
